@@ -2,6 +2,7 @@
  <html>
 	<head>
 		<meta charset="utf-8" >
+		<script language="javascript" src="background.js"></script>
 		<script language="javascript" src="popup.js"></script>
 		<style>
 			*{
@@ -24,6 +25,9 @@
 			#youtube{
 				background-image: url(img/youtube.png);
 			}
+			#gmail{
+				background-image: url(img/gmail.png);
+			}
 			ul{
 				list-style-type: none;
 				width: 150px;
@@ -37,22 +41,29 @@
 			}
 			li:hover{
 				background-color: #39F;
-				cursor: pointer;
+				cursor: pointer;	
+			}			
+			li:hover > span{
+				background-color: #39F;
+				cursor: pointer;	
 			}
-			
 		</style>
 	</head>
 	<body>
 		<ul>
+			<li id="gmail">Google Mail <span id="unreadCount"></span></li>
+			<hr>
+			<li id="translate">Google Translate</li>
+			<hr>
+			<li id="drive">Google Drive</li>
+			<hr>
 			<li id="search">Google Search</li>
 			<hr>
 			<li id="play">Google Play</li>
 			<hr>
-			<li id="drive">Google Drive</li>
-			<hr>
-			<li id="translate">Google Translate</li>
-			<hr>
 			<li id="youtube">Youtube</li>
+			<hr>
+			<li id="shortener">URL Shortener</li>
 		</ul>
 	</body>
 </html>

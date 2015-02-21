@@ -1,4 +1,4 @@
-function save_options() {
+function SaveOptions() {
 	var checkedOptions = new Array();
 	var mailService = document.getElementsByName("mailService");
 	for(var i = 0; i < mailService.length; i++){
@@ -25,7 +25,7 @@ function save_options() {
 	});
 }
 
-function restore_options() {
+function RestoreOptions() {
 	chrome.storage.sync.get({
 		options: ["mail", "translate", "drive", "search", "play", "youtube", "shortener", "gmail"]
 	}, function(items) {
@@ -65,7 +65,7 @@ function restore_options() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-	document.getElementById("saveButton").addEventListener("click", save_options);
+	document.getElementById("saveButton").addEventListener("click", SaveOptions);
 	
 	document.getElementById("mailText").addEventListener("click", function(){
 		var option = document.getElementById("mailOption");	
@@ -111,6 +111,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 });
 
-document.addEventListener('DOMContentLoaded', restore_options);
+document.addEventListener('DOMContentLoaded', RestoreOptions);
 
-// document.addEventListener("contextmenu", function(event){ event.preventDefault(); });
+document.addEventListener("contextmenu", function(event){ event.preventDefault(); });

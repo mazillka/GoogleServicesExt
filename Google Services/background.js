@@ -69,12 +69,14 @@ function GetShortUrl(longUrl){
 			if(xhr.status == 200) {
 				var shortUrl = JSON.parse(xhr.responseText).id;
 
-				localStorage.setItem("googleServicesLongUrl", longUrl);
-				localStorage.setItem("googleServicesShortUrl", shortUrl);	
-				
-				liElement.innerHTML = "<hr>" + shortUrl;
-				
-				copyToClipboard(liElement);
+				chrome.storage.sync.set({
+					shortUrl: shortUrl,
+					longUrl: longUrl
+				}, function() {
+					liElement.innerHTML = "<hr>" + shortUrl;
+					copyToClipboard(liElement);
+				});
+
 				xhr.abort();
 			} else {
 				liElement.innerHTML = "Invalid Value";
@@ -83,9 +85,6 @@ function GetShortUrl(longUrl){
 		}
 	}
 }
-
-// ... //
-document.addEventListener('DOMContentLoaded', updateUnreadCount);
 
 if (chrome.runtime && chrome.runtime.onStartup) {
 	chrome.runtime.onStartup.addListener(function(){
@@ -97,7 +96,7 @@ if (chrome.runtime && chrome.runtime.onStartup) {
 	});
 }
 
-
+document.addEventListener('DOMContentLoaded', updateUnreadCount);
 
 
 

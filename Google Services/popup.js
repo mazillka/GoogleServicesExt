@@ -39,16 +39,21 @@ document.addEventListener('DOMContentLoaded', function () {
 	document.getElementById("shortener").addEventListener("click", function(){
 		var li = document.getElementById("shortener");
 		chrome.tabs.getSelected(null, function(tab){
-			if(tab.url == localStorage.getItem("googleServicesLongUrl")){
-				li.innerHTML = localStorage.getItem("googleServicesShortUrl");
-			} else {
-				GetShortUrl(tab.url);
-			}
+			chrome.storage.sync.get({
+				shortUrl: "google.com",
+				longUrl: "google.com"
+			}, function(items) {
+				if(tab.url == items.longUrl){
+					li.innerHTML = "<hr>" + items.shortUrl;
+				} else {
+					GetShortUrl(tab.url);
+				}
+			});		
 		});
 	});
 });
 
-function restore_options() {
+function RestoreOptions() {
 	chrome.storage.sync.get({
 		options: ["mail", "translate", "drive", "search", "play", "youtube", "shortener", "gmail"]
 	}, function(items) {
@@ -87,6 +92,6 @@ function restore_options() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', restore_options);
+document.addEventListener('DOMContentLoaded', RestoreOptions);
 
 document.addEventListener("contextmenu", function(event){ event.preventDefault(); });

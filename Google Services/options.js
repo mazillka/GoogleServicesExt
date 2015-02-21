@@ -18,9 +18,9 @@ function SaveOptions() {
 		options: checkedOptions
 	}, function() {
 		var status = document.getElementById('saveButton');
-		status.textContent = "Options saved...";
+		status.value = "Options saved...";
 		setTimeout(function() {
-			status.textContent = "Save";
+			status.value = "Save";
 		}, 750);
 	});
 }

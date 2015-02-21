@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="utf-8" >
+	<script language="javascript" src="options.js"></script>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			background-color: #EEE;
+			user-select: none;
+			-webkit-user-select: none;
+		}
+		.horizontal{
+			float: left;
+			margin: 12px;
+			font-family: Verdana, Arial, Helvetica, sans-serif;
+		}
+
+		#saveButton{
+			width: 120px;
+			height:20px; 
+			display: block;
+			margin: auto;
+		}
+		
+		#mainDiv{
+			height: 200px;
+		}
+		
+	</style>
+	</head>
+	
+	<body>
+		<div id="mainDiv">
+			<div class="horizontal">
+				<b>Choose Google Services:</b><br>
+				<p><input type="checkbox" name="googleService" value="mail" id="mailOption"> <span id="mailText">Google Mail</span></p>
+				<p><input type="checkbox" name="googleService" value="translate" id="translateOption"> <span id="translateText">Google Translate</span></p>
+				<p><input type="checkbox" name="googleService" value="drive" id="driveOption"> <span id="driveText">Google Drive</span></p>
+				<p><input type="checkbox" name="googleService" value="search" id="searchOption"> <span id="searchText">Google Search</span></p>
+				<p><input type="checkbox" name="googleService" value="play" id="playOption"> <span id="playText">Google Play</span></p>
+				<p><input type="checkbox" name="googleService" value="youtube" id="youtubeOption"> <span id="youtubeText">Youtube</span></p>
+				<p><input type="checkbox" name="googleService" value="shortener" id="shortenerOption"> <span id="shortenerText">Url Shortener</span></p>
+			</div>
+			
+			<div class="horizontal">
+				<b>Choose Mail Service:</b><br>
+				<p><input type="radio" name="mailService" value="gmail" id="gmailOption"> <span id="gmailText">Gmail</span></p>
+				<p><input type="radio" name="mailService" value="inbox" id="inboxOption"> <span id="inboxText">Inbox</span></p>
+			</div>
+		</div>
+		<br>
+		<br>
+		<button id="saveButton">Save</button>
+	</body>
+</html>

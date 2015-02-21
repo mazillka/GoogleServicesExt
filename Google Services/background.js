@@ -8,10 +8,11 @@ chrome.extension.onMessage.addListener(
 		}, 300000);
 	}
 );
-var gMailUrl = "https://mail.google.com/mail/";
 
-function isGmailUrl(url) {
-	return url.indexOf(gMailUrl) == 0;
+var mailUrl;
+
+function isMailUrl(url) {
+	return url.indexOf(mailUrl) == 0;
 }
 
 function updateUnreadCount(){
@@ -71,7 +72,7 @@ function GetShortUrl(longUrl){
 				localStorage.setItem("googleServicesLongUrl", longUrl);
 				localStorage.setItem("googleServicesShortUrl", shortUrl);	
 				
-				liElement.innerHTML = shortUrl;
+				liElement.innerHTML = "<hr>" + shortUrl;
 				
 				copyToClipboard(liElement);
 				xhr.abort();

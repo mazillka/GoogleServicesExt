@@ -12,21 +12,30 @@
 			}
 			#search{
 				background-image: url(img/search.png);
+				display: none;
 			}
 			#play{
 				background-image: url(img/play.png);
+				display: none;
 			}	
 			#drive{
 				background-image: url(img/drive.png);
+				display: none;
 			}
 			#translate{
 				background-image: url(img/translate.png);
+				display: none;
 			}
 			#youtube{
 				background-image: url(img/youtube.png);
+				display: none;
 			}
 			#gmail{
 				background-image: url(img/gmail.png);
+				display: none;
+			}
+			#shortener{
+				display: none;
 			}
 			ul{
 				list-style-type: none;
@@ -47,23 +56,23 @@
 				background-color: #39F;
 				cursor: pointer;	
 			}
+			
+			#mainDiv{
+				display: block;
+			}
 		</style>
 	</head>
 	<body>
-		<ul>
-			<li id="gmail">Google Mail <span id="unreadCount"></span></li>
-			<hr>
-			<li id="translate">Google Translate</li>
-			<hr>
-			<li id="drive">Google Drive</li>
-			<hr>
-			<li id="search">Google Search</li>
-			<hr>
-			<li id="play">Google Play</li>
-			<hr>
-			<li id="youtube">Youtube</li>
-			<hr>
-			<li id="shortener">URL Shortener</li>
-		</ul>
+		<div id="mainDiv">
+			<ul>
+				<li id="gmail"><hr>Google Mail <span id="unreadCount"></span></li>
+				<li id="translate"><hr>Google Translate</li>
+				<li id="drive"><hr>Google Drive</li>
+				<li id="search"><hr>Google Search</li>
+				<li id="play"><hr>Google Play</li>
+				<li id="youtube"><hr>Youtube</li>
+				<li id="shortener"><hr>URL Shortener</li>		
+			</ul>
+		</div>
 	</body>
 </html>

@@ -2,8 +2,10 @@
     "manifest_version": 2,
 
     "name": "Google Services",
+	"short_name": "Google Services",
     "version": "1.3",
-	"description": "Mazillka extension",
+	"author": "Mazillka",
+	"description": "Quick access to Google Services",
 	
     "icons": {
         "16": "icons/16x16.png",
@@ -11,7 +13,7 @@
         "48": "icons/48x48.png"
     },
 	
-	"permissions": [ "alarms", "tabs", "storage", "*://*.google.com/" ],
+	"permissions": [ "tabs", "storage", "*://*.google.com/" ],
 	
 	"background": {
 		"scripts": ["background.js"],

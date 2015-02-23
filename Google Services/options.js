@@ -64,53 +64,6 @@ function RestoreOptions() {
 	});
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-	document.getElementById("saveButton").addEventListener("click", SaveOptions);
-	
-	document.getElementById("mailText").addEventListener("click", function(){
-		var option = document.getElementById("mailOption");	
-		option.checked == true ? option.checked = false : option.checked = true;
-	});
-	
-	document.getElementById("translateText").addEventListener("click", function(){
-		var option = document.getElementById("translateOption");	
-		option.checked == true ? option.checked = false : option.checked = true;
-	});
-	
-	document.getElementById("driveText").addEventListener("click", function(){
-		var option = document.getElementById("driveOption");	
-		option.checked == true ? option.checked = false : option.checked = true;
-	});
-	
-	document.getElementById("searchText").addEventListener("click", function(){
-		var option = document.getElementById("searchOption");	
-		option.checked == true ? option.checked = false : option.checked = true;
-	});
-	
-	document.getElementById("playText").addEventListener("click", function(){
-		var option = document.getElementById("playOption");	
-		option.checked == true ? option.checked = false : option.checked = true;
-	});
-	
-	document.getElementById("youtubeText").addEventListener("click", function(){
-		var option = document.getElementById("youtubeOption");	
-		option.checked == true ? option.checked = false : option.checked = true;
-	});
-	
-	document.getElementById("shortenerText").addEventListener("click", function(){
-		var option = document.getElementById("shortenerOption");	
-		option.checked == true ? option.checked = false : option.checked = true;
-	});
-	
-	document.getElementById("gmailText").addEventListener("click", function(){
-		var option = document.getElementById("gmailOption").checked = true;
-	});
-	
-	document.getElementById("inboxText").addEventListener("click", function(){
-		var option = document.getElementById("inboxOption").checked = true;
-	});
-});
-
 document.addEventListener('DOMContentLoaded', RestoreOptions);
 
 document.addEventListener("contextmenu", function(event){ event.preventDefault(); });

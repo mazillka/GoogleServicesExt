@@ -26,13 +26,6 @@
 			margin-top: 3px;
 		}
 		
-		#saveButton{
-			width: 120px;
-			height:20px; 
-			display: block;
-			margin: auto;
-		}
-		
 		#mainDiv{
 			width: 460px;
 			height: 200px;
@@ -40,7 +33,15 @@
 			margin: auto;
 		}
 		
-		input:hover, p:hover{
+		#saveButton{
+			width: 120px;
+			height:20px; 
+			display: block;
+			margin: auto;
+			outline : 0;
+		}
+		
+		input:hover, label:hover{
 			cursor: pointer;
 		}
 		
@@ -50,20 +51,38 @@
 	<body>
 		<div id="mainDiv">
 			<div id="leftDiv" class="divs">
-				<b>Choose Google Services:</b><br>
-				<p><input type="checkbox" name="googleService" value="mail" id="mailOption"> <span id="mailText">Google Mail</span></p>
-				<p><input type="checkbox" name="googleService" value="translate" id="translateOption"> <span id="translateText">Google Translate</span></p>
-				<p><input type="checkbox" name="googleService" value="drive" id="driveOption"> <span id="driveText">Google Drive</span></p>
-				<p><input type="checkbox" name="googleService" value="search" id="searchOption"> <span id="searchText">Google Search</span></p>
-				<p><input type="checkbox" name="googleService" value="play" id="playOption"> <span id="playText">Google Play</span></p>
-				<p><input type="checkbox" name="googleService" value="youtube" id="youtubeOption"> <span id="youtubeText">Youtube</span></p>
-				<p><input type="checkbox" name="googleService" value="shortener" id="shortenerOption"> <span id="shortenerText">Url Shortener</span></p>
+				<b>Choose Google Services:</b>
+				<br>
+				<p><input type="checkbox" name="googleService" value="mail" id="mailOption">
+				<label for="mailOption">Google Mail</label></p>
+				
+				<p><input type="checkbox" name="googleService" value="translate" id="translateOption"> 
+				<label for="translateOption">Google Translate</label></p>
+				
+				<p><input type="checkbox" name="googleService" value="drive" id="driveOption">
+				<label for="driveOption">Google Drive</label></p>
+				
+				<p><input type="checkbox" name="googleService" value="search" id="searchOption">
+				<label for="searchOption">Google Search</label></p>
+				
+				<p><input type="checkbox" name="googleService" value="play" id="playOption"> 
+				<label for="playOption">Google Play</label></p>
+				
+				<p><input type="checkbox" name="googleService" value="youtube" id="youtubeOption">
+				<label for="youtubeOption">Youtube</label></p>
+				
+				<p><input type="checkbox" name="googleService" value="shortener" id="shortenerOption">
+				<label for="shortenerOption">Url Shortener</label></p>			
 			</div>
 			
 			<div id="rightDiv" class="divs">
-				<b>Choose Mail Service:</b><br>
-				<p><input type="radio" name="mailService" value="gmail" id="gmailOption"> <span id="gmailText">Gmail</span></p>
-				<p><input type="radio" name="mailService" value="inbox" id="inboxOption"> <span id="inboxText">Inbox</span></p>
+				<b>Choose Mail Service:</b>
+				<br>
+				<p><input type="radio" name="mailService" value="gmail" id="gmailOption" />
+				<label for="gmailOption">Gmail</label></p>
+				
+				<p><input type="radio" name="mailService" value="inbox" id="inboxOption"/>
+				<label for="inboxOption">Inbox</label></p>		
 			</div>
 		</div>
 		<br>

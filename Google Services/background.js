@@ -68,18 +68,18 @@ function GetShortUrl(longUrl){
 		if (xhr.readyState == 4) {
 			if(xhr.status == 200) {
 				var shortUrl = JSON.parse(xhr.responseText).id;
-
+				
 				chrome.storage.sync.set({
 					shortUrl: shortUrl,
 					longUrl: longUrl
-				}, function() {
+				}, function(){
 					liElement.innerHTML = "<hr>" + shortUrl;
-					copyToClipboard(liElement);
+					copyToClipboard(liElement);	
 				});
-
+				
 				xhr.abort();
 			} else {
-				liElement.innerHTML = "Invalid Value";
+				liElement.innerHTML = "<hr>" + "Invalid Value";
 				xhr.abort();
 			}
 		}

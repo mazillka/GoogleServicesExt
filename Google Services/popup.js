@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					GetShortUrl(tab.url);
 				}
 			});		
-		});
+		});	
 	});
 });
 

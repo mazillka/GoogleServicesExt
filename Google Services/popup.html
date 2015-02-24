@@ -9,7 +9,6 @@
 				margin: 0;
 				padding: 0;
 				background-color: #EEE;
-				-webkit-user-select: none;
 			}
 			#search{
 				background-image: url(img/search.png);
@@ -53,7 +52,7 @@
 				background-color: #39F;
 				cursor: pointer;	
 			}			
-			li:hover > span{
+			li:hover > label{
 				background-color: #39F;
 				cursor: pointer;	
 			}
@@ -61,12 +60,18 @@
 			#mainDiv{
 				display: block;
 			}
+			
+			::selection { 
+				background: transparent; 
+			}
+			
+			
 		</style>
 	</head>
 	<body>
 		<div id="mainDiv">
 			<ul>
-				<li id="gmail"><hr>Google Mail <span id="unreadCount"></span></li>
+				<li id="gmail"><hr>Google Mail <label id="unreadCount"></label></li>
 				<li id="translate"><hr>Google Translate</li>
 				<li id="drive"><hr>Google Drive</li>
 				<li id="search"><hr>Google Search</li>

@@ -64,6 +64,10 @@ function RestoreOptions() {
 	});
 }
 
+document.addEventListener('DOMContentLoaded', function () {		
+	document.getElementById("saveButton").addEventListener("click", SaveOptions);
+});
+
 document.addEventListener('DOMContentLoaded', RestoreOptions);
 
 document.addEventListener("contextmenu", function(event){ event.preventDefault(); });

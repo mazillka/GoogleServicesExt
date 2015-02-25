@@ -1,4 +1,4 @@
 # GoogleServicesExt
 Chrome: https://chrome.google.com/webstore/detail/iaflbhdheobajkkpiahidpjpmgeijhdo
 
-Opera: 
+Opera: https://addons.opera.com/ru/extensions/details/google-services

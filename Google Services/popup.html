@@ -61,10 +61,19 @@
 				display: block;
 			}
 			
-			::selection { 
+			::selection{ 
 				background: transparent; 
 			}
 			
+			a{ 
+				text-decoration: none;
+				color: Black;
+			}
+			
+			li:hover > a{
+				background-color: #39F;
+				cursor: pointer;	
+			}
 			
 		</style>
 	</head>
@@ -72,11 +81,19 @@
 		<div id="mainDiv">
 			<ul>
 				<li id="gmail"><hr>Google Mail <label id="unreadCount"></label></li>
-				<li id="translate"><hr>Google Translate</li>
-				<li id="drive"><hr>Google Drive</li>
-				<li id="search"><hr>Google Search</li>
-				<li id="play"><hr>Google Play</li>
-				<li id="youtube"><hr>Youtube</li>
+				
+				<li id="translate"><hr><a target="_blank" href="https://translate.google.com">Google Translate</a></li>
+				
+				<li id="translate"><hr><a target="_blank" href="https://translate.google.com">Google Translate</a></li>
+				
+				<li id="drive"><hr><a target="_blank" href="https://drive.google.com">Google Drive</a></li>
+				
+				<li id="search"><hr><a target="_blank" href="https://google.com">Google Search</a></li>
+				
+				<li id="play"><hr><a target="_blank" href="https://play.google.com">Google Play</a></li>
+				
+				<li id="youtube"><hr><a target="_blank" href="https://youtube.com">Youtube</a></li>
+
 				<li id="shortener"><hr>URL Shortener</li>		
 			</ul>
 		</div>

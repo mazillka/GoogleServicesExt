@@ -230,7 +230,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
 		});
 		chrome.tabs.create({
 			'url' : chrome.extension.getURL('html/options.html')
-		});
+		});	
 	} else if (details.reason == "update") {
 		chrome.tabs.create({
 			'url' : chrome.extension.getURL('html/donate.html')

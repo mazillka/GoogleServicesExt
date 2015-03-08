@@ -1,16 +1,23 @@
+var mailUrl;
+var translateLink;
+
+function isMailUrl(url) {
+	return url.indexOf(mailUrl) == 0;
+}
+
 function ContextMenu() {
 	chrome.storage.local.get({
 		"context" : ["contextTranslate", "contextShortener"],
-		"language" : "en"
 	}, function (items) {
+		chrome.contextMenus.removeAll();
 		if (items.context != null && items.context.length > 0) {
-			chrome.contextMenus.removeAll();
+			var ctx = ["all", "page", "frame", "selection", "link", "editable", "image", "video", "audio"];
 			chrome.contextMenus.create({
 				id : 'parent',
 				title : 'Google Services',
-				contexts : ['all']
+				contexts : ctx
 			});
-
+			
 			for (var i = 0; i < items.context.length; i++) {
 				switch (items.context[i]) {
 				case "contextTranslate":
@@ -18,21 +25,7 @@ function ContextMenu() {
 						parentId : 'parent',
 						id : 'translate',
 						title : 'Google Translate',
-						contexts : ['all'],
-						onclick : function (info) {
-							if (info.menuItemId == "translate") {
-								if (info.selectionText != null) {
-									var text = info.selectionText.replace(/ /g, '%20');
-									chrome.tabs.create({
-										'url' : 'https://translate.google.com/#auto/' + items.language + '/' + text
-									});
-								} else {
-									chrome.tabs.create({
-										'url' : 'https://translate.google.com'
-									});
-								}
-							}
-						}
+						contexts : ctx
 					});
 					break;
 
@@ -41,12 +34,7 @@ function ContextMenu() {
 						parentId : 'parent',
 						id : 'url',
 						title : 'Url Shortener',
-						contexts : ['all'],
-						onclick : function (info) {
-							if (info.menuItemId == "url") {
-								Url();
-							}
-						}
+						contexts : ctx
 					});
 					break;
 				}
@@ -54,12 +42,28 @@ function ContextMenu() {
 		}
 	});
 }
-//
-var mailUrl;
 
-function isMailUrl(url) {
-	return url.indexOf(mailUrl) == 0;
-}
+chrome.contextMenus.onClicked.addListener(function (info, tab){
+	switch(info.menuItemId){
+		case "translate":
+			if (info.selectionText != null && info.selectionText.length > 0) {
+				chrome.storage.local.get({
+						"language" : "en"
+					}, function (items) {
+						translateLink = 'https://translate.google.com/#auto/' + items.language + '/' + info.selectionText.replace(/ /g, '%20');
+						GetTranslate(info.selectionText, items.language);
+				});
+			} else {
+				chrome.tabs.create({
+					'url' : 'https://translate.google.com'
+				});
+			}
+		break;			
+	case "url":
+			Url();	
+		break;
+	}
+});
 
 function Mail() {
 	chrome.tabs.getAllInWindow(null, function (tabs) {
@@ -92,18 +96,7 @@ function Url() {
 	});
 }
 
-// TODO:
-chrome.extension.onMessage.addListener(
-	function (request, sender, send_response) {
-	var updateTimer = setInterval(function () {
-			updateUnreadCount();
-		}, 2000);
-	setTimeout(function () {
-		clearInterval(updateTimer);
-	}, 300000);
-});
-
-function updateUnreadCount() {
+function UpdateUnreadCount() {
 	var xhr = new XMLHttpRequest();
 	xhr.open("GET", "https://mail.google.com/mail/feed/atom", true);
 	xhr.onreadystatechange = function () {
@@ -146,16 +139,7 @@ function copyTextToClipboard(text) {
 	document.execCommand('copy');
 	body.removeChild(copyFrom);
 
-	chrome.notifications.create("true", {
-		type : "basic",
-		title : "Google Services",
-		message : "Short Url copied to clipboard",
-		iconUrl : "../icons/64x64.png"
-	}, function () {
-		setTimeout(function () {
-			chrome.notifications.clear("true", function () {});
-		}, 1300);
-	});
+	Notification("msg", "Short Url copied to clipboard", "../img/notificationUrl.png", 1500);
 }
 
 function GetShortUrl(longUrl) {
@@ -181,43 +165,104 @@ function GetShortUrl(longUrl) {
 			} else {
 				xhr.abort();
 
-				chrome.notifications.create("false", {
-					type : "basic",
-					title : "Google Services",
-					message : "Can't short this Url",
-					iconUrl : "../icons/64x64.png"
-				}, function () {
-					setTimeout(function () {
-						chrome.notifications.clear("false", function () {});
-					}, 1400);
-				});
+				Notification("msg", "Can't short this Url", "../img/notificationUrl.png", 1500);
 			}
 		}
 	}
 }
 
-// TODO:
-if (chrome.runtime && chrome.runtime.onStartup) {
-	chrome.runtime.onStartup.addListener(function () {
-		setInterval(updateUnreadCount, 60000);
-		ContextMenu();
-	});
-} else {
-	chrome.windows.onCreated.addListener(function () {
-		setInterval(updateUnreadCount, 60000);
-		ContextMenu();
+function GetTranslate(text, language) {
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", "http://translate.google.com/translate_a/t?client=x&text={" + text + "}&hl=auto&sl=auto&tl=" + language, true);
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState == 4) {
+			if (xhr.status == 200) {
+				var translate = JSON.parse(xhr.responseText).sentences[0];
+
+				Notification("translate", translate.trans.replace('{', '').replace('}', ''), "../img/notificationTranslate.png", 10000);
+
+				xhr.abort();
+			} else {
+				xhr.abort();
+			}
+		}
+	}
+	xhr.send(null);
+}
+
+function Notification(id, message, iconPath, closeTime) {
+	chrome.notifications.create(id, {
+		type : "basic",
+		title : "Google Services",
+		message : message,
+		iconUrl : iconPath
+	}, function () {
+		setTimeout(function () {
+			chrome.notifications.clear(id, function () {});
+		}, closeTime);
 	});
 }
 
-document.addEventListener('DOMContentLoaded', updateUnreadCount);
+chrome.notifications.onClicked.addListener(function (notificationId) {
+	if (notificationId == "translate") {
+		chrome.tabs.create({
+			'url' : translateLink
+		});
+	}
+});
+
+//
+
+chrome.extension.onMessage.addListener(
+	function (request, sender, send_response) {
+	var updateTimer = setInterval(function () {
+			UpdateUnreadCount();
+		}, 1000);
+	setTimeout(function () {
+		clearInterval(updateTimer);
+	}, 180000);
+});
 
 chrome.runtime.onInstalled.addListener(function (details) {
 	if (details.reason == "install") {
 		chrome.tabs.create({
+			'url' : chrome.extension.getURL('html/donate.html')
+		});
+		chrome.tabs.create({
 			'url' : chrome.extension.getURL('html/options.html')
 		});
-		ContextMenu();
 	} else if (details.reason == "update") {
-		ContextMenu();
+		chrome.tabs.create({
+			'url' : chrome.extension.getURL('html/donate.html')
+		});			
 	}
+	ContextMenu();
 });
+
+chrome.tabs.onUpdated.addListener(function (id, info, tab) {
+	ContextMenu();
+	UpdateUnreadCount();
+});
+
+chrome.tabs.onActivated.addListener(function () {
+	ContextMenu();
+	UpdateUnreadCount();
+});
+
+chrome.tabs.onRemoved.addListener(function () {
+	UpdateUnreadCount();
+});
+
+chrome.tabs.onHighlighted.addListener(function() {
+	UpdateUnreadCount();
+});
+
+chrome.idle.onStateChanged.addListener(function() {
+	UpdateUnreadCount();
+});
+
+chrome.windows.onFocusChanged.addListener(function() {
+	UpdateUnreadCount();	
+});
+
+document.addEventListener('DOMContentLoaded', UpdateUnreadCount);

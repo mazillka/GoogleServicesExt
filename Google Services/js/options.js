@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		document.getElementById("languageOption").value = items.language;
 	});
+	ContextMenu();
 });
 
 document.addEventListener('DOMContentLoaded', function () {

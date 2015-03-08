@@ -28,26 +28,14 @@ ul{
 	list-style-type: none;
 	width: 150px;
 }
+
 li{
 	background-repeat: no-repeat;
 	background-position: right;
 	line-height: 30px;
+	cursor: pointer;
 }
-li:hover{
+	
+li:hover, li:hover > label{
 	background-color: #39F;
-	cursor: pointer;	
-}			
-li:hover > label{
-	background-color: #39F;
-	cursor: pointer;	
-}
-
-a{ 
-	text-decoration: none;
-	color: Black;
-}
-
-li:hover > a{
-	background-color: #39F;
-	cursor: pointer;	
 }

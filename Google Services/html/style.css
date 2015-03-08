@@ -1,0 +1,53 @@
+*{
+	margin: 0;
+	padding: 0;
+	background-color: #EEE;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	cursor: default;
+	outline : 0;
+}
+
+::selection{ 
+	background: transparent; 
+}
+
+/* options.html */
+#optionsDiv{
+	width: 500px;
+	margin: auto;
+}
+
+input:hover, label:hover{
+	cursor: pointer;
+}
+
+
+
+/* popup.html */
+ul{
+	list-style-type: none;
+	width: 150px;
+}
+li{
+	background-repeat: no-repeat;
+	background-position: right;
+	line-height: 30px;
+}
+li:hover{
+	background-color: #39F;
+	cursor: pointer;	
+}			
+li:hover > label{
+	background-color: #39F;
+	cursor: pointer;	
+}
+
+a{ 
+	text-decoration: none;
+	color: Black;
+}
+
+li:hover > a{
+	background-color: #39F;
+	cursor: pointer;	
+}

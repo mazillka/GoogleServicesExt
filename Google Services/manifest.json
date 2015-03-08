@@ -10,20 +10,22 @@
     "icons": {
         "16": "icons/16x16.png",
         "32": "icons/32x32.png",
-        "48": "icons/48x48.png"
+        "48": "icons/48x48.png",
+		"64": "icons/64x64.png",
+		"128": "icons/128x128.png"
     },
 	
-	"permissions": [ "tabs", "storage", "*://*.google.com/" ],
+	"permissions": [ "tabs", "storage", "unlimitedStorage", "contextMenus", "notifications", "*://*.google.com/" ],
 	
 	"background": {
-		"scripts": ["background.js"],
+		"scripts": ["js/background.js"],
 		"persistent": true
 	},
 	
 	"content_scripts": [
 		{
 			"all_frames": true,
-			"js": [ "contentscript.js" ],
+			"js": [ "js/contentscript.js" ],
 			"matches": [ "*://mail.google.com/*"],
 			"run_at": "document_end"
 		}
@@ -31,11 +33,11 @@
 	
     "browser_action": {
         "default_icon": "icons/48x48.png",
-		"default_popup": "popup.html"
+		"default_popup": "html/popup.html"
     },
 	
 	"options_ui": {
-		"page": "options.html",
+		"page": "html/options.html",
 		"chrome_style": true
 	}
  }

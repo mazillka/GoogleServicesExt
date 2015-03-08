@@ -32,10 +32,46 @@ ul{
 li{
 	background-repeat: no-repeat;
 	background-position: right;
-	line-height: 30px;
+	line-height: 36px;
 	cursor: pointer;
 }
 	
 li:hover, li:hover > label{
 	background-color: #39F;
+
+}
+
+/* icons */
+#search{
+	background-image: url(../img/search.png);
+}
+#play{
+	background-image: url(../img/play.png);
+}	
+#drive{
+	background-image: url(../img/drive.png);
+}
+#translate{
+	background-image: url(../img/translate.png);
+}
+#youtube{
+	background-image: url(../img/youtube.png);
+}
+#mail{
+	background-image: url(../img/gmail.png);
+}
+#plus{
+	background-image: url(../img/plus.png);
+}
+#maps{
+	background-image: url(../img/maps.png);
+}
+#calendar{
+	background-image: url(../img/calendar.png);
+}
+#news{
+	background-image: url(../img/news.png);
+}
+#shortener{
+	background-image: url(../img/shortener.png);
 }

@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					break;
 
 				case "popupMaps":
-					li.setAttribute("id", "search");
+					li.setAttribute("id", "maps");
 					li.innerHTML = "<hr>Google Maps";
 					li.onclick = function () {
 						chrome.tabs.create({

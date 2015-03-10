@@ -26,7 +26,7 @@
 			"all_frames" : true,
 			"js" : ["js/contentscript.js"],
 			"matches" : ["*://mail.google.com/*"],
-			"run_at" : "document_end"
+			"run_at" : "document_start"
 		}
 	],
 
@@ -35,8 +35,20 @@
 		"default_popup" : "html/popup.html"
 	},
 
-	"options_ui" : {
-		"page" : "html/options.html",
-		"chrome_style" : true
+	"options_page": "html/options.html",
+	
+	"commands" : {
+		"Translate Selected" : {
+			"suggested_key" : {
+				"default" : "Alt+1"
+			},
+			"description" : "Translate Selected"
+		},
+		"Url Shortener" : {
+			"suggested_key" : {
+				"default" : "Alt+2"
+			},
+			"description" : "Url Short"
+		}
 	}
 }

@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
 		"options" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
-			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupYoutube", "popupShortener", "mailGmail"]
+			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener", "mailGmail"]
 	}, function (items) {
 		var ul = document.getElementById("list");
 		if (items.options != null && items.options.length > 0) {
@@ -90,6 +90,16 @@ document.addEventListener('DOMContentLoaded', function () {
 					li.onclick = function () {
 						chrome.tabs.create({
 							'url' : 'https://calendar.google.com'
+						});
+					};
+					break;
+					
+				case "popupContacts":
+					li.setAttribute("id", "contacts");
+					li.innerHTML = "<hr>Google Contacts";
+					li.onclick = function () {
+						chrome.tabs.create({
+							'url' : 'https://contacts.google.com'
 						});
 					};
 					break;

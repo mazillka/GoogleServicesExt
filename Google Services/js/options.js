@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
 		"options" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
-			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupYoutube", "popupShortener", "mailGmail"],
+			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener", "mailGmail"],
 		"context" : ["contextTranslate", "contextShortener"],
 		"language" : "en"
 	}, function (items) {
@@ -44,6 +44,10 @@ document.addEventListener('DOMContentLoaded', function () {
 					document.getElementById("calendarPopupOption").checked = true;
 					break;
 
+				case "popupContacts":
+					document.getElementById("contactsPopupOption").checked = true;
+					break;
+					
 				case "popupYoutube":
 					document.getElementById("youtubePopupOption").checked = true;
 					break;

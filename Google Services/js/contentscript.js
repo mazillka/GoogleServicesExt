@@ -1,3 +1,3 @@
 chrome.extension.sendMessage({
-	message : "updateUnreadCounter"
-}, function (response) {});
+	message : "UpdateUnreadCounter"
+});

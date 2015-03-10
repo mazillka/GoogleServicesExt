@@ -12,17 +12,17 @@ function ContextMenu() {
 		chrome.contextMenus.removeAll();
 		if (items.context != null && items.context.length > 0) {
 			var ctx = ["all", "page", "frame", "selection", "link", "editable", "image", "video", "audio"];
-			chrome.contextMenus.create({
-				id : 'parent',
-				title : 'Google Services',
-				contexts : ctx
-			});
-			
+			// chrome.contextMenus.create({
+				// id : 'parent',
+				// title : 'Google Services',
+				// contexts : ctx
+			// });
+
 			for (var i = 0; i < items.context.length; i++) {
 				switch (items.context[i]) {
 				case "contextTranslate":
 					chrome.contextMenus.create({
-						parentId : 'parent',
+						//parentId : 'parent',
 						id : 'translate',
 						title : 'Google Translate',
 						contexts : ctx
@@ -31,7 +31,7 @@ function ContextMenu() {
 
 				case "contextShortener":
 					chrome.contextMenus.create({
-						parentId : 'parent',
+						//parentId : 'parent',
 						id : 'url',
 						title : 'Url Shortener',
 						contexts : ctx
@@ -43,24 +43,24 @@ function ContextMenu() {
 	});
 }
 
-chrome.contextMenus.onClicked.addListener(function (info, tab){
-	switch(info.menuItemId){
-		case "translate":
-			if (info.selectionText != null && info.selectionText.length > 0) {
-				chrome.storage.local.get({
-						"language" : "en"
-					}, function (items) {
-						translateLink = 'https://translate.google.com/#auto/' + items.language + '/' + info.selectionText.replace(/ /g, '%20');
-						GetTranslate(info.selectionText, items.language);
-				});
-			} else {
-				chrome.tabs.create({
-					'url' : 'https://translate.google.com'
-				});
-			}
-		break;			
+chrome.contextMenus.onClicked.addListener(function (info, tab) {
+	switch (info.menuItemId) {
+	case "translate":
+		if (info.selectionText != null && info.selectionText.length > 0) {
+			chrome.storage.local.get({
+				"language" : "en"
+			}, function (items) {
+				translateLink = 'https://translate.google.com/#auto/' + items.language + '/' + info.selectionText.replace(/ /g, '%20');
+				GetTranslate(info.selectionText, items.language);
+			});
+		} else {
+			chrome.tabs.create({
+				'url' : 'https://translate.google.com'
+			});
+		}
+		break;
 	case "url":
-			Url();	
+		Url();
 		break;
 	}
 });
@@ -213,14 +213,22 @@ chrome.notifications.onClicked.addListener(function (notificationId) {
 
 //
 
-chrome.extension.onMessage.addListener(
-	function (request, sender, send_response) {
-	var updateTimer = setInterval(function () {
-			UpdateUnreadCount();
-		}, 1000);
-	setTimeout(function () {
-		clearInterval(updateTimer);
-	}, 180000);
+chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
+	switch(request.message){
+		case "UpdateUnreadCounter":
+			console.log("UpdateUnreadCounter");
+			var updateTimer = setInterval(function () {
+				UpdateUnreadCount();
+			}, 1000);
+			setTimeout(function () {
+				clearInterval(updateTimer);
+			}, 180000);		
+			break;
+		case "SelectedText":
+			console.log("SelectedText");
+			selected = request.selectedText;		
+			break;
+	}
 });
 
 chrome.runtime.onInstalled.addListener(function (details) {
@@ -230,11 +238,11 @@ chrome.runtime.onInstalled.addListener(function (details) {
 		});
 		chrome.tabs.create({
 			'url' : chrome.extension.getURL('html/options.html')
-		});	
+		});
 	} else if (details.reason == "update") {
 		chrome.tabs.create({
 			'url' : chrome.extension.getURL('html/donate.html')
-		});			
+		});
 	}
 	ContextMenu();
 });
@@ -253,16 +261,39 @@ chrome.tabs.onRemoved.addListener(function () {
 	UpdateUnreadCount();
 });
 
-chrome.tabs.onHighlighted.addListener(function() {
+chrome.tabs.onHighlighted.addListener(function () {
 	UpdateUnreadCount();
 });
 
-chrome.idle.onStateChanged.addListener(function() {
+chrome.idle.onStateChanged.addListener(function () {
 	UpdateUnreadCount();
 });
 
-chrome.windows.onFocusChanged.addListener(function() {
-	UpdateUnreadCount();	
+chrome.windows.onFocusChanged.addListener(function () {
+	UpdateUnreadCount();
 });
 
 document.addEventListener('DOMContentLoaded', UpdateUnreadCount);
+
+chrome.commands.onCommand.addListener(function (command) {
+	switch (command) {
+	case "Translate Selected":
+		// chrome.extension.sendMessage({
+			// message : "GetSelectedText"
+		// }, function (response) {
+			// console.log(response.selectedText);
+			// GetTranslate(response.selectedText, "ru");
+		// });
+		// chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
+			// if (request.message == "SelectedText"){
+				// console.log("SelectedText");
+				// GetTranslate(request.selectedText, "ru");
+			// }
+		// });
+		//GetTranslate(selected, "ru");
+		break;
+	case "Url Shortener":
+		Url();
+		break;
+	}
+});

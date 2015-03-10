@@ -5,27 +5,15 @@
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	cursor: default;
 	outline : 0;
+	list-style-type: none;
 }
 
 ::selection{ 
 	background: transparent; 
 }
 
-/* options.html */
-#optionsDiv{
-	width: 500px;
-	margin: auto;
-}
-
-input:hover, label:hover{
-	cursor: pointer;
-}
-
-
-
 /* popup.html */
 ul{
-	list-style-type: none;
 	width: 150px;
 }
 
@@ -74,4 +62,7 @@ li:hover, li:hover > label{
 }
 #shortener{
 	background-image: url(../img/shortener.png);
+}
+#contacts{
+	background-image: url(../img/contacts.png);
 }

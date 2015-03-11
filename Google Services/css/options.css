@@ -1,19 +1,15 @@
 *{
 	margin: 0;
 	padding: 0;
-	background-color: #EEE;
+/* 	background-color: #EEE; */
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	cursor: default;
 	outline : 0;
 	list-style-type: none;
+	-webkit-user-select: none;
 	font-size: 16px;
 }
 
-::selection{ 
-	background: transparent; 
-}
-
-/* options.html */
 #optionsDiv{
 	width: 500px;
 	margin: auto;
@@ -21,4 +17,13 @@
 
 input:hover, label:hover{
 	cursor: pointer;
+}
+
+li{
+	width: 160px;
+	height: 24px;
+	line-height: 24px;
+	margin: 3px;
+	padding-left: 3px;
+	border: 1px dashed black;
 }

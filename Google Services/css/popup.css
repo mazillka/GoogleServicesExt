@@ -1,18 +1,14 @@
 *{
 	margin: 0;
 	padding: 0;
-	background-color: #EEE;
+/* 	background-color: #EEE; */
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	cursor: default;
 	outline : 0;
 	list-style-type: none;
+	-webkit-user-select: none;
 }
 
-::selection{ 
-	background: transparent; 
-}
-
-/* popup.html */
 ul{
 	width: 150px;
 }
@@ -26,7 +22,19 @@ li{
 	
 li:hover, li:hover > label{
 	background-color: #39F;
+}
 
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+a{
+	cursor: pointer;
+	color: Blue;
+    text-decoration: none;
 }
 
 /* icons */

@@ -7,22 +7,22 @@ function isMailUrl(url) {
 
 function ContextMenu() {
 	chrome.storage.local.get({
-		"context" : ["contextTranslate", "contextShortener"],
+		"context" : ["contextTranslate", "contextShortener"]
 	}, function (items) {
 		chrome.contextMenus.removeAll();
 		if (items.context != null && items.context.length > 0) {
 			var ctx = ["all", "page", "frame", "selection", "link", "editable", "image", "video", "audio"];
-			// chrome.contextMenus.create({
-				// id : 'parent',
-				// title : 'Google Services',
-				// contexts : ctx
-			// });
+			chrome.contextMenus.create({
+				id : 'parent',
+				title : 'Google Services',
+				contexts : ctx
+			});
 
 			for (var i = 0; i < items.context.length; i++) {
 				switch (items.context[i]) {
 				case "contextTranslate":
 					chrome.contextMenus.create({
-						//parentId : 'parent',
+						parentId : 'parent',
 						id : 'translate',
 						title : 'Google Translate',
 						contexts : ctx
@@ -31,7 +31,7 @@ function ContextMenu() {
 
 				case "contextShortener":
 					chrome.contextMenus.create({
-						//parentId : 'parent',
+						parentId : 'parent',
 						id : 'url',
 						title : 'Url Shortener',
 						contexts : ctx
@@ -112,7 +112,6 @@ function UpdateUnreadCount() {
 					try {
 						document.getElementById("unreadCount").innerHTML = "(" + unreadCount + ")";
 					} catch (e) {}
-					xhr.abort();
 				} else {
 					chrome.browserAction.setBadgeText({
 						text : ""
@@ -120,10 +119,7 @@ function UpdateUnreadCount() {
 					try {
 						document.getElementById("unreadCount").innerHTML = "";
 					} catch (e) {}
-					xhr.abort();
 				}
-			} else {
-				xhr.abort();
 			}
 		}
 	}
@@ -160,11 +156,7 @@ function GetShortUrl(longUrl) {
 				}, function () {
 					copyTextToClipboard(shortUrl);
 				});
-
-				xhr.abort();
 			} else {
-				xhr.abort();
-
 				Notification("msg", "Can't short this Url", "../img/notificationUrl.png", 1500);
 			}
 		}
@@ -180,10 +172,6 @@ function GetTranslate(text, language) {
 				var translate = JSON.parse(xhr.responseText).sentences[0];
 
 				Notification("translate", translate.trans.replace('{', '').replace('}', ''), "../img/notificationTranslate.png", 10000);
-
-				xhr.abort();
-			} else {
-				xhr.abort();
 			}
 		}
 	}
@@ -211,23 +199,16 @@ chrome.notifications.onClicked.addListener(function (notificationId) {
 	}
 });
 
-//
-
 chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
-	switch(request.message){
-		case "UpdateUnreadCounter":
-			console.log("UpdateUnreadCounter");
-			var updateTimer = setInterval(function () {
+	switch (request.message) {
+	case "UpdateUnreadCounter":
+		var updateTimer = setInterval(function () {
 				UpdateUnreadCount();
 			}, 1000);
-			setTimeout(function () {
-				clearInterval(updateTimer);
-			}, 180000);		
-			break;
-		case "SelectedText":
-			console.log("SelectedText");
-			selected = request.selectedText;		
-			break;
+		setTimeout(function () {
+			clearInterval(updateTimer);
+		}, 180000);
+		break;
 	}
 });
 
@@ -277,23 +258,24 @@ document.addEventListener('DOMContentLoaded', UpdateUnreadCount);
 
 chrome.commands.onCommand.addListener(function (command) {
 	switch (command) {
-	case "Translate Selected":
-		// chrome.extension.sendMessage({
-			// message : "GetSelectedText"
-		// }, function (response) {
-			// console.log(response.selectedText);
-			// GetTranslate(response.selectedText, "ru");
-		// });
-		// chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
-			// if (request.message == "SelectedText"){
-				// console.log("SelectedText");
-				// GetTranslate(request.selectedText, "ru");
-			// }
-		// });
-		//GetTranslate(selected, "ru");
-		break;
 	case "Url Shortener":
 		Url();
+		break;
+	case "Translate Selected":
+		chrome.tabs.query({
+			active : true
+		}, function (tab) {
+			chrome.tabs.sendMessage(tab[0].id, {
+				method : "getSelection"
+			}, function (response) {
+				chrome.storage.local.get({
+					"language" : "en"
+				}, function (items) {
+					translateLink = 'https://translate.google.com/#auto/' + items.language + '/' + response.selected.replace(/ /g, '%20');
+					GetTranslate(response.selected, items.language);
+				});
+			});
+		});
 		break;
 	}
 });

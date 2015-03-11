@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
 		"options" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
-			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener", "mailGmail"]
+			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener", "mailGmail"],
+		"mail" : ["mailGmail"]
 	}, function (items) {
 		var ul = document.getElementById("list");
 		if (items.options != null && items.options.length > 0) {
@@ -93,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
 						});
 					};
 					break;
-					
+
 				case "popupContacts":
 					li.setAttribute("id", "contacts");
 					li.innerHTML = "<hr>Google Contacts";
@@ -119,7 +120,22 @@ document.addEventListener('DOMContentLoaded', function () {
 					li.innerHTML = "<hr>URL Shortener";
 					li.onclick = Url;
 					break;
+				}
+				ul.appendChild(li);
+			}
+		}
 
+		var other = "<hr><a style='float: left' target='_blank' href='http://www.google.com.ua/intl/ru/about/products/'>more</a><a style='float: right' target='_blank' href='options.html'>options</a>";
+
+		var div = document.createElement("div");
+		div.style.height = "10px";
+		div.style.lineHeight = "12px";
+		div.innerHTML = other;
+		ul.appendChild(div);
+
+		if (items.mail != null && items.mail.length > 0) {
+			for (var i = 0; i < items.mail.length; i++) {
+				switch (items.mail[i]) {
 				case "mailGmail":
 					mailUrl = "https://mail.google.com/mail/";
 					break;
@@ -128,8 +144,6 @@ document.addEventListener('DOMContentLoaded', function () {
 					mailUrl = "https://inbox.google.com/";
 					break;
 				}
-
-				ul.appendChild(li);
 			}
 		}
 	});

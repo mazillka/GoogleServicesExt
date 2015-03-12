@@ -1,27 +1,27 @@
 *{
-	margin: 0;
-	padding: 0;
-/* 	background-color: #EEE; */
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	cursor: default;
-	outline : 0;
-	list-style-type: none;
-	-webkit-user-select: none;
+    margin: 0;
+    padding: 0;
+    /* 	background-color: #EEE; */
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    cursor: default;
+    outline : 0;
+    list-style-type: none;
+    -webkit-user-select: none;
 }
 
 ul{
-	width: 150px;
+    width: 150px;
 }
 
 li{
-	background-repeat: no-repeat;
-	background-position: right;
-	line-height: 36px;
-	cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: right;
+    line-height: 36px;
+    cursor: pointer;
 }
-	
+
 li:hover, li:hover > label{
-	background-color: #39F;
+    background-color: #39F;
 }
 
 hr {
@@ -32,45 +32,45 @@ hr {
 }
 
 a{
-	cursor: pointer;
-	color: Blue;
+    cursor: pointer;
+    color: Blue;
     text-decoration: none;
 }
 
 /* icons */
 #search{
-	background-image: url(../img/search.png);
+    background-image: url(../img/search.png);
 }
 #play{
-	background-image: url(../img/play.png);
+    background-image: url(../img/play.png);
 }	
 #drive{
-	background-image: url(../img/drive.png);
+    background-image: url(../img/drive.png);
 }
 #translate{
-	background-image: url(../img/translate.png);
+    background-image: url(../img/translate.png);
 }
 #youtube{
-	background-image: url(../img/youtube.png);
+    background-image: url(../img/youtube.png);
 }
 #mail{
-	background-image: url(../img/gmail.png);
+    background-image: url(../img/gmail.png);
 }
 #plus{
-	background-image: url(../img/plus.png);
+    background-image: url(../img/plus.png);
 }
 #maps{
-	background-image: url(../img/maps.png);
+    background-image: url(../img/maps.png);
 }
 #calendar{
-	background-image: url(../img/calendar.png);
+    background-image: url(../img/calendar.png);
 }
 #news{
-	background-image: url(../img/news.png);
+    background-image: url(../img/news.png);
 }
 #shortener{
-	background-image: url(../img/shortener.png);
+    background-image: url(../img/shortener.png);
 }
 #contacts{
-	background-image: url(../img/contacts.png);
+    background-image: url(../img/contacts.png);
 }

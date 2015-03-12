@@ -1,29 +1,29 @@
 *{
-	margin: 0;
-	padding: 0;
-/* 	background-color: #EEE; */
-	font-family: Verdana, Arial, Helvetica, sans-serif;
-	cursor: default;
-	outline : 0;
-	list-style-type: none;
-	-webkit-user-select: none;
-	font-size: 16px;
+    margin: 0;
+    padding: 0;
+    /* 	background-color: #EEE; */
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    cursor: default;
+    outline : 0;
+    list-style-type: none;
+    -webkit-user-select: none;
+    font-size: 16px;
 }
 
 #optionsDiv{
-	width: 500px;
-	margin: auto;
+    width: 500px;
+    margin: auto;
 }
 
 input:hover, label:hover{
-	cursor: pointer;
+    cursor: pointer;
 }
 
 li{
-	width: 160px;
-	height: 24px;
-	line-height: 24px;
-	margin: 3px;
-	padding-left: 3px;
-	border: 1px dashed black;
+    width: 160px;
+    height: 24px;
+    line-height: 24px;
+    margin: 3px;
+    padding-left: 3px;
+    border: 1px dashed black;
 }

@@ -2,10 +2,10 @@ Array.prototype.remove = function (x) {
 	var i;
 	for (i in this) {
 		if (this[i].toString() == x.toString()) {
-			this.splice(i, 1)
+			this.splice(i, 1);
 		}
 	}
-}
+};
 
 var defaultOptionsList = ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
 	"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener"];

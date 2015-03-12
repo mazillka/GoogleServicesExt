@@ -66,11 +66,11 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 });
 
 function Mail() {
-	chrome.tabs.getAllInWindow(null, function (tabs) {
+	chrome.tabs.query({}, function (tabs) {
 		for (var i = 0; i < tabs.length; i++) {
 			if (tabs[i].url && isMailUrl(tabs[i].url)) {
 				chrome.tabs.update(tabs[i].id, {
-					selected : true
+					highlighted : true
 				});
 				return;
 			}
@@ -82,15 +82,18 @@ function Mail() {
 }
 
 function Url() {
-	chrome.tabs.getSelected(null, function (tab) {
+	chrome.tabs.query({
+		'active' : true,
+		'lastFocusedWindow' : true
+	}, function (tabs) {
 		chrome.storage.local.get({
 			"shortUrl" : null,
 			"longUrl" : null
 		}, function (items) {
-			if (tab.url == items.longUrl) {
+			if (tabs[0].url == items.longUrl) {
 				copyTextToClipboard(items.shortUrl);
 			} else {
-				GetShortUrl(tab.url);
+				GetShortUrl(tabs[0].url);
 			}
 		});
 	});
@@ -122,7 +125,7 @@ function UpdateUnreadCount() {
 				}
 			}
 		}
-	}
+	};
 	xhr.send(null);
 }
 
@@ -160,7 +163,7 @@ function GetShortUrl(longUrl) {
 				Notification("msg", "Can't short this Url", "../img/notificationUrl.png", 1500);
 			}
 		}
-	}
+	};
 }
 
 function GetTranslate(text, language) {
@@ -174,7 +177,7 @@ function GetTranslate(text, language) {
 				Notification("translate", translate.trans.replace('{', '').replace('}', ''), "../img/notificationTranslate.png", 10000);
 			}
 		}
-	}
+	};
 	xhr.send(null);
 }
 
@@ -196,6 +199,7 @@ chrome.notifications.onClicked.addListener(function (notificationId) {
 		chrome.tabs.create({
 			'url' : translateLink
 		});
+		return;
 	}
 });
 

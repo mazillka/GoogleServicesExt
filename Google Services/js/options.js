@@ -12,13 +12,13 @@ var defaultOptionsList = ["popupMail", "popupPlus", "popupTranslate", "popupDriv
 
 document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
-		"options" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
+		"optionsList" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
 			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener"]
 	}, function (items) {
 		var ul = document.getElementById("list");
-		for (var i = 0; i < items.options.length; i++) {
+		for (var i = 0; i < items.optionsList.length; i++) {
 			var li = document.createElement("li");
-			switch (items.options[i]) {
+			switch (items.optionsList[i]) {
 			case "popupMail":
 				defaultOptionsList.remove("popupMail");
 				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupMail' id='mailPopupOption'><label for='mailPopupOption'>Google Mail</label></p>";
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', function () {
 		}
 
 		chrome.storage.local.set({
-			"options" : checkedOptions,
+			"optionsList" : checkedOptions,
 			"mail" : checkedMail,
 			"context" : checkedContext,
 			"language" : checkedLanguage

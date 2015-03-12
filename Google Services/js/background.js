@@ -224,6 +224,9 @@ chrome.runtime.onInstalled.addListener(function (details) {
 		chrome.tabs.create({
 			'url' : chrome.extension.getURL('html/donate.html')
 		});
+		chrome.tabs.create({
+			'url' : chrome.extension.getURL('html/options.html')
+		});
 	}
 	ContextMenu();
 });

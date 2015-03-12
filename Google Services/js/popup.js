@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
-		"options" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
+		"optionsList" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
 			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener", "mailGmail"],
 		"mail" : ["mailGmail"]
 	}, function (items) {
 		var ul = document.getElementById("list");
-		if (items.options != null && items.options.length > 0) {
-			for (var i = 0; i < items.options.length; i++) {
+		if (items.optionsList != null && items.optionsList.length > 0) {
+			for (var i = 0; i < items.optionsList.length; i++) {
 				var li = document.createElement("li");
-				switch (items.options[i]) {
+				switch (items.optionsList[i]) {
 				case "popupMail":
 					li.setAttribute("id", "mail");
 					li.innerHTML = "<hr>Google Mail <label id='unreadCount'></label>";

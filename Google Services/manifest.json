@@ -12,11 +12,14 @@
 		"64" : "icons/64x64.png",
 		"128" : "icons/128x128.png"
 	},
+	
 	"permissions" : ["tabs", "storage", "unlimitedStorage", "contextMenus", "notifications", "idle", "*://*.google.com/*"],
+	
 	"background" : {
 		"scripts" : ["js/background.js", "js/libs/jquery-2.1.3.min.js", "js/libs/jquery.sortable.min.js"],
 		"persistent" : false
 	},
+	
 	"content_scripts" : [{
 			"all_frames" : true,
 			"js" : ["js/contentscript.js"],

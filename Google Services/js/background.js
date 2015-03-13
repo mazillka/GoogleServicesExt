@@ -84,7 +84,7 @@ function Mail() {
 function Url() {
 	chrome.tabs.query({
 		'active' : true,
-		'lastFocusedWindow' : true
+		'currentWindow' : true
 	}, function (tabs) {
 		chrome.storage.local.get({
 			"shortUrl" : null,
@@ -174,7 +174,7 @@ function GetTranslate(text, language) {
 			if (xhr.status == 200) {
 				var translate = JSON.parse(xhr.responseText).sentences[0];
 
-				Notification("translate", translate.trans.replace('{', '').replace('}', ''), "../img/notificationTranslate.png", 10000);
+				Notification("translate", translate.trans.replace('{', '').replace('}', ''), "../img/notificationTranslate.png", 8000);
 			}
 		}
 	};
@@ -194,7 +194,8 @@ function Notification(id, message, iconPath, closeTime) {
 	});
 }
 
-chrome.notifications.onClicked.addListener(function (notificationId) {
+chrome.notifications.onClicked.addListener(function (notificationId, event) {
+	chrome.notifications.clear(notificationId);
 	if (notificationId == "translate") {
 		chrome.tabs.create({
 			'url' : translateLink

@@ -125,14 +125,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		}
 
-		var other = "<hr><a style='float: left' target='_blank' href='http://www.google.com.ua/intl/ru/about/products/'>more</a><a style='float: right' target='_blank' href='options.html'>options</a>";
-
-		var div = document.createElement("div");
-		div.style.height = "10px";
-		div.style.lineHeight = "12px";
-		div.innerHTML = other;
-		ul.appendChild(div);
-
 		if (items.mail != null && items.mail.length > 0) {
 			for (var i = 0; i < items.mail.length; i++) {
 				switch (items.mail[i]) {

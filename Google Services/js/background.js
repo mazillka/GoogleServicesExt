@@ -189,7 +189,7 @@ function Notification(id, message, iconPath, closeTime) {
 		iconUrl : iconPath
 	}, function () {
 		setTimeout(function () {
-			chrome.notifications.clear(id, function () {});
+			chrome.notifications.clear(id);
 		}, closeTime);
 	});
 }
@@ -199,7 +199,6 @@ chrome.notifications.onClicked.addListener(function (notificationId) {
 		chrome.tabs.create({
 			'url' : translateLink
 		});
-		return;
 	}
 });
 

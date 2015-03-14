@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
 		"optionsList" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
 			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener", "mailGmail"],
-		"mail" : ["mailGmail"]
+		"mail" : ["mailGmail"],
+		"style" : ["lineMenu"]
 	}, function (items) {
 		var ul = document.getElementById("list");
 		if (items.optionsList != null && items.optionsList.length > 0) {
@@ -121,6 +122,21 @@ document.addEventListener('DOMContentLoaded', function () {
 					li.onclick = Url;
 					break;
 				}
+
+				for (var j = 0; j < items.style.length; j++) {
+					switch (items.style[j]) {
+					case "gridMenu":
+						ul.style.width = "200px";
+						ul.style.height = "200px";
+						li.style.display = "inline-block";
+						li.style.backgroundPosition = "center";
+						li.style.width = "33%";
+						li.style.height = "24%";
+						li.innerHTML = "&zwnj;";
+						break;
+					}
+				}
+
 				ul.appendChild(li);
 			}
 		}

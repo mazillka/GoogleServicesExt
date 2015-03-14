@@ -142,7 +142,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
 		"mail" : ["mailGmail"],
 		"context" : ["contextTranslate", "contextShortener"],
-		"language" : "en"
+		"language" : "en",
+		"style" : ["lineMenu"]
 	}, function (items) {
 		if (items.mail != null && items.mail.length > 0) {
 			for (var i = 0; i < items.mail.length; i++) {
@@ -172,6 +173,20 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		}
 
+		if (items.style != null && items.style.length > 0) {
+			for (var i = 0; i < items.style.length; i++) {
+				switch (items.style[i]) {
+				case "lineMenu":
+					document.getElementById("lineOption").checked = true;
+					break;
+
+				case "gridMenu":
+					document.getElementById("gridOption").checked = true;
+					break;
+				}
+			}
+		}
+
 		document.getElementById("languageOption").value = items.language;
 	});
 	ContextMenu();
@@ -182,9 +197,11 @@ document.addEventListener('DOMContentLoaded', function () {
 		var checkedOptions = [];
 		var checkedContext = [];
 		var checkedMail = [];
+		var checkedStyle = [];
 		var popupOptions = document.getElementsByName("popupOptions");
 		var mailOptions = document.getElementsByName("mailOptions");
 		var contextOptions = document.getElementsByName("contextOptions");
+		var styleOptions = document.getElementsByName("styleOptions");
 		var checkedLanguage = document.getElementById("languageOption").value;
 
 		for (var i = 0; i < popupOptions.length; i++) {
@@ -205,11 +222,18 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		}
 
+		for (var i = 0; i < styleOptions.length; i++) {
+			if (styleOptions[i].checked) {
+				checkedStyle.push(styleOptions[i].value);
+			}
+		}
+
 		chrome.storage.local.set({
 			"optionsList" : checkedOptions,
 			"mail" : checkedMail,
 			"context" : checkedContext,
-			"language" : checkedLanguage
+			"language" : checkedLanguage,
+			"style" : checkedStyle
 		}, function () {
 			var status = document.getElementById('saveButton');
 			status.value = "Options saved...";

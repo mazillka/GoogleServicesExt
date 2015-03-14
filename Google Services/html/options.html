@@ -15,14 +15,14 @@
         <div id="optionsDiv">
             <table width="100%">
                 <tr>
-                    <td rowspan="4" nowrap width="50%">
+                    <td valign="top" rowspan="5" nowrap width="50%">
                         <b>Google Services:</b>
                         <br>
                         <ul id="list">
 
                         </ul>
                     </td>
-                    <td valign="top" nowrap width="50%" height="24%">
+                    <td valign="top" nowrap width="50%" height="20%">
                         <b>Mail Service:</b>
                         <br>
                         <p><input type="radio" name="mailOptions" value="mailGmail" id="gmailOption"/>
@@ -33,7 +33,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td valign="top" nowrap width="50%" height="24%">
+                    <td valign="top" nowrap width="50%" height="20%">
                         <b>Context Menu Services:</b>
                         <br>
                         <p><input type="checkbox" name="contextOptions" value="contextTranslate" id="translateContextOption"> 
@@ -44,7 +44,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td valign="top" nowrap width="50%" height="24%">
+                    <td valign="top" nowrap width="50%" height="10%">
                         <b>Native Language:</b>
                         <br>
                         <select id="languageOption">							
@@ -115,8 +115,17 @@
                         </select>
                     </td>
                 </tr>
+				<td valign="top" nowrap width="50%" height="20%">
+					<b>Menu Style:</b>
+					<br>
+					<p><input type="radio" name="styleOptions" value="lineMenu" id="lineOption"/>
+					<label for="lineOption">Line Menu</label></p>
+					
+					<p><input type="radio" name="styleOptions" value="gridMenu" id="gridOption"/>
+					<label for="gridOption">Grid Menu</label></p>		
+				</td>
                 <tr>
-                    <td valign="top" nowrap width="50%" height="24%">
+                    <td valign="top" nowrap width="50%" height="20%">
                         <b>Keyboard Shortcuts:</b>
                         <br>
                         <p>Alt + Q - Url Shortener</p>

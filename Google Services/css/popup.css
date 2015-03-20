@@ -64,7 +64,7 @@ a:hover{
 	height: 35px;
 }
 
-.altLineStyle:hover{
+.altLineStyle:hover, .altLineStyle:hover > label{
 	background-color: transparent;
 	font-size: 14px;
 	color: black;

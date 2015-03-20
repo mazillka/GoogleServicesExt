@@ -128,11 +128,15 @@ document.addEventListener('DOMContentLoaded', function () {
 					case "gridMenu":
 						ul.style.width = "200px";
 						ul.style.height = "200px";
-						li.style.display = "inline-block";
-						li.style.backgroundPosition = "center";
-						li.style.width = "33%";
-						li.style.height = "24%";
 						li.innerHTML = "&zwnj;";
+						li.setAttribute("class", "gridStyle");
+						document.body.style.backgroundColor = "#F8F8F8";
+						break;
+					case "altLineMenu":
+						ul.style.width = "220px";
+						ul.style.marginTop = "6px";
+						li.setAttribute("class", "altLineStyle");
+						document.body.style.backgroundColor = "#F8F8F8";
 						break;
 					}
 				}

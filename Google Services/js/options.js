@@ -179,9 +179,11 @@ document.addEventListener('DOMContentLoaded', function () {
 				case "lineMenu":
 					document.getElementById("lineOption").checked = true;
 					break;
-
 				case "gridMenu":
 					document.getElementById("gridOption").checked = true;
+					break;
+				case "altLineMenu":
+					document.getElementById("altLineOption").checked = true;
 					break;
 				}
 			}

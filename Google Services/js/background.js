@@ -143,19 +143,16 @@ function copyTextToClipboard(text) {
 
 function GetShortUrl(longUrl) {
 	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "https://www.googleapis.com/urlshortener/v1/url", true);
-	xhr.setRequestHeader("Content-Type", "application/JSON");
-	xhr.send(JSON.stringify({
-			longUrl : longUrl
-		}));
+	xhr.open("POST", "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBycyrWVXU6BCZ1-JC_XFKi1e1bbCifIYk", true);
+	xhr.setRequestHeader("Content-Type", "application/json");
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4) {
 			if (xhr.status == 200) {
 				var shortUrl = JSON.parse(xhr.responseText).id;
 
 				chrome.storage.local.set({
-					shortUrl : shortUrl,
-					longUrl : longUrl
+					shortUrl: shortUrl,
+					longUrl: longUrl
 				}, function () {
 					copyTextToClipboard(shortUrl);
 				});
@@ -164,6 +161,7 @@ function GetShortUrl(longUrl) {
 			}
 		}
 	};
+	xhr.send(JSON.stringify({"longUrl": longUrl}));
 }
 
 function GetTranslate(text, language) {
@@ -182,6 +180,7 @@ function GetTranslate(text, language) {
 }
 
 function Notification(id, message, iconPath, closeTime) {
+	chrome.notifications.clear(id);
 	chrome.notifications.create(id, {
 		type : "basic",
 		title : "Google Services",
@@ -219,14 +218,14 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
 chrome.runtime.onInstalled.addListener(function (details) {
 	if (details.reason == "install") {
 		chrome.tabs.create({
-			'url' : chrome.extension.getURL('html/donate.html')
+			'url' : "http://mazillka.in.ua/donate/"
 		});
 		chrome.tabs.create({
 			'url' : chrome.extension.getURL('html/options.html')
 		});
 	} else if (details.reason == "update") {
 		chrome.tabs.create({
-			'url' : chrome.extension.getURL('html/donate.html')
+			'url' : "http://mazillka.in.ua/donate/"
 		});
 		chrome.tabs.create({
 			'url' : chrome.extension.getURL('html/options.html')
@@ -276,10 +275,12 @@ chrome.commands.onCommand.addListener(function (command) {
 				method : "getSelection"
 			}, function (response) {
 				chrome.storage.local.get({
-					"language" : "en"
+					language : "en"
 				}, function (items) {
-					translateLink = 'https://translate.google.com/#auto/' + items.language + '/' + response.selected.replace(/ /g, '%20');
-					GetTranslate(response.selected, items.language);
+					if(response != undefined){
+						translateLink = 'https://translate.google.com/#auto/' + items.language + '/' + response.selected.replace(/ /g, '%20');
+						GetTranslate(response.selected, items.language);
+					}
 				});
 			});
 		});

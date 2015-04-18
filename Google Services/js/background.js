@@ -107,22 +107,38 @@ function UpdateUnreadCount() {
 			if (xhr.status == 200) {
 				var xmlDoc = xhr.responseXML;
 				var unreadCount = xmlDoc.getElementsByTagName("fullcount")[0].innerHTML;
+				
+				chrome.storage.local.get(function (items) {
+					if (items) {
+						if (items.mail != null && items.mail.length > 0) {
+							if (items.mail.indexOf("showUnreadCount") > 0) {
+								if (unreadCount > 0) {
+									chrome.browserAction.setBadgeText({
+										text : unreadCount
+									});
+									try {
+										document.getElementById("unreadCount").innerHTML = "(" + unreadCount + ")";
+									} catch (e) {}
+								} else {
+									chrome.browserAction.setBadgeText({
+										text : ""
+									});
+									try {
+										document.getElementById("unreadCount").innerHTML = "";
+									} catch (e) {}
+								}
 
-				if (unreadCount > 0) {
-					chrome.browserAction.setBadgeText({
-						text : unreadCount
-					});
-					try {
-						document.getElementById("unreadCount").innerHTML = "(" + unreadCount + ")";
-					} catch (e) {}
-				} else {
-					chrome.browserAction.setBadgeText({
-						text : ""
-					});
-					try {
-						document.getElementById("unreadCount").innerHTML = "";
-					} catch (e) {}
-				}
+							} else {
+								chrome.browserAction.setBadgeText({
+									text : ""
+								});
+								try {
+									document.getElementById("unreadCount").innerHTML = "";
+								} catch (e) {}								
+							}
+						}
+					}
+				});
 			}
 		}
 	};

@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	chrome.storage.local.get({
-		"mail" : ["mailGmail"],
+		"mail" : ["mailGmail", "showUnreadCount"],
 		"context" : ["contextTranslate", "contextShortener"],
 		"language" : "en",
 		"style" : ["lineMenu"]
@@ -155,6 +155,10 @@ document.addEventListener('DOMContentLoaded', function () {
 				case "mailInbox":
 					document.getElementById("inboxOption").checked = true;
 					break;
+	
+				case "showUnreadCount":
+					document.getElementById("showOption").checked = true;
+				break;
 				}
 			}
 		}

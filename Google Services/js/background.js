@@ -151,8 +151,8 @@ function GetShortUrl(longUrl) {
 				var shortUrl = JSON.parse(xhr.responseText).id;
 
 				chrome.storage.local.set({
-					shortUrl: shortUrl,
-					longUrl: longUrl
+					shortUrl : shortUrl,
+					longUrl : longUrl
 				}, function () {
 					copyTextToClipboard(shortUrl);
 				});
@@ -161,7 +161,9 @@ function GetShortUrl(longUrl) {
 			}
 		}
 	};
-	xhr.send(JSON.stringify({"longUrl": longUrl}));
+	xhr.send(JSON.stringify({
+			"longUrl" : longUrl
+		}));
 }
 
 function GetTranslate(text, language) {
@@ -180,7 +182,6 @@ function GetTranslate(text, language) {
 }
 
 function Notification(id, message, iconPath, closeTime) {
-	chrome.notifications.clear(id);
 	chrome.notifications.create(id, {
 		type : "basic",
 		title : "Google Services",
@@ -188,13 +189,13 @@ function Notification(id, message, iconPath, closeTime) {
 		iconUrl : iconPath
 	}, function () {
 		setTimeout(function () {
-			chrome.notifications.clear(id);
+			chrome.notifications.clear(id, function () {});
 		}, closeTime);
 	});
 }
 
 chrome.notifications.onClicked.addListener(function (notificationId, event) {
-	chrome.notifications.clear(notificationId);
+	chrome.notifications.clear(notificationId, function () {}); // empty function for opera
 	if (notificationId == "translate") {
 		chrome.tabs.create({
 			'url' : translateLink
@@ -277,7 +278,7 @@ chrome.commands.onCommand.addListener(function (command) {
 				chrome.storage.local.get({
 					language : "en"
 				}, function (items) {
-					if(response != undefined){
+					if (response != undefined) {
 						translateLink = 'https://translate.google.com/#auto/' + items.language + '/' + response.selected.replace(/ /g, '%20');
 						GetTranslate(response.selected, items.language);
 					}

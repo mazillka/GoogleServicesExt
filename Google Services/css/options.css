@@ -34,3 +34,8 @@ li{
     padding-left: 3px;
     border: 1px dashed black;
 }
+
+sup{
+	color: Red;
+	font-weight: Bold;
+}

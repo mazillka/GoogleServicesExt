@@ -105,6 +105,26 @@ document.addEventListener('DOMContentLoaded', function () {
 						});
 					};
 					break;
+					
+				case "popupPhotos":
+					li.setAttribute("id", "photos");
+					li.innerHTML = "<hr>Google Photos";
+					li.onclick = function () {
+						chrome.tabs.create({
+							'url' : 'https://photos.google.com'
+						});
+					};
+					break;
+					
+				case "popupKeep":
+					li.setAttribute("id", "keep");
+					li.innerHTML = "<hr>Google Keep";
+					li.onclick = function () {
+						chrome.tabs.create({
+							'url' : 'https://keep.google.com'
+						});
+					};
+					break;
 
 				case "popupYoutube":
 					li.setAttribute("id", "youtube");
@@ -127,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function () {
 					switch (items.style[j]) {
 					case "gridMenu":
 						ul.style.width = "200px";
-						ul.style.height = "200px";
+						ul.style.height = "auto";
 						li.innerHTML = "&zwnj;";
 						li.setAttribute("class", "gridStyle");
 						document.body.style.backgroundColor = "#F8F8F8";

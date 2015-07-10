@@ -6,6 +6,7 @@
     outline : 0;
     list-style-type: none;
     -webkit-user-select: none;
+	background-size: 32px 32px;
 }
 
 ul{
@@ -45,14 +46,14 @@ a:hover{
 
 .gridStyle{
 	width: 33%;
-	height: 24%;
+	height: 36%;
 	display: inline-block;
 	background-position: center;
 }
 
 .gridStyle:hover{
 	background-color: transparent;
-	background-size: 37px 37px;
+	background-size: 40px 40px;
 }
 
 .altLineStyle{
@@ -106,4 +107,10 @@ a:hover{
 }
 #contacts{
     background-image: url(../img/contacts.png);
+}
+#photos{
+    background-image: url(../img/photos.png);
+}
+#keep{
+    background-image: url(../img/keep.png);
 }

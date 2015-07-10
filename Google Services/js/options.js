@@ -8,12 +8,12 @@ Array.prototype.remove = function (x) {
 };
 
 var defaultOptionsList = ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
-	"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener"];
+	"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupPhotos", "popupKeep", "popupYoutube", "popupShortener"];
 
 document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
 		"optionsList" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
-			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupYoutube", "popupShortener"]
+			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupPhotos", "popupKeep", "popupYoutube", "popupShortener"]
 	}, function (items) {
 		var ul = document.getElementById("list");
 		for (var i = 0; i < items.optionsList.length; i++) {
@@ -69,6 +69,16 @@ document.addEventListener('DOMContentLoaded', function () {
 				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupContacts' id='contactsPopupOption'><label for='contactsPopupOption'>Google Contacts</label></p>";
 				break;
 
+			case "popupPhotos":
+				defaultOptionsList.remove("popupPhotos");
+				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupPhotos' id='photosPopupOption'><label for='photosPopupOption'>Google Photos</label></p>";
+				break;
+				
+			case "popupKeep":
+				defaultOptionsList.remove("popupKeep");
+				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupKeep' id='keepPopupOption'><label for='keepPopupOption'>Google Keep</label></p>";
+				break;
+				
 			case "popupYoutube":
 				defaultOptionsList.remove("popupYoutube");
 				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupYoutube' id='youtubePopupOption'><label for='youtubePopupOption'>Youtube</label></p>";
@@ -124,7 +134,15 @@ document.addEventListener('DOMContentLoaded', function () {
 			case "popupContacts":
 				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupContacts' id='contactsPopupOption'><label for='contactsPopupOption'>Google Contacts</label></p>";
 				break;
-
+				
+			case "popupPhotos":
+				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupPhotos' id='photosPopupOption'><label for='photosPopupOption'>Google Photos</label></p>";
+				break;
+			
+			case "popupKeep":
+				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupKeep' id='keepPopupOption'><label for='keepPopupOption'>Google Keep</label></p>";
+				break;
+				
 			case "popupYoutube":
 				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupYoutube' id='youtubePopupOption'><label for='youtubePopupOption'>Youtube</label></p>";
 				break;

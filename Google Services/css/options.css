@@ -27,12 +27,17 @@ input:hover, label:hover{
 }
 
 li{
-    width: 160px;
+    width: 170px;
     height: 24px;
     line-height: 24px;
     margin: 3px;
     padding-left: 3px;
     border: 1px dashed black;
+}
+
+li :hover{
+	font-weight: bold;
+	cursor: pointer;
 }
 
 sup{

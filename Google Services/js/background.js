@@ -211,8 +211,8 @@ function Notification(id, message, iconPath, closeTime) {
 }
 
 chrome.notifications.onClicked.addListener(function (notificationId) {
-	// chrome.notifications.clear(notificationId, function () {}); // empty function for opera
-	if (notificationId == "translate") {
+	chrome.notifications.clear(notificationId, function(){});
+	if (notificationId === "translate") {
 		chrome.tabs.create({
 			'url' : translateLink
 		});

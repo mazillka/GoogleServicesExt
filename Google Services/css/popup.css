@@ -111,6 +111,15 @@ a:hover{
 #photos{
     background-image: url(../img/photos.png);
 }
+#store{
+    background-image: url(../img/store.png);
+}
+#music{
+    background-image: url(../img/music.png);
+}
+#hangouts{
+    background-image: url(../img/hangouts.png);
+}
 #keep{
     background-image: url(../img/keep.png);
 }

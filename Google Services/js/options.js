@@ -7,151 +7,184 @@ Array.prototype.remove = function (x) {
 	}
 };
 
+function CreateLiString(elementValue, elementIdName, LabelText, boolChecked) {
+	if (boolChecked == true) {
+		return "<li><p><input checked type='checkbox' name='popupOptions' value='" + elementValue + "' id='" + elementIdName + "'><label for='" + elementIdName + "'>" + LabelText + "</label></p></li>";
+	} else {
+		return "<li><p><input type='checkbox' name='popupOptions' value='" + elementValue + "' id='" + elementIdName + "'><label for='" + elementIdName + "'>" + LabelText + "</label></p></li>";
+	}
+}
+
 var defaultOptionsList = ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
-	"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupPhotos", "popupKeep", "popupYoutube", "popupShortener"];
+						"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts",
+						"popupPhotos", "popupKeep", "popupHangouts", "popupMusic", "popupStore", "popupYoutube", "popupShortener"];
 
 document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
 		"optionsList" : ["popupMail", "popupPlus", "popupTranslate", "popupDrive", "popupSearch",
-			"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts", "popupPhotos", "popupKeep", "popupYoutube", "popupShortener"]
+						"popupMaps", "popupPlay", "popupNews", "popupCalendar", "popupContacts",
+						"popupPhotos", "popupKeep", "popupHangouts", "popupMusic", "popupStore", "popupYoutube", "popupShortener"]
 	}, function (items) {
 		var ul = document.getElementById("list");
 		for (var i = 0; i < items.optionsList.length; i++) {
-			var li = document.createElement("li");
 			switch (items.optionsList[i]) {
 			case "popupMail":
 				defaultOptionsList.remove("popupMail");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupMail' id='mailPopupOption'><label for='mailPopupOption'>Google Mail</label></p>";
+				ul.innerHTML += CreateLiString("popupMail", "popupMail", "Google Mail", true);
 				break;
 
 			case "popupPlus":
 				defaultOptionsList.remove("popupPlus");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupPlus' id='plusPopupOption'><label for='plusPopupOption'>Google Plus</label></p>";
+				ul.innerHTML += CreateLiString("popupPlus", "popupPlus", "Google Plus", true);
 				break;
 
 			case "popupTranslate":
 				defaultOptionsList.remove("popupTranslate");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupTranslate' id='translatePopupOption'><label for='translatePopupOption'>Google Translate</label></p>";
+				ul.innerHTML += CreateLiString("popupTranslate", "popupTranslate", "Google Translate", true);
 				break;
 
 			case "popupDrive":
 				defaultOptionsList.remove("popupDrive");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupDrive' id='drivePopupOption'><label for='drivePopupOption'>Google Drive</label></p>";
+				ul.innerHTML += CreateLiString("popupDrive", "popupDrive", "Google Drive", true);
 				break;
 
 			case "popupSearch":
 				defaultOptionsList.remove("popupSearch");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupSearch' id='searchPopupOption'><label for='searchPopupOption'>Google Search</label></p>";
+				ul.innerHTML += CreateLiString("popupSearch", "popupSearch", "Google Search", true);
 				break;
 
 			case "popupMaps":
 				defaultOptionsList.remove("popupMaps");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupMaps' id='mapsPopupOption'><label for='mapsPopupOption'>Google Maps</label></p>";
+				ul.innerHTML += CreateLiString("popupMaps", "popupMaps", "Google Maps", true);
 				break;
 
 			case "popupPlay":
 				defaultOptionsList.remove("popupPlay");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupPlay' id='playPopupOption'><label for='playPopupOption'>Google Play</label></p>";
+				ul.innerHTML += CreateLiString("popupPlay", "popupPlay", "Google Play", true);
 				break;
 
 			case "popupNews":
 				defaultOptionsList.remove("popupNews");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupNews' id='newsPopupOption'><label for='newsPopupOption'>Google News</label></p>";
+				ul.innerHTML += CreateLiString("popupNews", "popupNews", "Google News", true);
 				break;
 
 			case "popupCalendar":
 				defaultOptionsList.remove("popupCalendar");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupCalendar' id='calendarPopupOption'><label for='calendarPopupOption'>Google Calendar</label></p>";
+				ul.innerHTML += CreateLiString("popupCalendar", "popupCalendar", "Google Calendar", true);
 				break;
 
 			case "popupContacts":
 				defaultOptionsList.remove("popupContacts");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupContacts' id='contactsPopupOption'><label for='contactsPopupOption'>Google Contacts</label></p>";
+				ul.innerHTML += CreateLiString("popupContacts", "popupContacts", "Google Contacts", true);
 				break;
 
 			case "popupPhotos":
 				defaultOptionsList.remove("popupPhotos");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupPhotos' id='photosPopupOption'><label for='photosPopupOption'>Google Photos</label></p>";
+				ul.innerHTML += CreateLiString("popupPhotos", "popupPhotos", "Google Photos", true);
 				break;
 				
 			case "popupKeep":
 				defaultOptionsList.remove("popupKeep");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupKeep' id='keepPopupOption'><label for='keepPopupOption'>Google Keep</label></p>";
+				ul.innerHTML += CreateLiString("popupKeep", "popupKeep", "Google Keep", true);
+				break;
+
+			case "popupHangouts":
+				defaultOptionsList.remove("popupHangouts");
+				ul.innerHTML += CreateLiString("popupHangouts", "popupHangouts", "Google Hangouts", true);
+				break;
+
+			case "popupMusic":
+				defaultOptionsList.remove("popupMusic");
+				ul.innerHTML += CreateLiString("popupMusic", "popupMusic", "Google Play Music", true);
+				break;
+
+			case "popupStore":
+				defaultOptionsList.remove("popupStore");
+				ul.innerHTML += CreateLiString("popupStore", "popupStore", "Chrome Web Store", true);
 				break;
 				
 			case "popupYoutube":
 				defaultOptionsList.remove("popupYoutube");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupYoutube' id='youtubePopupOption'><label for='youtubePopupOption'>Youtube</label></p>";
+				ul.innerHTML += CreateLiString("popupYoutube", "popupYoutube", "Youtube", true);
 				break;
 
 			case "popupShortener":
 				defaultOptionsList.remove("popupShortener");
-				li.innerHTML = "<p><input checked type='checkbox' name='popupOptions' value='popupShortener' id='shortenerPopupOption'><label for='shortenerPopupOption'>Url Shortener</label></p>";
+				ul.innerHTML += CreateLiString("popupShortener", "popupShortener", "Url Shortener", true);
 				break;
 			}
-			ul.appendChild(li);
 		}
 
 		for (var i = 0; i < defaultOptionsList.length; i++) {
-			var li = document.createElement("li");
 			switch (defaultOptionsList[i]) {
-			case "popupMail":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupMail' id='mailPopupOption'><label for='mailPopupOption'>Google Mail</label></p>";
-				break;
+				case "popupMail":
+					ul.innerHTML += CreateLiString("popupMail", "popupMail", "Google Mail", false);
+					break;
 
-			case "popupPlus":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupPlus' id='plusPopupOption'><label for='plusPopupOption'>Google Plus</label></p>";
-				break;
+				case "popupPlus":
+					ul.innerHTML += CreateLiString("popupPlus", "popupPlus", "Google Plus", false);
+					break;
 
-			case "popupTranslate":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupTranslate' id='translatePopupOption'><label for='translatePopupOption'>Google Translate</label></p>";
-				break;
+				case "popupTranslate":
+					ul.innerHTML += CreateLiString("popupTranslate", "popupTranslate", "Google Translate", false);
+					break;
 
-			case "popupDrive":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupDrive' id='drivePopupOption'><label for='drivePopupOption'>Google Drive</label></p>";
-				break;
+				case "popupDrive":
+					ul.innerHTML += CreateLiString("popupDrive", "popupDrive", "Google Drive", false);
+					break;
 
-			case "popupSearch":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupSearch' id='searchPopupOption'><label for='searchPopupOption'>Google Search</label></p>";
-				break;
+				case "popupSearch":
+					ul.innerHTML += CreateLiString("popupSearch", "popupSearch", "Google Search", false);
+					break;
 
-			case "popupMaps":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupMaps' id='mapsPopupOption'><label for='mapsPopupOption'>Google Maps</label></p>";
-				break;
+				case "popupMaps":
+					ul.innerHTML += CreateLiString("popupMaps", "popupMaps", "Google Maps", false);
+					break;
 
-			case "popupPlay":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupPlay' id='playPopupOption'><label for='playPopupOption'>Google Play</label></p>";
-				break;
+				case "popupPlay":
+					ul.innerHTML += CreateLiString("popupPlay", "popupPlay", "Google Play", false);
+					break;
 
-			case "popupNews":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupNews' id='newsPopupOption'><label for='newsPopupOption'>Google News</label></p>";
-				break;
+				case "popupNews":
+					ul.innerHTML += CreateLiString("popupNews", "popupNews", "Google News", false);
+					break;
 
-			case "popupCalendar":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupCalendar' id='calendarPopupOption'><label for='calendarPopupOption'>Google Calendar</label></p>";
-				break;
+				case "popupCalendar":
+					ul.innerHTML += CreateLiString("popupCalendar", "popupCalendar", "Google Calendar", false);
+					break;
 
-			case "popupContacts":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupContacts' id='contactsPopupOption'><label for='contactsPopupOption'>Google Contacts</label></p>";
-				break;
-				
-			case "popupPhotos":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupPhotos' id='photosPopupOption'><label for='photosPopupOption'>Google Photos</label></p>";
-				break;
-			
-			case "popupKeep":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupKeep' id='keepPopupOption'><label for='keepPopupOption'>Google Keep</label></p>";
-				break;
-				
-			case "popupYoutube":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupYoutube' id='youtubePopupOption'><label for='youtubePopupOption'>Youtube</label></p>";
-				break;
+				case "popupContacts":
+					ul.innerHTML += CreateLiString("popupContacts", "popupContacts", "Google Contacts", false);
+					break;
 
-			case "popupShortener":
-				li.innerHTML = "<p><input type='checkbox' name='popupOptions' value='popupShortener' id='shortenerPopupOption'><label for='shortenerPopupOption'>Url Shortener</label></p>";
-				break;
+				case "popupPhotos":
+					ul.innerHTML += CreateLiString("popupPhotos", "popupPhotos", "Google Photos", false);
+					break;
+
+				case "popupKeep":
+					ul.innerHTML += CreateLiString("popupKeep", "popupKeep", "Google Keep", false);
+					break;
+
+				case "popupHangouts":
+					ul.innerHTML += CreateLiString("popupHangouts", "popupHangouts", "Google Hangouts", false);
+					break;
+
+				case "popupMusic":
+					ul.innerHTML += CreateLiString("popupMusic", "popupMusic", "Google Play Music", false);
+					break;
+
+				case "popupStore":
+					ul.innerHTML += CreateLiString("popupStore", "popupStore", "Chrome Web Store", false);
+					break;
+
+				case "popupYoutube":
+					ul.innerHTML += CreateLiString("popupYoutube", "popupYoutube", "Youtube", false);
+					break;
+
+				case "popupShortener":
+					ul.innerHTML += CreateLiString("popupShortener", "popupShortener", "Url Shortener", false);
+					break;
 			}
-			ul.appendChild(li);
 		}
 
 		$("#list").sortable();

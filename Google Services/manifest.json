@@ -2,7 +2,7 @@
 	"manifest_version" : 2,
 	"name" : "Google Services",
 	"short_name" : "Google Services",
-	"version" : "2.6",
+	"version" : "2.7",
 	"author" : "Mazillka",
 	"description" : "Easy and fast access to Google Services",
 	"icons" : {
@@ -16,7 +16,7 @@
 	"permissions" : ["tabs", "storage", "unlimitedStorage", "contextMenus", "notifications", "idle", "*://*.google.com/*"],
 	
 	"background" : {
-		"scripts" : ["js/background.js", "js/libs/jquery-2.1.3.min.js", "js/libs/jquery.sortable.min.js"],
+		"scripts" : ["js/services.js", "js/background.js", "js/libs/jquery-2.1.3.min.js", "js/libs/jquery.sortable.min.js"],
 		"persistent" : false
 	},
 	
@@ -25,11 +25,6 @@
 			"js" : ["js/contentscript.js"],
 			"matches" : ["*://mail.google.com/*"],
 			"run_at" : "document_start"
-		}, {
-			"matches" : ["<all_urls>"],
-			"js" : ["js/selection.js"],
-			"run_at" : "document_start",
-			"all_frames" : true
 		}
 	],
 	"browser_action" : {
@@ -43,12 +38,6 @@
 				"default" : "Alt+Q"
 			},
 			"description" : "Url Short"
-		},
-		"Translate Selected" : {
-			"suggested_key" : {
-				"default" : "Alt+W"
-			},
-			"description" : "Translate Selected"
 		}
 	}
 }

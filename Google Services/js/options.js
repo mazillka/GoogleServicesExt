@@ -6,32 +6,34 @@ Array.prototype.Update = function (checkbox) {
 	}
 };
 
+// save
 function SaveData() {
-	var mail = document.getElementsByName("mailOptions");
-	for (var i = 0; i < mail.length; i++) {
+	var mail = document.getElementsByName("mail");
+	for (var i = 0; i < mail.length; i++) {		
 		if (mail[i].checked) {
-			switch (mail[i].value) {
-				case "mailGmail":
-					MailService.SERVICE = "gmail";
-					MailService.URL = "https://mail.google.com/";
-					break;
-				case "mailInbox":
-					MailService.SERVICE = "inbox";
-					MailService.URL = "https://inbox.google.com/";
-					break;
-			}
+			MailService.SERVICE = mail[i].value;
+			MailService.URL = mail[i].getAttribute("data-url");
 		}
 	}
 
-	MailService.ACTIVE = document.getElementById("showOption").checked;
-	UrlShortener.ACTIVE = document.getElementById("shortenerContextOption").checked;
-
+	MailService.ACTIVE = document.getElementById("showUnreadCountCheckbox").checked;
+	UrlShortener.ACTIVE = document.getElementById("shortenerContexMenuCheckbox").checked;
+	
+	var style = document.getElementsByName("style");
+	for(var i = 0; i < style.length; i++){
+		if(style[i].checked){
+			MenuStyle.STYLE = style[i].value;
+		}
+	}
+	
 	chrome.storage.local.set({
 		"googleServices": GoogleServices,
 		"mailService": MailService,
-		"urlShortenerService": UrlShortener
+		"urlShortenerService": UrlShortener,
+		"menuStyle": MenuStyle
 	});
-
+	
+	ContextMenu();
 }
 
 function OnCheck(event) {
@@ -61,11 +63,13 @@ function CreateLi(serviceObj) {
 	return li;
 }
 
+// restore
 document.addEventListener('DOMContentLoaded', function () {
 	chrome.storage.local.get({
 		"googleServices": GoogleServices,
 		"mailService": MailService,
-		"urlShortenerService": UrlShortener
+		"urlShortenerService": UrlShortener,
+		"menuStyle": MenuStyle
 	}, function (items) {
 		GoogleServices = items.googleServices;
 
@@ -81,38 +85,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
 		switch (MailService.SERVICE) {
 			case "gmail":
-				document.getElementById("gmailOption").checked = true;
+				document.getElementById("gmailRadioButton").checked = true;
 				break;
 			case "inbox":
-				document.getElementById("inboxOption").checked = true;
+				document.getElementById("inboxRadioButton").checked = true;
 				break;
 		}
 
 
-		document.getElementById("showOption").checked = MailService.ACTIVE;
+		document.getElementById("showUnreadCountCheckbox").checked = MailService.ACTIVE;
 
 		UrlShortener = items.urlShortenerService;
-		document.getElementById("shortenerContextOption").checked = UrlShortener.ACTIVE;
+		document.getElementById("shortenerContexMenuCheckbox").checked = UrlShortener.ACTIVE;
 
+		MenuStyle = items.menuStyle;
+		
+		switch(MenuStyle.STYLE){
+			case "grid":
+				document.getElementById("gridStyleRadioButton").checked = true;
+			break;
+			case "line":
+				document.getElementById("lineStyleRadioButton").checked = true;
+			break;
+		}
 	});
 
 	ContextMenu();
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-	document.getElementById("saveButton").addEventListener("click", function () {
+window.onload = function() {
+	var inputs = document.getElementsByTagName("input");
+	for(var i = 0; i < inputs.length; i++){
+		inputs[i].onclick = SaveData;
+	}
+}
 
-		SaveData();
-
-		var status = document.getElementById('saveButton');
-		status.value = "Options saved...";
-		setTimeout(function () {
-			status.value = "Save";
-		}, 750);
-
-		ContextMenu();
-	});
-});
+window.unload = function() {
+	SaveData();
+};
 
 // document.addEventListener("contextmenu", function (event) {
 // event.preventDefault();

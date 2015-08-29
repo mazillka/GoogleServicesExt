@@ -7,10 +7,11 @@
     list-style-type: none;
     -webkit-user-select: none;
 	background-size: 32px 32px;
+	background-color: #F8F8F8;
 }
 
 ul{
-	width: 150px;
+	width: 200px;
 }
 
 li{
@@ -24,12 +25,12 @@ li:hover, li:hover > label{
 	background-color: #39F;
 }
 
-hr{
+/* hr{
     border: 0;
     height: 0;
     border-top: 2px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-}
+} */
 
 a{
 	font-size: 11px;
@@ -56,7 +57,9 @@ a:hover{
 	background-size: 40px 40px;
 }
 
-.altLineStyle{
+
+
+.lineStyle{
 	color: #686868;
 	padding-left: 2%;
 	font-size: 12px;
@@ -65,61 +68,8 @@ a:hover{
 	height: 35px;
 }
 
-.altLineStyle:hover, .altLineStyle:hover > label{
+.lineStyle:hover, .lineStyle:hover > label{
 	background-color: transparent;
 	font-size: 14px;
 	color: black;
-}
-
-/* icons */
-#search{
-    background-image: url(../img/search.png);
-}
-#play{
-    background-image: url(../img/play.png);
-}	
-#drive{
-    background-image: url(../img/drive.png);
-}
-#translate{
-    background-image: url(../img/translate.png);
-}
-#youtube{
-    background-image: url(../img/youtube.png);
-}
-#mail{
-    background-image: url(../img/gmail.png);
-}
-#plus{
-    background-image: url(../img/plus.png);
-}
-#maps{
-    background-image: url(../img/maps.png);
-}
-#calendar{
-    background-image: url(../img/calendar.png);
-}
-#news{
-    background-image: url(../img/news.png);
-}
-#shortener{
-    background-image: url(../img/shortener.png);
-}
-#contacts{
-    background-image: url(../img/contacts.png);
-}
-#photos{
-    background-image: url(../img/photos.png);
-}
-#store{
-    background-image: url(../img/store.png);
-}
-#music{
-    background-image: url(../img/music.png);
-}
-#hangouts{
-    background-image: url(../img/hangouts.png);
-}
-#keep{
-    background-image: url(../img/keep.png);
 }

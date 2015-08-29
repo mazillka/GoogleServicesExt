@@ -24,33 +24,49 @@
                         </ul>
                     </td>
                     <td valign="top" nowrap width="50%">
-                        <b>Mail Service:</b>
+                        
+						<b>Mail Service:</b>
                         </br>
-                        <p><input type="radio" name="mailOptions" value="mailGmail" id="gmailOption"/>
-                            <label for="gmailOption">Gmail</label></p>
-
-                        <p><input type="radio" name="mailOptions" value="mailInbox" id="inboxOption"/>
-                            <label for="inboxOption">Inbox</label></p>		
-						
-						<p><input type="checkbox" name="mailOptions" value="showUnreadCount" id="showOption"/>
-							<label for="showOption">Show Unread Count</label>
+                        <p>
+							<input type="radio" name="mail" value="gmail" data-url="https://mail.google.com/" id="gmailRadioButton"/>
+                            <label for="gmailRadioButton">Gmail</label>
+						</p>
+                        <p>
+							<input type="radio" name="mail" value="inbox" data-url="https://inbox.google.com/" id="inboxRadioButton"/>
+                            <label for="inboxRadioButton">Inbox</label>
+						</p>		
+						<p>
+							<input type="checkbox" value="showUnreadCount" id="showUnreadCountCheckbox"/>
+							<label for="showUnreadCountCheckbox">Show Unread Count</label>
 						</p>
 						
 						<br>
 						<b>Context Menu Services:</b>
                         <br>
-                        <p><input type="checkbox" name="contextOptions" value="contextShortener" id="shortenerContextOption"><label for="shortenerContextOption">Url Shortener</label></p>
+                        <p>
+							<input type="checkbox" value="contextMenu" id="shortenerContexMenuCheckbox">
+							<label for="shortenerContexMenuCheckbox">Url Shortener</label>
+						</p>
+						
+						<br>
+						<b>Choose Menu Style: </b>
+						<br>
+						<p>
+							<input type="radio" name="style" value="grid" id="gridStyleRadioButton"/>
+							<label for="gridStyleRadioButton">Grid Menu</label>
+						</p>
+						
+						<p>
+							<input type="radio" name="style" value="line" id="lineStyleRadioButton"/>
+							<label for="lineStyleRadioButton">Line Menu</label>
+						</p>
 						
 						<br>
 						<b>Keyboard Shortcuts:</b>
                         <br>
-                        <p>Alt + W - Translate Selected</p>
+                        <p>Alt + Q - Url Shortener</p>
                         <p style="font-size: 9px">(can be changed in "Extensions -> Keyboard Shortcuts")<p>
-                    </td>
-                </tr>
-                <tr align="center">
-                    <td colspan="2" height="80px">
-                        <p><input type="button" value="Save" id="saveButton" style="width: 150px; height:30px;"></p>
+												
                     </td>
                 </tr>
             </table>

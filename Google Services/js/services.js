@@ -4,7 +4,7 @@ var GoogleServices = [];
 GoogleServices.push({
 	ID: "mail",
 	TXT: "Google Mail",
-	IMG: "../img/mail.png",
+	IMG: "../img/gmail.png",
 	ACTIVE: true
 });
 
@@ -155,3 +155,9 @@ var MailService = {
 var UrlShortener = {
 	ACTIVE: true
 };
+
+/////////////////////////////////////////////////////////
+
+var MenuStyle = {
+	STYLE: "grid"
+}

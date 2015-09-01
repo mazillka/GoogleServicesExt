@@ -6,6 +6,23 @@ Array.prototype.Update = function (checkbox) {
 	}
 };
 
+// function compare(a,b) {
+//   if (a.POSITION < b.POSITION)
+//     return -1;
+//   if (a.POSITION > b.POSITION)
+//     return 1;
+//   return 0;
+// }
+
+	// GoogleServices.sort(compare);
+
+	// var msg = "";
+	// for(var i = 0; i < GoogleServices.length; i++)
+	// {
+	// 	msg+= GoogleServices[i].POSITION + "\n";
+	// }
+	// alert(msg);
+
 // save
 function SaveData() {
 	var mail = document.getElementsByName("mail");
@@ -36,7 +53,7 @@ function SaveData() {
 	ContextMenu();
 }
 
-function OnCheck(event) {
+function OnCheckedHandler(event) {
 	GoogleServices.Update(event.target);
 	SaveData();
 }
@@ -48,8 +65,16 @@ function CreateLi(serviceObj) {
 	input.type = "checkbox";
 	input.value = serviceObj.ID;
 	input.id = serviceObj.ID;
+
+	input.setAttribute("data-id", serviceObj.ID);
+	input.setAttribute("data-txt", serviceObj.TXT);
+	input.setAttribute("data-url", serviceObj.URL);
+	input.setAttribute("data-img", serviceObj.IMG);
+	input.setAttribute("data-active", serviceObj.ACTIVE);
+	input.setAttribute("class", "sortable");
+
 	input.checked = serviceObj.ACTIVE;
-	input.onclick = OnCheck;
+	input.onclick = OnCheckedHandler;
 	p.appendChild(input);
 
 	var label = document.createElement("label");
@@ -58,6 +83,7 @@ function CreateLi(serviceObj) {
 	p.appendChild(label);
 
 	var li = document.createElement("li");
+	li.style.backgroundImage = "url('"+ serviceObj.IMG +"')";
 	li.appendChild(p);
 
 	return li;

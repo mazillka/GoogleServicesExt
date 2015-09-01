@@ -1,41 +1,39 @@
 *{
-    margin: 0;
-    padding: 0;
-    font-family: Verdana, Arial, Helvetica, sans-serif;
-    cursor: default;
-    outline : 0;
-    -webkit-user-select: none;
-    font-size: 16px;
+	margin: 0;
+	padding: 0;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	cursor: default;
+	outline : 0;
+	-webkit-user-select: none;
+	font-size: 16px;
 }
 
 #optionsDiv{
-    width: 500px;
-    margin: auto;
+	width: 500px;
+	margin: auto;
 	background: LightWhite;
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    padding: 10px;
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
+	padding: 10px;
 }
 
 input:hover, label:hover{
-    cursor: pointer;
+	cursor: pointer;
 }
 
 ul{
-    list-style: none;
+	list-style: none;
 }
 
 li{
-    width: 210px;
-    height: 30px;
+	width: 210px;
+	height: 30px;
 	line-height: 30px;
-    margin: 3px;
-    padding-left: 3px;
+	margin: 3px;
+	padding-left: 3px;
 
-    /*border: 1px dashed black;*/
-   /* border: 1px dotted black;*/
 	border: 1px solid black;
-	
-    background-size: 24px 24px;
+
+	background-size: 24px 24px;
 	background-repeat: no-repeat;
 	background-position: right;
 }
@@ -45,15 +43,9 @@ li :hover{
 }
 
 .sortable-dragging{
-    border: 1px solid black;
-    
+	border: 1px solid black;    
 }
 
 .sortable-placeholder{
-    border: 1px dashed black;
+	border: 1px dashed black;
 }
-
-/*li[Attributes Style] {
-    -webkit-user-drag: element;
-    -webkit-user-select: none;
-}*/

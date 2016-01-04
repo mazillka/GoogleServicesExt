@@ -12,10 +12,7 @@ function CreateLi(serviceObj) {
 	input.setAttribute("data-img", serviceObj.image_path);
 	input.setAttribute("data-active", serviceObj.status);
 
-	input.setAttribute("class", "sortable");
-
 	input.checked = serviceObj.status;
-	// input.onclick = OnCheckedHandler;
 	p.appendChild(input);
 
 	var label = document.createElement("label");
@@ -38,14 +35,7 @@ function CreateRadioButton(obj, name){
 	input.id = obj.title;
 	input.name = name;
 
-	input.setAttribute("data-service", obj.title);
-	input.setAttribute("data-txt", obj.title);
-	input.setAttribute("data-url", obj.url);
-	input.setAttribute("data-active", obj.status);
-	input.setAttribute("data-style", obj.style);
-
 	input.checked = obj.status;
-	// input.onclick = OnCheckedHandler;
 	p.appendChild(input);
 
 	var label = document.createElement("label");
@@ -56,7 +46,6 @@ function CreateRadioButton(obj, name){
 	return p;
 }
 
-// restore from DB
 document.addEventListener('DOMContentLoaded', function () {
 	var l = document.getElementById("list");
 
@@ -64,20 +53,18 @@ document.addEventListener('DOMContentLoaded', function () {
 		l.appendChild(CreateLi(service));
 	});
 
-	/// ?????????
 	Sortable.create(l, {
 		animation: 150,
-		store: {
-			get: function (sortable) {
-				// var order = localStorage.getItem(sortable.options.group);
-				var order = localStorage.getItem("position");
-				return order ? order.split('|') : [];
-			},
-			set: function (sortable) {
-				var order = sortable.toArray();
-				// localStorage.setItem(sortable.options.group, order.join('|'));
-				localStorage.setItem("position", order.join('|'));
-			}
+		onUpdate: function (event) {
+			var tableBackup = DB.queryAll("services");
+			var movedElement = tableBackup[event.oldIndex];
+
+			tableBackup.splice(event.oldIndex, 1);
+			tableBackup.splice(event.newIndex, 0, movedElement);
+
+			DB.dropTable("services");
+			DB.createTableWithData("services", tableBackup);
+			DB.commit();
 		}
 	});
 
@@ -117,6 +104,7 @@ window.onload = function() {
 					return row;
 				});
 				ContextMenu();
+				UpdateUnreadCount();
 			} else{
 				DB.update("services", {short_name: obj.value}, function (row) {
 					row.status = obj.checked;

@@ -2,15 +2,19 @@ Array.prototype.first = function () {
 	return this[0];
 };
 
+HTMLCollection.prototype.first = function () {
+	return this[0];
+};
+
 function isMailUrl(url) {
-	return url.indexOf(MailService.URL) == 0; // !!!
+	return url.indexOf(DB.queryAll("mailServices", { query: {status: true} }).first().url) == 0;
 }
 
 function ContextMenu() {
 	chrome.contextMenus.removeAll();
-	if (DB.queryAll("configs", {query: {title: "UrlShortener"}}).first().status) {
+
+	if (DB.queryAll("configs", {query: {title: "UrlShortener"}}).first().status == true) {
 		var ctx = ["all", "page", "frame", "selection", "link", "editable", "image", "video", "audio"];
-		// chrome.contextMenus.removeAll();
 		chrome.contextMenus.create({
 			id: 'parent',
 			title: 'Google Services',
@@ -45,7 +49,7 @@ function Mail() {
 			}
 		}
 		chrome.tabs.create({
-			url: MailService.URL // !!!
+			url: DB.queryAll("mailServices", { query: {status: true} }).first().url
 		});
 	});
 }
@@ -69,32 +73,26 @@ function Url() {
 }
 
 function UpdateUnreadCount() {
-	if (DB.queryAll("configs", {query: {title: "UnreadCounter"}}).first().status) {
+	if (DB.queryAll("configs", {query: {title: "UnreadCounter"}}).first().status == true) {
 		var xhr = new XMLHttpRequest();
 		xhr.open("GET", "https://mail.google.com/mail/feed/atom", true);
 		xhr.onreadystatechange = function () {
 			if (xhr.readyState == 4) {
 				if (xhr.status == 200) {
 					var xmlDoc = xhr.responseXML;
-					var unreadCount = xmlDoc.getElementsByTagName("fullcount")[0].innerHTML;
+					var unreadCount = xmlDoc.getElementsByTagName("fullcount").first().innerHTML;
 
 					if (unreadCount > 0) {
-						chrome.browserAction.setBadgeText({
-							text: unreadCount
-						});
+						chrome.browserAction.setBadgeText({ text: unreadCount });
 					} else {
-						chrome.browserAction.setBadgeText({
-							text: ""
-						});
+						chrome.browserAction.setBadgeText({ text: "" });
 					}
 				}
 			}
 		};
 		xhr.send(null);
 	} else {
-		chrome.browserAction.setBadgeText({
-			text: ""
-		});
+		chrome.browserAction.setBadgeText({ text: "" });
 	}
 }
 
@@ -130,9 +128,7 @@ function GetShortUrl(longUrl) {
 			}
 		}
 	};
-	xhr.send(JSON.stringify({
-		"longUrl": longUrl
-	}));
+	xhr.send(JSON.stringify({ "longUrl": longUrl }));
 }
 
 function Notification(id, message, iconPath, closeTime) {
@@ -163,17 +159,7 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
 
 chrome.runtime.onInstalled.addListener(function (details) {
 	if (details.reason == "install") {
-		// storage initialize
-		chrome.storage.local.set({
-			"services": GoogleServices,
-			"mail": MailServices,
-			"shortener": UrlShortener,
-			"counter": UnreadCounter,
-			"styles": MenuStyles
-		});
-
-
-
+		initDB();
 		//chrome.tabs.create({
 		//	'url': "http://mazillka.in.ua/donate/"
 		//});
@@ -181,10 +167,6 @@ chrome.runtime.onInstalled.addListener(function (details) {
 			'url': chrome.extension.getURL('html/options.html')
 		});
 	} else if (details.reason == "update") {
-		// storage check for updates
-
-
-
 		//chrome.tabs.create({
 		//	'url': "http://mazillka.in.ua/donate/"
 		//});
@@ -196,12 +178,10 @@ chrome.runtime.onInstalled.addListener(function (details) {
 });
 
 chrome.tabs.onUpdated.addListener(function () {
-	ContextMenu();
 	UpdateUnreadCount();
 });
 
 chrome.tabs.onActivated.addListener(function () {
-	ContextMenu();
 	UpdateUnreadCount();
 });
 

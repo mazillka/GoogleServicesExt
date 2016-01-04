@@ -1,28 +1,27 @@
 function CreateLi(serviceObj, styleObj) {
-	// var ul = document.getElementById("list");
+	var ul = document.getElementById("list");
 	var li = document.createElement("li");
-	// li.setAttribute("id", serviceObj.short_name);
 	li.innerHTML = serviceObj.title;
 	li.style.backgroundImage = "url('"+ serviceObj.image_path +"')";
 
 	switch(styleObj.style){
 		case "grid":
-			// ul.style.width = "200px";
-			// ul.style.height = "auto";
+			ul.style.width = "200px";
+			ul.style.height = "auto";
 			li.innerHTML = "&zwnj;";
 			li.setAttribute("class", "gridStyle");
 			break;
 		case "line":
-			// ul.style.width = "220px";
-			// ul.style.marginTop = "6px";
+			ul.style.width = "220px";
+			ul.style.marginTop = "6px";
 			li.setAttribute("class", "lineStyle");	
 			break;	
 	}
 		
-	if (serviceObj.ID == "mail") {
+	if (serviceObj.short_name == "mail") {
 		li.onclick = Mail;
-	} else if (serviceObj.ID == "shortener") {
-		li.onclick = url;
+	} else if (serviceObj.short_name == "shortener") {
+		li.onclick = Url;
 	} else {
 		li.onclick = function () {
 			chrome.tabs.create({
@@ -35,7 +34,6 @@ function CreateLi(serviceObj, styleObj) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-
 	var style = DB.queryAll("menuStyles", {
 		query: {status: true}
 	}).first();
@@ -47,25 +45,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	}).forEach(function(service) {
 		ul.appendChild(CreateLi(service, style));
 	});
-
-	/// ?????????
-	Sortable.create(ul, {
-		animation: 150,
-		store: {
-			get: function (sortable) {
-				// var order = localStorage.getItem(sortable.options.group);
-				var order = localStorage.getItem("position");
-				return order ? order.split('|') : [];
-			},
-			set: function (sortable) {
-				var order = sortable.toArray();
-				// localStorage.setItem(sortable.options.group, order.join('|'));
-				localStorage.setItem("position", order.join('|'));
-			}
-		}
-	});
 });
 
  document.addEventListener("contextmenu", function (event) {
-	 // event.preventDefault();
+	event.preventDefault();
  });

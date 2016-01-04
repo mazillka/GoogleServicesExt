@@ -14,9 +14,9 @@
 	},
 	
 	"permissions" : ["tabs", "storage", "unlimitedStorage", "contextMenus", "notifications", "idle", "*://*.google.com/*"],
-	
+
 	"background" : {
-		"scripts" : ["js/libs/LocalStorageDB.min.js", "js/services.js", "js/background.js"],
+		"scripts" : ["js/libs/LocalStorageDB.min.js", "js/db.js", "js/background.js"],
 		"persistent" : false
 	},
 	

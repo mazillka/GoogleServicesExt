@@ -1,163 +1,36 @@
-var GoogleServices = [];
+var DB = new localStorageDB("library", localStorage);
 
-// Google Mail
-GoogleServices.push({
-	ID: "mail",
-	TXT: "Google Mail",
-	IMG: "../img/gmail.png",
-	ACTIVE: true
-});
+if(DB.isNew()){
+	DB.createTable("services", ["short_name", "title", "url", "image_path", "status"]);
 
-// Google Search
-GoogleServices.push({
-	ID: "search",
-	TXT: "Google Search",
-	URL: "https://plus.google.com",
-	IMG: "../img/search.png",
-	ACTIVE: true
-});
+	DB.insert("services", {short_name: "mail", title: "Google Mail", url: "none", image_path: "../img/gmail.png", status: true});
+	DB.insert("services", {short_name: "search", title: "Google Search", url: "https://google.com", image_path: "../img/search.png", status: true});
+	DB.insert("services", {short_name: "plus", title: "Google Plus", url: "https://plus.google.com", image_path: "../img/plus.png", status: true});
+	DB.insert("services", {short_name: "translate", title: "Google Translate", url: "https://translate.google.com", image_path: "../img/translate.png", status: true});
+	DB.insert("services", {short_name: "drive", title: "Google Drive", url: "https://drive.google.com", image_path: "../img/drive.png", status: true});
+	DB.insert("services", {short_name: "maps", title: "Google Maps", url: "https://maps.google.com", image_path: "../img/maps.png", status: true});
+	DB.insert("services", {short_name: "play", title: "Google Play", url: "https://play.google.com", image_path: "../img/play.png", status: true});
+	DB.insert("services", {short_name: "news", title: "Google News", url: "https://news.google.com", image_path: "../img/news.png", status: true});
+	DB.insert("services", {short_name: "contacts", title: "Google Contacts", url: "https://contacts.google.com", image_path: "../img/contacts.png", status: true});
+	DB.insert("services", {short_name: "photos", title: "Google Photos", url: "https://photos.google.com", image_path: "../img/photos.png", status: true});
+	DB.insert("services", {short_name: "keep", title: "Google Keep", url: "https://keep.google.com", image_path: "../img/keep.png", status: true});
+	DB.insert("services", {short_name: "hangouts", title: "Google Hangouts", url: "https://hangouts.google.com", image_path: "../img/hangouts.png", status: true});
+	DB.insert("services", {short_name: "music", title: "Google Play Music", url: "https://music.google.com", image_path: "../img/music.png", status: true});
+	DB.insert("services", {short_name: "store", title: "Chrome Web Store", url: "https://chrome.google.com/webstore", image_path: "../img/store.png", status: true});
+	DB.insert("services", {short_name: "youtube", title: "Youtube", url: "https://youtube.com", image_path: "../img/youtube.png", status: true});
+	DB.insert("services", {short_name: "shortener", title: "URL Shortener", url: "none", image_path: "../img/shortener.png", status: true});
 
-// Google Plus
-GoogleServices.push({
-	ID: "plus",
-	TXT: "Google Plus",
-	URL: "https://plus.google.com",
-	IMG: "../img/plus.png",
-	ACTIVE: true
-});
+	DB.createTable("menuStyles", ["title", "style", "status"]);
+	DB.insert("menuStyles", {title: "Grid Menu", style: "grid", status: true});
+	DB.insert("menuStyles", {title: "Line Menu", style: "line", status: false});
 
-// Google Translate
-GoogleServices.push({
-	ID: "translate",
-	TXT: "Google Translate",
-	URL: "https://translate.google.com",
-	IMG: "../img/translate.png",
-	ACTIVE: true
-});
+	DB.createTable("mailServices", ["title", "url", "status"]);
+	DB.insert("mailServices", {title: "Gmail", url: "https://mail.google.com/", status: true});
+	DB.insert("mailServices", {title: "Inbox", url: "https://inbox.google.com/", status: false});
 
-// Google Drive
-GoogleServices.push({
-	ID: "drive",
-	TXT: "Google Drive",
-	URL: "https://drive.google.com",
-	IMG: "../img/drive.png",
-	ACTIVE: true
-});
+	DB.createTable("configs", ["title", "status"]);
+	DB.insert("configs", {title: "UrlShortener", status: true});
+	DB.insert("configs", {title: "UnreadCounter", status: true});
 
-// Google Maps
-GoogleServices.push({
-	ID: "maps",
-	TXT: "Google Maps",
-	URL: "https://maps.google.com",
-	IMG: "../img/maps.png",
-	ACTIVE: true
-});
-
-// Google Play
-GoogleServices.push({
-	ID: "play",
-	TXT: "Google Play",
-	URL: "https://play.google.com",
-	IMG: "../img/play.png",
-	ACTIVE: true
-});
-
-// Google News
-GoogleServices.push({
-	ID: "news",
-	TXT: "Google News",
-	URL: "https://news.google.com",
-	IMG: "../img/news.png",
-	ACTIVE: true
-});
-
-// Google Contacts
-GoogleServices.push({
-	ID: "contacts",
-	TXT: "Google Contacts",
-	URL: "https://contacts.google.com",
-	IMG: "../img/contacts.png",
-	ACTIVE: true
-});
-
-// Google Photos
-GoogleServices.push({
-	ID: "photos",
-	TXT: "Google Photos",
-	URL: "https://photos.google.com",
-	IMG: "../img/photos.png",
-	ACTIVE: true
-});
-
-// Google Keep
-GoogleServices.push({
-	ID: "keep",
-	TXT: "Google Keep",
-	URL: "https://keep.google.com",
-	IMG: "../img/keep.png",
-	ACTIVE: true
-});
-
-// Google Hangouts
-GoogleServices.push({
-	ID: "hangouts",
-	TXT: "Google Hangouts",
-	URL: "https://hangouts.google.com",
-	IMG: "../img/hangouts.png",
-	ACTIVE: true
-});
-
-// Google Play Music
-GoogleServices.push({
-	ID: "music",
-	TXT: "Google Play Music",
-	URL: "https://music.google.com",
-	IMG: "../img/music.png",
-	ACTIVE: true
-});
-
-// Chrome Web Store
-GoogleServices.push({
-	ID: "store",
-	TXT: "Chrome Web Store",
-	URL: "https://chrome.google.com/webstore",
-	IMG: "../img/store.png",
-	ACTIVE: true
-});
-
-// Youtube
-GoogleServices.push({
-	ID: "youtube",
-	TXT: "Youtube",
-	URL: "https://youtube.com",
-	IMG: "../img/youtube.png",
-	ACTIVE: true
-});
-
-// URL Shortener
-GoogleServices.push({
-	ID: "shortener",
-	TXT: "URL Shortener",
-	IMG: "../img/shortener.png",
-	ACTIVE: true
-});
-
-/////////////////////////////////////////////////////////
-
-var MailService = {
-	SERVICE: "gmail",
-	URL: "https://mail.google.com/",
-	ACTIVE: true
-};
-
-/////////////////////////////////////////////////////////
-
-var UrlShortener = {
-	ACTIVE: true
-};
-
-/////////////////////////////////////////////////////////
-
-var MenuStyle = {
-	STYLE: "grid"
+	DB.commit();
 }

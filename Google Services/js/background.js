@@ -1,31 +1,29 @@
+Array.prototype.first = function () {
+	return this[0];
+};
+
 function isMailUrl(url) {
-	return url.indexOf(MailService.URL) == 0;
+	return url.indexOf(MailService.URL) == 0; // !!!
 }
 
 function ContextMenu() {
-	chrome.storage.local.get({
-		"urlShortenerService": UrlShortener
-	}, function (items) {
-		UrlShortener = items.urlShortenerService;
+	chrome.contextMenus.removeAll();
+	if (DB.queryAll("configs", {query: {title: "UrlShortener"}}).first().status) {
+		var ctx = ["all", "page", "frame", "selection", "link", "editable", "image", "video", "audio"];
+		// chrome.contextMenus.removeAll();
+		chrome.contextMenus.create({
+			id: 'parent',
+			title: 'Google Services',
+			contexts: ctx
+		});
 
-		chrome.contextMenus.removeAll();
-
-		if (UrlShortener.ACTIVE) {
-			var ctx = ["all", "page", "frame", "selection", "link", "editable", "image", "video", "audio"];
-			chrome.contextMenus.create({
-				id: 'parent',
-				title: 'Google Services',
-				contexts: ctx
-			});
-
-			chrome.contextMenus.create({
-				parentId: 'parent',
-				id: 'url',
-				title: 'Url Shortener',
-				contexts: ctx
-			});
-		}
-	});
+		chrome.contextMenus.create({
+			parentId: 'parent',
+			id: 'url',
+			title: 'Url Shortener',
+			contexts: ctx
+		});
+	}
 }
 
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
@@ -47,7 +45,7 @@ function Mail() {
 			}
 		}
 		chrome.tabs.create({
-			url: MailService.URL
+			url: MailService.URL // !!!
 		});
 	});
 }
@@ -71,39 +69,33 @@ function Url() {
 }
 
 function UpdateUnreadCount() {
-	chrome.storage.local.get({
-		"mailService": MailService
-	}, function (items) {
-		MailService = items.mailService;
+	if (DB.queryAll("configs", {query: {title: "UnreadCounter"}}).first().status) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "https://mail.google.com/mail/feed/atom", true);
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState == 4) {
+				if (xhr.status == 200) {
+					var xmlDoc = xhr.responseXML;
+					var unreadCount = xmlDoc.getElementsByTagName("fullcount")[0].innerHTML;
 
-		if (MailService.ACTIVE) {
-			var xhr = new XMLHttpRequest();
-			xhr.open("GET", "https://mail.google.com/mail/feed/atom", true);
-			xhr.onreadystatechange = function () {
-				if (xhr.readyState == 4) {
-					if (xhr.status == 200) {
-						var xmlDoc = xhr.responseXML;
-						var unreadCount = xmlDoc.getElementsByTagName("fullcount")[0].innerHTML;
-
-						if (unreadCount > 0) {
-							chrome.browserAction.setBadgeText({
-								text: unreadCount
-							});
-						} else {
-							chrome.browserAction.setBadgeText({
-								text: ""
-							});
-						}
+					if (unreadCount > 0) {
+						chrome.browserAction.setBadgeText({
+							text: unreadCount
+						});
+					} else {
+						chrome.browserAction.setBadgeText({
+							text: ""
+						});
 					}
 				}
-			};
-			xhr.send(null);
-		} else {
-			chrome.browserAction.setBadgeText({
-				text: ""
-			});
-		}
-	});
+			}
+		};
+		xhr.send(null);
+	} else {
+		chrome.browserAction.setBadgeText({
+			text: ""
+		});
+	}
 }
 
 function copyTextToClipboard(text) {
@@ -171,16 +163,31 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
 
 chrome.runtime.onInstalled.addListener(function (details) {
 	if (details.reason == "install") {
-		chrome.tabs.create({
-			'url': "http://mazillka.in.ua/donate/"
+		// storage initialize
+		chrome.storage.local.set({
+			"services": GoogleServices,
+			"mail": MailServices,
+			"shortener": UrlShortener,
+			"counter": UnreadCounter,
+			"styles": MenuStyles
 		});
+
+
+
+		//chrome.tabs.create({
+		//	'url': "http://mazillka.in.ua/donate/"
+		//});
 		chrome.tabs.create({
 			'url': chrome.extension.getURL('html/options.html')
 		});
 	} else if (details.reason == "update") {
-		chrome.tabs.create({
-			'url': "http://mazillka.in.ua/donate/"
-		});
+		// storage check for updates
+
+
+
+		//chrome.tabs.create({
+		//	'url': "http://mazillka.in.ua/donate/"
+		//});
 		chrome.tabs.create({
 			'url': chrome.extension.getURL('html/options.html')
 		});
@@ -188,7 +195,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
 	ContextMenu();
 });
 
-chrome.tabs.onUpdated.addListener(function (id, info, tab) {
+chrome.tabs.onUpdated.addListener(function () {
 	ContextMenu();
 	UpdateUnreadCount();
 });

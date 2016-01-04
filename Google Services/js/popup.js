@@ -1,20 +1,20 @@
-function CreateLi(serviceObj, theme) {
-	var ul = document.getElementById("list");
+function CreateLi(serviceObj, styleObj) {
+	// var ul = document.getElementById("list");
 	var li = document.createElement("li");
-	li.setAttribute("id", serviceObj.ID);
-	li.innerHTML = serviceObj.TXT;
-	li.style.backgroundImage = "url('"+ serviceObj.IMG +"')";
+	// li.setAttribute("id", serviceObj.short_name);
+	li.innerHTML = serviceObj.title;
+	li.style.backgroundImage = "url('"+ serviceObj.image_path +"')";
 
-	switch(theme){
+	switch(styleObj.style){
 		case "grid":
-			ul.style.width = "200px";
-			ul.style.height = "auto";
+			// ul.style.width = "200px";
+			// ul.style.height = "auto";
 			li.innerHTML = "&zwnj;";
 			li.setAttribute("class", "gridStyle");
 			break;
 		case "line":
-			ul.style.width = "220px";
-			ul.style.marginTop = "6px";
+			// ul.style.width = "220px";
+			// ul.style.marginTop = "6px";
 			li.setAttribute("class", "lineStyle");	
 			break;	
 	}
@@ -22,36 +22,50 @@ function CreateLi(serviceObj, theme) {
 	if (serviceObj.ID == "mail") {
 		li.onclick = Mail;
 	} else if (serviceObj.ID == "shortener") {
-		li.onclick = Url;
+		li.onclick = url;
 	} else {
 		li.onclick = function () {
 			chrome.tabs.create({
-				'url': serviceObj.URL
+				'url': serviceObj.url
 			});
 		};
 	}
+
 	return li;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-	chrome.storage.local.get({
-		"mailService": MailService,
-		"googleServices": GoogleServices,
-		"menuStyle": MenuStyle
-	}, function (items) {
-		MailService = items.mailService;
-		GoogleServices = items.googleServices;
-		MenuStyle = items.menuStyle;
-		
-		var ul = document.getElementById("list");
-		for (var i = 0; i < GoogleServices.length; i++) {
-			if(GoogleServices[i].ACTIVE){
-				ul.appendChild(CreateLi(GoogleServices[i], MenuStyle.STYLE));
+
+	var style = DB.queryAll("menuStyles", {
+		query: {status: true}
+	}).first();
+
+	var ul = document.getElementById("list");
+
+	DB.queryAll("services", {
+		query: {status: true}
+	}).forEach(function(service) {
+		ul.appendChild(CreateLi(service, style));
+	});
+
+	/// ?????????
+	Sortable.create(ul, {
+		animation: 150,
+		store: {
+			get: function (sortable) {
+				// var order = localStorage.getItem(sortable.options.group);
+				var order = localStorage.getItem("position");
+				return order ? order.split('|') : [];
+			},
+			set: function (sortable) {
+				var order = sortable.toArray();
+				// localStorage.setItem(sortable.options.group, order.join('|'));
+				localStorage.setItem("position", order.join('|'));
 			}
 		}
 	});
 });
 
-// document.addEventListener("contextmenu", function (event) {
-	// event.preventDefault();
-// });
+ document.addEventListener("contextmenu", function (event) {
+	 // event.preventDefault();
+ });

@@ -2,6 +2,14 @@ Array.prototype.first = function () {
 	return this[0];
 };
 
+Array.prototype.last = function() {
+	for(var i = this.length - 1; i != 0; i--){
+		if(this[i].status == true){
+			return i + 1;
+		}
+	}
+};
+
 HTMLCollection.prototype.first = function () {
 	return this[0];
 };

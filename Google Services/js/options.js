@@ -46,14 +46,16 @@ function CreateRadioButton(obj, name){
 	return p;
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-	var l = document.getElementById("list");
+// TODO: need better name
+function rebuild(){
+	var ul = document.getElementById("list");
+	ul.innerHTML = "";
 
 	DB.queryAll("services").forEach(function(service) {
-		l.appendChild(CreateLi(service));
+		ul.appendChild(CreateLi(service));
 	});
 
-	Sortable.create(l, {
+	Sortable.create(ul, {
 		animation: 150,
 		onUpdate: function (event) {
 			var tableBackup = DB.queryAll("services");
@@ -67,6 +69,14 @@ document.addEventListener('DOMContentLoaded', function () {
 			DB.commit();
 		}
 	});
+
+	// TODO: need better name
+	handler();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+	rebuild();
+
 
 	var mails = document.getElementById("mailList");
 	DB.queryAll("mailServices").forEach(function(mail){
@@ -92,7 +102,8 @@ document.addEventListener('DOMContentLoaded', function () {
 	ContextMenu();
 });
 
-window.onload = function() {
+// TODO: need better name
+function handler(){
 	var inputs = document.getElementsByTagName("input");
 	for(var i = 0; i < inputs.length; i++){
 		inputs[i].onclick = function(event){
@@ -106,15 +117,36 @@ window.onload = function() {
 				ContextMenu();
 				UpdateUnreadCount();
 			} else{
-				DB.update("services", {short_name: obj.value}, function (row) {
-					row.status = obj.checked;
-					return row;
-				});
+				var idx = DB.queryAll("services", { query: { short_name: obj.value } }).first().ID - 1;
+
+				var tableBackup = DB.queryAll("services");
+				var changedElement = tableBackup[idx];
+				changedElement.status = obj.checked;
+
+				tableBackup.splice(idx, 1);
+
+				if(obj.checked == true){
+
+					tableBackup.splice(tableBackup.last(), 0, changedElement);
+				} else {
+					tableBackup.splice(tableBackup.length, 0, changedElement);
+				}
+
+				DB.dropTable("services");
+				DB.createTableWithData("services", tableBackup);
 			}
 			DB.commit();
+
+			// TODO: need better name
+			rebuild();
 		};
 	}
+}
 
+window.onload = function() {
+
+	// TODO: need better name
+	handler();
 
 	var mails = document.getElementsByName("mail");
 	for(var i = 0; i < mails.length; i++){

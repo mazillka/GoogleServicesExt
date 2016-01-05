@@ -38,5 +38,5 @@ function InitializeDB(){
 }
 
 function UpdateDB(){
-
+	InitializeDB();
 }

@@ -1,4 +1,4 @@
-function CreateLi(serviceObj, styleObj) {
+function CreateLiElement(serviceObj, styleObj) {
 	var ul = document.getElementById("list");
 	var li = document.createElement("li");
 	li.innerHTML = serviceObj.title;
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	DB.queryAll("services", {
 		query: {status: true}
 	}).forEach(function(service) {
-		ul.appendChild(CreateLi(service, style));
+		ul.appendChild(CreateLiElement(service, style));
 	});
 });
 

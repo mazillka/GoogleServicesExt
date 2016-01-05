@@ -1,58 +1,54 @@
-function CreateLi(serviceObj) {
+function CreateLiElement(serviceObj) {
 	var p = document.createElement("p");
 
 	var input = document.createElement("input");
 	input.type = "checkbox";
 	input.value = serviceObj.short_name;
 	input.id = serviceObj.short_name;
-
-	input.setAttribute("data-id", serviceObj.short_name);
-	input.setAttribute("data-txt", serviceObj.title);
-	input.setAttribute("data-url", serviceObj.url);
-	input.setAttribute("data-img", serviceObj.image_path);
-	input.setAttribute("data-active", serviceObj.status);
-
 	input.checked = serviceObj.status;
+
 	p.appendChild(input);
 
 	var label = document.createElement("label");
 	label.htmlFor = serviceObj.short_name;
 	label.innerHTML = serviceObj.title;
+
 	p.appendChild(label);
 
 	var li = document.createElement("li");
 	li.style.backgroundImage = "url('"+ serviceObj.image_path +"')";
+
 	li.appendChild(p);
 
 	return li;
 }
 
-function CreateRadioButton(obj, name){
+function CreateRadioButtonElement(obj, name){
 	var p = document.createElement("p");
 	var input = document.createElement("input");
 	input.type = "radio";
 	input.value = obj.title;
 	input.id = obj.title;
 	input.name = name;
-
 	input.checked = obj.status;
+
 	p.appendChild(input);
 
 	var label = document.createElement("label");
 	label.htmlFor = obj.title;
 	label.innerHTML = obj.title;
+
 	p.appendChild(label);
 
 	return p;
 }
 
-// TODO: need better name
-function rebuild(){
+function UpdateServicesList(){
 	var ul = document.getElementById("list");
 	ul.innerHTML = "";
 
 	DB.queryAll("services").forEach(function(service) {
-		ul.appendChild(CreateLi(service));
+		ul.appendChild(CreateLiElement(service));
 	});
 
 	Sortable.create(ul, {
@@ -70,40 +66,10 @@ function rebuild(){
 		}
 	});
 
-	// TODO: need better name
-	handler();
+	SubscribeToServicesListEvents();
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-	rebuild();
-
-
-	var mails = document.getElementById("mailList");
-	DB.queryAll("mailServices").forEach(function(mail){
-		mails.appendChild(CreateRadioButton(mail, "mail"));
-	});
-
-
-	var styles = document.getElementById("styleList");
-	DB.queryAll("menuStyles").forEach(function(style){
-		styles.appendChild(CreateRadioButton(style, "style"));
-	});
-
-
-	document.getElementById("showUnreadCountCheckbox").checked = DB.queryAll("configs", {
-		query: {title: "UnreadCounter"}
-	}).first().status;
-
-	document.getElementById("shortenerContexMenuCheckbox").checked = DB.queryAll("configs", {
-		query: {title: "UrlShortener"}
-	}).first().status;
-
-
-	UpdateContextMenu();
-});
-
-// TODO: need better name
-function handler(){
+function SubscribeToServicesListEvents(){
 	var inputs = document.getElementsByTagName("input");
 	for(var i = 0; i < inputs.length; i++){
 		inputs[i].onclick = function(event){
@@ -137,16 +103,39 @@ function handler(){
 			}
 			DB.commit();
 
-			// TODO: need better name
-			rebuild();
+			UpdateServicesList();
 		};
 	}
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+
+	UpdateServicesList();
+
+	var mails = document.getElementById("mailList");
+	DB.queryAll("mailServices").forEach(function(mail){
+		mails.appendChild(CreateRadioButtonElement(mail, "mail"));
+	});
+
+	var styles = document.getElementById("styleList");
+	DB.queryAll("menuStyles").forEach(function(style){
+		styles.appendChild(CreateRadioButtonElement(style, "style"));
+	});
+
+	document.getElementById("showUnreadCountCheckbox").checked = DB.queryAll("configs", {
+		query: {title: "UnreadCounter"}
+	}).first().status;
+
+	document.getElementById("shortenerContexMenuCheckbox").checked = DB.queryAll("configs", {
+		query: {title: "UrlShortener"}
+	}).first().status;
+
+	UpdateContextMenu();
+});
+
 window.onload = function() {
 
-	// TODO: need better name
-	handler();
+	SubscribeToServicesListEvents();
 
 	var mails = document.getElementsByName("mail");
 	for(var i = 0; i < mails.length; i++){
@@ -165,7 +154,6 @@ window.onload = function() {
 			DB.commit();
 		};
 	}
-
 
 	var styles = document.getElementsByName("style");
 	for(var i = 0; i < styles.length; i++){

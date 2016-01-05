@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	}).first().status;
 
 
-	ContextMenu();
+	UpdateContextMenu();
 });
 
 // TODO: need better name
@@ -114,7 +114,7 @@ function handler(){
 					row.status = obj.checked;
 					return row;
 				});
-				ContextMenu();
+				UpdateContextMenu();
 				UpdateUnreadCount();
 			} else{
 				var idx = DB.queryAll("services", { query: { short_name: obj.value } }).first().ID - 1;
@@ -127,7 +127,7 @@ function handler(){
 
 				if(obj.checked == true){
 
-					tableBackup.splice(tableBackup.last(), 0, changedElement);
+					tableBackup.splice(tableBackup.lastActiveServiceIdx(), 0, changedElement);
 				} else {
 					tableBackup.splice(tableBackup.length, 0, changedElement);
 				}

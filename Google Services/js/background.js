@@ -2,7 +2,7 @@ Array.prototype.first = function () {
 	return this[0];
 };
 
-Array.prototype.last = function() {
+Array.prototype.lastActiveServiceIdx = function() {
 	for(var i = this.length - 1; i != 0; i--){
 		if(this[i].status == true){
 			return i + 1;
@@ -14,15 +14,12 @@ HTMLCollection.prototype.first = function () {
 	return this[0];
 };
 
-function isMailUrl(url) {
-	return url.indexOf(DB.queryAll("mailServices", { query: {status: true} }).first().url) == 0;
-}
-
-function ContextMenu() {
+function UpdateContextMenu() {
 	chrome.contextMenus.removeAll();
 
 	if (DB.queryAll("configs", {query: {title: "UrlShortener"}}).first().status == true) {
 		var ctx = ["all", "page", "frame", "selection", "link", "editable", "image", "video", "audio"];
+
 		chrome.contextMenus.create({
 			id: 'parent',
 			title: 'Google Services',
@@ -47,18 +44,16 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 });
 
 function Mail() {
+	var mailURL = DB.queryAll("mailServices", { query: {status: true} }).first().url;
+
 	chrome.tabs.query({}, function (tabs) {
 		for (var i = 0; i < tabs.length; i++) {
-			if (tabs[i].url && isMailUrl(tabs[i].url)) {
-				chrome.tabs.update(tabs[i].id, {
-					highlighted: true
-				});
+			if (tabs[i].url && (tabs[i].url.indexOf(mailURL) == 0)) {
+				chrome.tabs.update(tabs[i].id, { highlighted: true });
 				return;
 			}
 		}
-		chrome.tabs.create({
-			url: DB.queryAll("mailServices", { query: {status: true} }).first().url
-		});
+		chrome.tabs.create({ url: mailURL });
 	});
 }
 
@@ -71,10 +66,10 @@ function Url() {
 			"shortUrl": null,
 			"longUrl": null
 		}, function (items) {
-			if (tabs[0].url == items.longUrl) {
+			if (tabs.first().url == items.longUrl) {
 				copyTextToClipboard(items.shortUrl);
 			} else {
-				GetShortUrl(tabs[0].url);
+				GetShortUrl(tabs.first().url);
 			}
 		});
 	});
@@ -107,7 +102,7 @@ function UpdateUnreadCount() {
 function copyTextToClipboard(text) {
 	var copyFrom = document.createElement("textarea");
 	copyFrom.textContent = text;
-	var body = document.getElementsByTagName('body')[0];
+	var body = document.getElementsByTagName('body').first();
 	body.appendChild(copyFrom);
 	copyFrom.select();
 	document.execCommand('copy');
@@ -182,7 +177,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
 			'url': chrome.extension.getURL('html/options.html')
 		});
 	}
-	ContextMenu();
+	UpdateContextMenu();
 });
 
 chrome.tabs.onUpdated.addListener(function () {

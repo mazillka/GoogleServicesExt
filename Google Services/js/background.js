@@ -162,7 +162,7 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
 
 chrome.runtime.onInstalled.addListener(function (details) {
 	if (details.reason == "install") {
-		initDB();
+		InitializeDB();
 		//chrome.tabs.create({
 		//	'url': "http://mazillka.in.ua/donate/"
 		//});
@@ -170,6 +170,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
 			'url': chrome.extension.getURL('html/options.html')
 		});
 	} else if (details.reason == "update") {
+		UpdateDB();
 		//chrome.tabs.create({
 		//	'url': "http://mazillka.in.ua/donate/"
 		//});

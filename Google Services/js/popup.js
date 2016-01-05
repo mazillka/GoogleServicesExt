@@ -1,19 +1,14 @@
-function CreateLiElement(serviceObj, styleObj) {
-	var ul = document.getElementById("list");
+function CreateLiElement(serviceObj, style) {
 	var li = document.createElement("li");
 	li.innerHTML = serviceObj.title;
 	li.style.backgroundImage = "url('"+ serviceObj.image_path +"')";
 
-	switch(styleObj.style){
+	switch(style){
 		case "grid":
-			ul.style.width = "200px";
-			ul.style.height = "auto";
 			li.innerHTML = "&zwnj;";
 			li.setAttribute("class", "gridStyle");
 			break;
 		case "line":
-			ul.style.width = "220px";
-			ul.style.marginTop = "6px";
 			li.setAttribute("class", "lineStyle");	
 			break;	
 	}
@@ -24,9 +19,7 @@ function CreateLiElement(serviceObj, styleObj) {
 		li.onclick = Url;
 	} else {
 		li.onclick = function () {
-			chrome.tabs.create({
-				'url': serviceObj.url
-			});
+			chrome.tabs.create({ 'url': serviceObj.url });
 		};
 	}
 
@@ -34,11 +27,20 @@ function CreateLiElement(serviceObj, styleObj) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-	var style = DB.queryAll("menuStyles", {
-		query: {status: true}
-	}).first();
+	var style = DB.queryAll("menuStyles", { query: { status: true } }).first().style;
 
 	var ul = document.getElementById("list");
+
+	//switch (style){
+	//	case "grid":
+	//		ul.style.width = "200px";
+	//		ul.style.height = "auto";
+	//		break;
+	//	case "line":
+	//		ul.style.width = "220px";
+	//		ul.style.marginTop = "6px";
+	//		break;
+	//}
 
 	DB.queryAll("services", {
 		query: {status: true}

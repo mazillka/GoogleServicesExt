@@ -70,7 +70,8 @@ function UpdateServicesList(){
 }
 
 function SubscribeToServicesListEvents(){
-	var inputs = document.getElementsByTagName("input");
+	var inputs = document.querySelectorAll('input[type="checkbox"]');
+
 	for(var i = 0; i < inputs.length; i++){
 		inputs[i].onclick = function(event){
 			var obj = event.target;
@@ -80,8 +81,15 @@ function SubscribeToServicesListEvents(){
 					row.status = obj.checked;
 					return row;
 				});
-				UpdateContextMenu();
-				UpdateUnreadCount();
+
+				switch (obj.value){
+					case "UnreadCounter":
+						UpdateUnreadCount();
+						break;
+					case "UrlShortener":
+						UpdateContextMenu();
+						break;
+				}
 			} else{
 				var idx = DB.queryAll("services", { query: { short_name: obj.value } }).first().ID - 1;
 
@@ -92,7 +100,6 @@ function SubscribeToServicesListEvents(){
 				tableBackup.splice(idx, 1);
 
 				if(obj.checked == true){
-
 					tableBackup.splice(tableBackup.lastActiveServiceIdx(), 0, changedElement);
 				} else {
 					tableBackup.splice(tableBackup.length, 0, changedElement);
@@ -174,6 +181,6 @@ window.onload = function() {
 	}
 };
 
-// document.addEventListener("contextmenu", function (event) {
-// event.preventDefault();
-// });
+document.addEventListener("contextmenu", function (event) {
+	event.preventDefault();
+});

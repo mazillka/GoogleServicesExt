@@ -1,6 +1,6 @@
 var DB = new localStorageDB("library", localStorage);
 
-function initDB(){
+function InitializeDB(){
 	if(DB.isNew()){
 		DB.createTable("services", ["short_name", "title", "url", "image_path", "status"]);
 
@@ -35,4 +35,8 @@ function initDB(){
 
 		DB.commit();
 	}
+}
+
+function UpdateDB(){
+
 }

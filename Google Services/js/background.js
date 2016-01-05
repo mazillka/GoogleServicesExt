@@ -163,17 +163,17 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
 chrome.runtime.onInstalled.addListener(function (details) {
 	if (details.reason == "install") {
 		InitializeDB();
-		//chrome.tabs.create({
-		//	url: "http://mazillka.in.ua/donate/"
-		//});
+		chrome.tabs.create({
+			url: "http://mazillka.in.ua/donate/"
+		});
 		chrome.tabs.create({
 			url: chrome.extension.getURL('html/options.html')
 		});
 	} else if (details.reason == "update") {
 		UpdateDB();
-		//chrome.tabs.create({
-		//	url: "http://mazillka.in.ua/donate/"
-		//});
+		chrome.tabs.create({
+			url: "http://mazillka.in.ua/donate/"
+		});
 		chrome.tabs.create({
 			url: chrome.extension.getURL('html/options.html')
 		});

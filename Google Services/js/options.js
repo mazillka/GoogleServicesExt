@@ -77,7 +77,7 @@ function SubscribeToServicesListEvents(){
 			var obj = event.target;
 
 			if(obj.value == "UnreadCounter" || obj.value == "UrlShortener"){
-				DB.update("configs", {title: obj.value}, function (row) {
+				DB.update("configs", { title: obj.value }, function (row) {
 					row.status = obj.checked;
 					return row;
 				});
@@ -99,11 +99,7 @@ function SubscribeToServicesListEvents(){
 
 				tableBackup.splice(idx, 1);
 
-				if(obj.checked == true){
-					tableBackup.splice(tableBackup.lastActiveServiceIdx(), 0, changedElement);
-				} else {
-					tableBackup.splice(tableBackup.length, 0, changedElement);
-				}
+				obj.checked ? tableBackup.splice(tableBackup.lastActiveServiceIdx(), 0, changedElement) : tableBackup.splice(tableBackup.length, 0, changedElement);
 
 				DB.dropTable("services");
 				DB.createTableWithData("services", tableBackup);
@@ -129,13 +125,9 @@ document.addEventListener('DOMContentLoaded', function () {
 		styles.appendChild(CreateRadioButtonElement(style, "style"));
 	});
 
-	document.getElementById("showUnreadCountCheckbox").checked = DB.queryAll("configs", {
-		query: {title: "UnreadCounter"}
-	}).first().status;
+	document.getElementById("showUnreadCountCheckbox").checked = DB.queryAll("configs", { query: {title: "UnreadCounter" } }).first().status;
 
-	document.getElementById("shortenerContexMenuCheckbox").checked = DB.queryAll("configs", {
-		query: {title: "UrlShortener"}
-	}).first().status;
+	document.getElementById("shortenerContexMenuCheckbox").checked = DB.queryAll("configs", { query: {title: "UrlShortener" } }).first().status;
 
 	UpdateContextMenu();
 });

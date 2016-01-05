@@ -1,6 +1,5 @@
 function CreateLiElement(serviceObj, style) {
 	var li = document.createElement("li");
-	li.innerHTML = serviceObj.title;
 	li.style.backgroundImage = "url('"+ serviceObj.image_path +"')";
 
 	switch(style){
@@ -9,18 +8,22 @@ function CreateLiElement(serviceObj, style) {
 			li.setAttribute("class", "gridStyle");
 			break;
 		case "line":
-			li.setAttribute("class", "lineStyle");	
+			li.innerHTML = serviceObj.title;
+			li.setAttribute("class", "lineStyle");
 			break;	
 	}
-		
-	if (serviceObj.short_name == "mail") {
-		li.onclick = Mail;
-	} else if (serviceObj.short_name == "shortener") {
-		li.onclick = Url;
-	} else {
-		li.onclick = function () {
-			chrome.tabs.create({ 'url': serviceObj.url });
-		};
+
+	switch (serviceObj.short_name){
+		case "mail":
+			li.onclick = Mail;
+			break;
+		case "shortener":
+			li.onclick = Url;
+			break;
+		default:
+			li.onclick = function () {
+				chrome.tabs.create({ url: serviceObj.url });
+			};
 	}
 
 	return li;
@@ -43,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	//}
 
 	DB.queryAll("services", {
-		query: {status: true}
+		query: { status: true }
 	}).forEach(function(service) {
 		ul.appendChild(CreateLiElement(service, style));
 	});

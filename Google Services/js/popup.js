@@ -15,10 +15,10 @@ function CreateLiElement(serviceObj, style) {
 
 	switch (serviceObj.short_name){
 		case "mail":
-			li.onclick = Mail;
+			li.onclick = OpenMail;
 			break;
 		case "shortener":
-			li.onclick = Url;
+			li.onclick = GetUrl;
 			break;
 		default:
 			li.onclick = function () {
@@ -34,17 +34,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
 	var ul = document.getElementById("list");
 
-	//switch (style){
-	//	case "grid":
-	//		ul.style.width = "200px";
-	//		ul.style.height = "auto";
-	//		break;
-	//	case "line":
-	//		ul.style.width = "220px";
-	//		ul.style.marginTop = "6px";
-	//		break;
-	//}
-
 	DB.queryAll("services", {
 		query: { status: true }
 	}).forEach(function(service) {
@@ -53,5 +42,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
  document.addEventListener("contextmenu", function (event) {
-	event.preventDefault();
+	 event.preventDefault();
  });

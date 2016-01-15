@@ -32,5 +32,9 @@ if(DB.isNew()){
 	DB.insert("configs", {title: "UrlShortener", status: true});
 	DB.insert("configs", {title: "UnreadCounter", status: true});
 
+	DB.createTable("urls", ["type", "value"]);
+	DB.insert("urls", {type: "ShortUrl", value: " "});
+	DB.insert("urls", {type: "LongUrl", value: " "});
+
 	DB.commit();
 }

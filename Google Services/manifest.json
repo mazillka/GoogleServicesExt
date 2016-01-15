@@ -2,7 +2,7 @@
 	"manifest_version" : 2,
 	"name" : "Google Services",
 	"short_name" : "Google Services",
-	"version" : "3.1",
+	"version" : "3.2",
 	"author" : "Andrew Shevchuk-Yuganets(Mazillka)",
 	"description" : "Easy and fast access to Google Services",
 	"icons" : {
@@ -23,15 +23,18 @@
 	"content_scripts" : [{
 			"all_frames" : true,
 			"js" : ["js/contentscript.js"],
-			"matches" : ["*://mail.google.com/*"],
+			"matches" : ["*://*.google.com/*"],
 			"run_at" : "document_start"
 		}
 	],
+	
 	"browser_action" : {
 		"default_icon" : "icons/48x48.png",
 		"default_popup" : "html/popup.html"
 	},
+	
 	"options_page" : "html/options.html",
+	
 	"commands" : {
 		"Url Shortener" : {
 			"suggested_key" : {

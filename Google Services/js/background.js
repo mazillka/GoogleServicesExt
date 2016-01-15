@@ -38,12 +38,12 @@ function UpdateContextMenu() {
 chrome.contextMenus.onClicked.addListener(function (info, tab) {
 	switch (info.menuItemId) {
 		case "url":
-			Url();
+			GetUrl();
 			break;
 	}
 });
 
-function Mail() {
+function OpenMail() {
 	var mailURL = DB.queryAll("mailServices", { query: { status: true } }).first().url;
 
 	chrome.tabs.query({}, function (tabs) {
@@ -57,21 +57,19 @@ function Mail() {
 	});
 }
 
-function Url() {
+function GetUrl() {
 	chrome.tabs.query({
 		active: true,
 		currentWindow: true
 	}, function (tabs) {
-		chrome.storage.local.get({
-			shortUrl: null,
-			longUrl: null
-		}, function (items) {
-			if (tabs.first().url == items.longUrl) {
-				copyTextToClipboard(items.shortUrl);
-			} else {
-				GetShortUrl(tabs.first().url);
-			}
-		});
+		var shortUrl = DB.queryAll("urls", {query: {type: "ShortUrl"}}).first().value;
+		var longUrl = DB.queryAll("urls", {query: {type: "LongUrl"}}).first().value;
+
+		if (tabs.first().url.indexOf(longUrl) == 0) {
+			CopyTextToClipboard(shortUrl);
+		} else {
+			GetShortUrl(tabs.first().url);
+		}
 	});
 }
 
@@ -99,7 +97,7 @@ function UpdateUnreadCount() {
 	}
 }
 
-function copyTextToClipboard(text) {
+function CopyTextToClipboard(text) {
 	var copyFrom = document.createElement("textarea");
 	copyFrom.textContent = text;
 	var body = document.getElementsByTagName("body").first();
@@ -120,12 +118,14 @@ function GetShortUrl(longUrl) {
 			if (xhr.status == 200) {
 				var shortUrl = JSON.parse(xhr.responseText).id;
 
-				chrome.storage.local.set({
-					shortUrl: shortUrl,
-					longUrl: longUrl
-				}, function () {
-					copyTextToClipboard(shortUrl);
-				});
+				DB.insertOrUpdate("urls", { type: 'ShortUrl' }, { type: "ShortUrl", value: shortUrl });
+
+				DB.insertOrUpdate("urls", { type: 'LongUrl' }, { type: "LongUrl", value: longUrl });
+
+				DB.commit();
+
+				CopyTextToClipboard(shortUrl);
+
 			} else {
 				Notification("msg", "Can't short this Url", "../img/notificationUrl.png", 1500);
 			}
@@ -205,12 +205,14 @@ chrome.windows.onFocusChanged.addListener(function () {
 	UpdateUnreadCount();
 });
 
-document.addEventListener('DOMContentLoaded', UpdateUnreadCount);
+document.addEventListener('DOMContentLoaded', function(){
+	UpdateUnreadCount();
+});
 
 chrome.commands.onCommand.addListener(function (command) {
 	switch (command) {
 		case "Url Shortener":
-			Url();
+			GetUrl();
 			break;
 	}
 });

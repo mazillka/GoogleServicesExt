@@ -161,10 +161,14 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
 });
 
 chrome.runtime.onInstalled.addListener(function (details) {
-	DB.drop();
+	if (details.reason == "update") {
+		DB.drop();
+	}
+	
 	chrome.tabs.create({
 		url: chrome.extension.getURL('html/options.html')
 	});
+	
 	UpdateContextMenu();
 });
 

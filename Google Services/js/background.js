@@ -161,23 +161,10 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
 });
 
 chrome.runtime.onInstalled.addListener(function (details) {
-	if (details.reason == "install") {
-		DB.drop();
-		chrome.tabs.create({
-			url: "http://mazillka.in.ua/donate/"
-		});
-		chrome.tabs.create({
-			url: chrome.extension.getURL('html/options.html')
-		});
-	} else if (details.reason == "update") {
-		DB.drop();
-		chrome.tabs.create({
-			url: "http://mazillka.in.ua/donate/"
-		});
-		chrome.tabs.create({
-			url: chrome.extension.getURL('html/options.html')
-		});
-	}
+	DB.drop();
+	chrome.tabs.create({
+		url: chrome.extension.getURL('html/options.html')
+	});
 	UpdateContextMenu();
 });
 

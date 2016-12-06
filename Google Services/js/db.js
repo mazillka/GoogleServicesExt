@@ -14,7 +14,8 @@ if(DB.isNew()){
 	DB.insert("services", {short_name: "news", title: "Google News", url: "https://news.google.com", image_path: "../img/news.png", status: true});
 	DB.insert("services", {short_name: "contacts", title: "Google Contacts", url: "https://contacts.google.com", image_path: "../img/contacts.png", status: true});
 	DB.insert("services", {short_name: "photos", title: "Google Photos", url: "https://photos.google.com", image_path: "../img/photos.png", status: true});
-	DB.insert("services", {short_name: "keep", title: "Google Keep", url: "https://keep.google.com", image_path: "../img/keep.png", status: true});
+	DB.insert("services", {short_name: "keep", title: "Google Keep", url: "https://keep.google.com", image_path: "../img/keep.png", status: true});	
+	DB.insert("services", {short_name: "calendar", title: "Google Calendar", url: "https://calendar.google.com", image_path: "../img/calendar.png", status: true});
 	DB.insert("services", {short_name: "hangouts", title: "Google Hangouts", url: "https://hangouts.google.com", image_path: "../img/hangouts.png", status: true});
 	DB.insert("services", {short_name: "music", title: "Google Play Music", url: "https://music.google.com", image_path: "../img/music.png", status: true});
 	DB.insert("services", {short_name: "youtube", title: "Youtube", url: "https://youtube.com", image_path: "../img/youtube.png", status: true});

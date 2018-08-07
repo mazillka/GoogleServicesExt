@@ -50,7 +50,7 @@ function SaveData() {
 		"menuStyle": MenuStyle
 	});
 	
-	ContextMenu();
+	InitContextMenu();
 }
 
 function OnCheckedHandler(event) {
@@ -113,11 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
 			case "gmail":
 				document.getElementById("gmailRadioButton").checked = true;
 				break;
+
 			case "inbox":
 				document.getElementById("inboxRadioButton").checked = true;
 				break;
 		}
-
 
 		document.getElementById("showUnreadCountCheckbox").checked = MailService.ACTIVE;
 
@@ -129,14 +129,15 @@ document.addEventListener('DOMContentLoaded', function () {
 		switch(MenuStyle.STYLE){
 			case "grid":
 				document.getElementById("gridStyleRadioButton").checked = true;
-			break;
+				break;
+
 			case "line":
 				document.getElementById("lineStyleRadioButton").checked = true;
-			break;
+				break;
 		}
 	});
 
-	ContextMenu();
+	InitContextMenu();
 });
 
 window.onload = function() {
@@ -151,5 +152,5 @@ window.unload = function() {
 };
 
 // document.addEventListener("contextmenu", function (event) {
-// event.preventDefault();
+// 	event.preventDefault();
 // });

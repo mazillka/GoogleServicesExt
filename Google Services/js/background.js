@@ -1,8 +1,16 @@
-function isMailUrl(url) {
-	return url.indexOf(MailService.URL) == 0;
+function CreateTabWithURL(url){
+	chrome.tabs.create({
+		url: url
+	});
 }
 
-function ContextMenu() {
+function UpdateBadge(text){
+	chrome.browserAction.setBadgeText({
+		text: text
+	});
+}
+
+function InitContextMenu() {
 	chrome.storage.local.get({
 		"urlShortenerService": UrlShortener
 	}, function (items) {
@@ -39,16 +47,14 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
 function Mail() {
 	chrome.tabs.query({}, function (tabs) {
 		for (var i = 0; i < tabs.length; i++) {
-			if (tabs[i].url && isMailUrl(tabs[i].url)) {
+			if (tabs[i].url && tabs[i].url.indexOf(MailService.URL) == 0) {
 				chrome.tabs.update(tabs[i].id, {
 					highlighted: true
 				});
 				return;
 			}
 		}
-		chrome.tabs.create({
-			url: MailService.URL
-		});
+		CreateTabWithURL(MailService.URL);
 	});
 }
 
@@ -86,27 +92,21 @@ function UpdateUnreadCount() {
 						var unreadCount = xmlDoc.getElementsByTagName("fullcount")[0].innerHTML;
 
 						if (unreadCount > 0) {
-							chrome.browserAction.setBadgeText({
-								text: unreadCount
-							});
+							UpdateBadge(unreadCount);
 						} else {
-							chrome.browserAction.setBadgeText({
-								text: ""
-							});
+							UpdateBadge("");
 						}
 					}
 				}
 			};
 			xhr.send(null);
 		} else {
-			chrome.browserAction.setBadgeText({
-				text: ""
-			});
+			UpdateBadge("");
 		}
 	});
 }
 
-function copyTextToClipboard(text) {
+function CopyTextToClipboard(text) {
 	var copyFrom = document.createElement("textarea");
 	copyFrom.textContent = text;
 	var body = document.getElementsByTagName('body')[0];
@@ -115,7 +115,7 @@ function copyTextToClipboard(text) {
 	document.execCommand('copy');
 	body.removeChild(copyFrom);
 
-	Notification("msg", "Short Url copied to clipboard", "../img/notificationUrl.png", 1500);
+	ShowNotification("msg", "Short Url copied to clipboard", "../img/notificationUrl.png", 1500);
 }
 
 function GetShortUrl(longUrl) {
@@ -131,10 +131,10 @@ function GetShortUrl(longUrl) {
 					shortUrl: shortUrl,
 					longUrl: longUrl
 				}, function () {
-					copyTextToClipboard(shortUrl);
+					CopyTextToClipboard(shortUrl);
 				});
 			} else {
-				Notification("msg", "Can't short this Url", "../img/notificationUrl.png", 1500);
+				ShowNotification("msg", "Can't short this Url", "../img/notificationUrl.png", 1500);
 			}
 		}
 	};
@@ -143,7 +143,7 @@ function GetShortUrl(longUrl) {
 	}));
 }
 
-function Notification(id, message, iconPath, closeTime) {
+function ShowNotification(id, message, iconPath, closeTime) {
 	chrome.notifications.create(id, {
 		type: "basic",
 		title: "Google Services",
@@ -170,31 +170,23 @@ chrome.extension.onMessage.addListener(function (request, sender, sendResponse) 
 });
 
 chrome.runtime.onInstalled.addListener(function (details) {
-	if (details.reason == "install") {
-		chrome.tabs.create({
-			'url': "http://mazillka.in.ua/donate/"
-		});
-		chrome.tabs.create({
-			'url': chrome.extension.getURL('html/options.html')
-		});
-	} else if (details.reason == "update") {
-		chrome.tabs.create({
-			'url': "http://mazillka.in.ua/donate/"
-		});
-		chrome.tabs.create({
-			'url': chrome.extension.getURL('html/options.html')
-		});
+	switch(details.reason){
+		case "install":
+		case "update":
+			CreateTabWithURL(chrome.extension.getURL('html/options.html'));
+			break;
 	}
-	ContextMenu();
+
+	InitContextMenu();
 });
 
 chrome.tabs.onUpdated.addListener(function (id, info, tab) {
-	ContextMenu();
+	InitContextMenu();
 	UpdateUnreadCount();
 });
 
 chrome.tabs.onActivated.addListener(function () {
-	ContextMenu();
+	InitContextMenu();
 	UpdateUnreadCount();
 });
 

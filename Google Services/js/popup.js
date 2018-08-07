@@ -1,5 +1,6 @@
-function CreateLi(serviceObj, theme) {
+function CreateLi(serviceObj, theme) {	
 	var ul = document.getElementById("list");
+
 	var li = document.createElement("li");
 	li.setAttribute("id", serviceObj.ID);
 	li.innerHTML = serviceObj.TXT;
@@ -12,24 +13,30 @@ function CreateLi(serviceObj, theme) {
 			li.innerHTML = "&zwnj;";
 			li.setAttribute("class", "gridStyle");
 			break;
+
 		case "line":
 			ul.style.width = "220px";
 			ul.style.marginTop = "6px";
 			li.setAttribute("class", "lineStyle");	
 			break;	
 	}
-		
-	if (serviceObj.ID == "mail") {
-		li.onclick = Mail;
-	} else if (serviceObj.ID == "shortener") {
-		li.onclick = Url;
-	} else {
-		li.onclick = function () {
-			chrome.tabs.create({
-				'url': serviceObj.URL
-			});
-		};
+
+	switch(serviceObj.ID){
+		case "mail":
+			li.onclick = Mail;
+			break;
+
+		case "shortener":
+			li.onclick = Url;
+			break;
+
+		default: 
+			li.onclick = function () {
+				CreateTabWithURL(serviceObj.URL);
+			};
+			break;
 	}
+
 	return li;
 }
 
@@ -53,5 +60,5 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 // document.addEventListener("contextmenu", function (event) {
-	// event.preventDefault();
+// 	event.preventDefault();
 // });

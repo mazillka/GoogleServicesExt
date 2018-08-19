@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "Google Services",
-    "short_name": "Google Services",
+    "name": "Menu for Google Services",
+    "short_name": "Menu for Google Services",
     "version": "3.2",
     "author": "Andrii Shevchuk-Yuhanets(Mazillka)",
     "description": "Easy and fast access to Google Services",

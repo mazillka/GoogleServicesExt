@@ -3,9 +3,11 @@
     <head>
 		<meta charset="utf-8" >
 		<title>Options</title>
-		
+
+		<link type="text/css" href="../css/tabs.css" rel="stylesheet">
 		<link type="text/css" href="../css/options.css" rel="stylesheet">
 
+		<script language="javascript" src="../js/tabs.js"></script>
 		<script language="JavaScript" src="../js/libs/Sortable.min.js"></script>
 		<script language="javascript" src="../js/libs/LocalStorageDB.min.js"></script>
 		<script language="javascript" src="../js/db.js"></script>
@@ -16,76 +18,95 @@
     <body>
 		<br>
 		<div id="mainDiv">
-			<table width="100%" height="auto">
-				<tr>
-					<td valign="top" nowrap width="50%">
-						<b>Google Services:</b>
-						<br>
-						<ul id="list">
+			<div class="tab">
+				<button value="options" class="tab-links">Options</button>
+				<button value="privacy" class="tab-links">Privacy</button>
+				<button value="donation" class="tab-links">Donation</button>
+			</div>
 
-						</ul>
-					</td>
-					<td valign="top" nowrap width="50%">
-						<b>Mail Service:</b>
-						<br>
-						<div id="mailList">
-
-						</div>
-						<p>
-							<input type="checkbox" value="UnreadCounter" id="showUnreadCountCheckbox"/>
-							<label for="showUnreadCountCheckbox">Show Unread Count</label>
-						</p>
-						<br>
-						<b>Context Menu Services:</b>
-						<br>
-						<p>
-							<input type="checkbox" value="UrlShortener" id="shortenerContexMenuCheckbox">
-							<label for="shortenerContexMenuCheckbox">Url Shortener</label>
-						</p>
-						<br>
-						<b>Choose Menu Style: </b>
-						<br>
-						<div id="styleList">
-
-						</div>
-						<br>
-						<b>Keyboard Shortcuts:</b>
-						<br>
-						<p>Alt + Q - Url Shortener</p>
-						<p style="font-size: 9px">(can be changed in "Extensions -> Keyboard Shortcuts")<p>
-					</td>
-				</tr>
-			</table>
-			<br>
-			<hr>
-			<br>
-			<div class="text-center">
-				<h4>If you like this extension and want support developer:</h4>
-		
-				<div>
-					<a href="https://www.liqpay.ua/ru/checkout/card/mazillka" target="_blank">
-						<img width="160" src="../img/liqpay.png" />
-					</a>
-				</div>
-		
-				<div>
-					<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B76PKMQ6PZ2XE" target="_blank">
-						<img width="160" src="../img/paypal.png" />
-					</a>
-				</div>
-		
-				<div>
-					<a href="https://www.webmoney.ru/" target="_blank">
-						<img width="160" src="../img/webmoney.png" />
-					</a>
-		
-					<b>U</b>325382910739<br>
-					<b>R</b>296455847722<br>
-					<b>E</b>342535639727<br>
-					<b>Z</b>170185454323<br>
+			<div id="options" class="tab-content">
+					<table width="100%" height="auto">
+							<tr>
+								<td valign="top" nowrap width="50%">
+									<b>Google Services:</b>
+									<br>
+									<ul id="list">
+			
+									</ul>
+								</td>
+								<td valign="top" nowrap width="50%">
+									<b>Mail Service:</b>
+									<br>
+									<div id="mailList">
+			
+									</div>
+									<p>
+										<input type="checkbox" value="UnreadCounter" id="showUnreadCountCheckbox"/>
+										<label for="showUnreadCountCheckbox">Show Unread Count</label>
+									</p>
+									<br>
+									<b>Context Menu Services:</b>
+									<br>
+									<p>
+										<input type="checkbox" value="UrlShortener" id="shortenerContexMenuCheckbox">
+										<label for="shortenerContexMenuCheckbox">Url Shortener</label>
+									</p>
+									<br>
+									<b>Choose Menu Style: </b>
+									<br>
+									<div id="styleList">
+			
+									</div>
+									<br>
+									<b>Keyboard Shortcuts:</b>
+									<br>
+									<p>Alt + Q - Url Shortener</p>
+									<p style="font-size: 9px">(can be changed in "Extensions -> Keyboard Shortcuts")<p>
+								</td>
+							</tr>
+						</table>
+			</div>
+			
+			<div id="privacy" class="tab-content">
+				<h3>Privacy</h3>
+				<p>this extension doesn't store any data</p>
+				<div class="cj-md-card cj-md-card--with-padding" data-id="privacy">
+					<h1 class="cj-md-title">Google settings</h1>
+					<p>Because Black Menu for Google is highly linked to Google Services, here are some resources related to data &amp; privacy from Google</p>
+					<button class="cj-md-button" style="color: rgb(66, 133, 244);">Google Privacy</button>
+					<button class="cj-md-button" style="color: rgb(66, 133, 244);">Google Privacy &amp; Terms</button>
+					<button class="cj-md-button" style="color: rgb(66, 133, 244);">Google Account</button>
+					<button class="cj-md-button" style="color: rgb(66, 133, 244);">Google My Activity</button>
 				</div>
 			</div>
-		</div>
-		<br>
+			
+			<div id="donation" class="tab-content">
+					<div class="text-center">
+							<h4>If you like this extension and want support developer:</h4>
+					
+							<div>
+								<a href="https://www.liqpay.ua/ru/checkout/card/mazillka" target="_blank">
+									<img width="160" src="../img/liqpay.png" />
+								</a>
+							</div>
+					
+							<div>
+								<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=B76PKMQ6PZ2XE" target="_blank">
+									<img width="160" src="../img/paypal.png" />
+								</a>
+							</div>
+					
+							<div>
+								<a href="https://www.webmoney.ru/" target="_blank">
+									<img width="160" src="../img/webmoney.png" />
+								</a>
+					
+								<b>U</b>325382910739<br>
+								<b>R</b>296455847722<br>
+								<b>E</b>342535639727<br>
+								<b>Z</b>170185454323<br>
+							</div>
+						</div>
+			</div>
     </body>
 </html>

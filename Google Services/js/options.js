@@ -76,20 +76,13 @@ function SubscribeToServicesListEvents(){
 		inputs[i].onclick = function(event){
 			var obj = event.target;
 
-			if(obj.value == "UnreadCounter" || obj.value == "UrlShortener"){
+			if(obj.value == "UnreadCounter"){
 				DB.update("configs", { title: obj.value }, function (row) {
 					row.status = obj.checked;
 					return row;
 				});
 
-				switch (obj.value){
-					case "UnreadCounter":
-						UpdateUnreadCount();
-						break;
-					case "UrlShortener":
-						UpdateContextMenu();
-						break;
-				}
+				UpdateUnreadCount();
 			} else{
 				var idx = DB.queryAll("services", { query: { short_name: obj.value } }).first().ID - 1;
 
@@ -112,13 +105,7 @@ function SubscribeToServicesListEvents(){
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-
 	UpdateServicesList();
-
-	var mails = document.getElementById("mailList");
-	DB.queryAll("mailServices").forEach(function(mail){
-		mails.appendChild(CreateRadioButtonElement(mail, "mail"));
-	});
 
 	var styles = document.getElementById("styleList");
 	DB.queryAll("menuStyles").forEach(function(style){
@@ -126,33 +113,11 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	document.getElementById("showUnreadCountCheckbox").checked = DB.queryAll("configs", { query: {title: "UnreadCounter" } }).first().status;
-
-	document.getElementById("shortenerContexMenuCheckbox").checked = DB.queryAll("configs", { query: {title: "UrlShortener" } }).first().status;
-
-	UpdateContextMenu();
 });
 
 window.onload = function() {
 
 	SubscribeToServicesListEvents();
-
-	var mails = document.getElementsByName("mail");
-	for(var i = 0; i < mails.length; i++){
-		mails[i].onclick = function(event){
-			var obj = event.target;
-
-			DB.update("mailServices", {status: true}, function (row) {
-				row.status = false;
-				return row;
-			});
-
-			DB.update("mailServices", {title: obj.value}, function (row) {
-				row.status = obj.checked;
-				return row;
-			});
-			DB.commit();
-		};
-	}
 
 	var styles = document.getElementsByName("style");
 	for(var i = 0; i < styles.length; i++){
@@ -168,6 +133,7 @@ window.onload = function() {
 				row.status = obj.checked;
 				return row;
 			});
+
 			DB.commit();
 		};
 	}

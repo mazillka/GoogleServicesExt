@@ -3,7 +3,7 @@ var DB = new localStorageDB("library", localStorage);
 if(DB.isNew()){
 	DB.createTable("services", ["short_name", "title", "url", "image_path", "status"]);
 
-	DB.insert("services", {short_name: "mail", title: "Google Mail", url: "none", image_path: "../img/gmail.png", status: true});
+	DB.insert("services", {short_name: "mail", title: "Google Mail", url: "https://mail.google.com/", image_path: "../img/gmail.png", status: true});
 	DB.insert("services", {short_name: "drive", title: "Google Drive", url: "https://drive.google.com", image_path: "../img/drive.png", status: true});
 	DB.insert("services", {short_name: "translate", title: "Google Translate", url: "https://translate.google.com", image_path: "../img/translate.png", status: true});
 	DB.insert("services", {short_name: "search", title: "Google Search", url: "https://google.com", image_path: "../img/search.png", status: true});
@@ -19,23 +19,13 @@ if(DB.isNew()){
 	DB.insert("services", {short_name: "hangouts", title: "Google Hangouts", url: "https://hangouts.google.com", image_path: "../img/hangouts.png", status: true});
 	DB.insert("services", {short_name: "music", title: "Google Play Music", url: "https://music.google.com", image_path: "../img/music.png", status: true});
 	DB.insert("services", {short_name: "youtube", title: "Youtube", url: "https://youtube.com", image_path: "../img/youtube.png", status: true});
-	DB.insert("services", {short_name: "shortener", title: "URL Shortener", url: "none", image_path: "../img/shortener.png", status: true});
 
 	DB.createTable("menuStyles", ["title", "style", "status"]);
 	DB.insert("menuStyles", {title: "Grid Menu", style: "grid", status: true});
 	DB.insert("menuStyles", {title: "Line Menu", style: "line", status: false});
 
-	DB.createTable("mailServices", ["title", "url", "status"]);
-	DB.insert("mailServices", {title: "Gmail", url: "https://mail.google.com/", status: true});
-	DB.insert("mailServices", {title: "Inbox", url: "https://inbox.google.com/", status: false});
-
 	DB.createTable("configs", ["title", "status"]);
-	DB.insert("configs", {title: "UrlShortener", status: true});
 	DB.insert("configs", {title: "UnreadCounter", status: true});
-
-	DB.createTable("urls", ["type", "value"]);
-	DB.insert("urls", {type: "ShortUrl", value: " "});
-	DB.insert("urls", {type: "LongUrl", value: " "});
 
 	DB.commit();
 }

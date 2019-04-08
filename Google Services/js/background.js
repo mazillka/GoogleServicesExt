@@ -14,65 +14,6 @@ HTMLCollection.prototype.first = function () {
 	return this[0];
 };
 
-function UpdateContextMenu() {
-	chrome.contextMenus.removeAll();
-
-	if (DB.queryAll("configs", { query: { title: "UrlShortener" }}).first().status) {
-		var ctx = ["all", "page", "frame", "selection", "link", "editable", "image", "video", "audio"];
-
-		chrome.contextMenus.create({
-			id: 'parent',
-			title: 'Google Services',
-			contexts: ctx
-		});
-
-		chrome.contextMenus.create({
-			parentId: 'parent',
-			id: 'url',
-			title: 'Url Shortener',
-			contexts: ctx
-		});
-	}
-}
-
-chrome.contextMenus.onClicked.addListener(function (info, tab) {
-	switch (info.menuItemId) {
-		case "url":
-			GetUrl();
-			break;
-	}
-});
-
-function OpenMail() {
-	var mailURL = DB.queryAll("mailServices", { query: { status: true } }).first().url;
-
-	chrome.tabs.query({}, function (tabs) {
-		for (var i = 0; i < tabs.length; i++) {
-			if (tabs[i].url && (tabs[i].url.indexOf(mailURL) == 0)) {
-				chrome.tabs.update(tabs[i].id, { highlighted: true });
-				return;
-			}
-		}
-		chrome.tabs.create({ url: mailURL });
-	});
-}
-
-function GetUrl() {
-	chrome.tabs.query({
-		active: true,
-		currentWindow: true
-	}, function (tabs) {
-		var shortUrl = DB.queryAll("urls", {query: {type: "ShortUrl"}}).first().value;
-		var longUrl = DB.queryAll("urls", {query: {type: "LongUrl"}}).first().value;
-
-		if (tabs.first().url.indexOf(longUrl) == 0) {
-			CopyTextToClipboard(shortUrl);
-		} else {
-			GetShortUrl(tabs.first().url);
-		}
-	});
-}
-
 function UpdateUnreadCount() {
 	if (DB.queryAll("configs", { query: { title: "UnreadCounter" } }).first().status) {
 		var xhr = new XMLHttpRequest();
@@ -95,56 +36,6 @@ function UpdateUnreadCount() {
 	} else {
 		chrome.browserAction.setBadgeText({ text: "" });
 	}
-}
-
-function CopyTextToClipboard(text) {
-	var copyFrom = document.createElement("textarea");
-	copyFrom.textContent = text;
-	var body = document.getElementsByTagName("body").first();
-	body.appendChild(copyFrom);
-	copyFrom.select();
-	document.execCommand("copy");
-	body.removeChild(copyFrom);
-
-	Notification("msg", "Short Url copied to clipboard", "../img/notificationUrl.png", 1500);
-}
-
-function GetShortUrl(longUrl) {
-	var xhr = new XMLHttpRequest();
-	xhr.open("POST", "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBycyrWVXU6BCZ1-JC_XFKi1e1bbCifIYk", true);
-	xhr.setRequestHeader("Content-Type", "application/json");
-	xhr.onreadystatechange = function () {
-		if (xhr.readyState == 4) {
-			if (xhr.status == 200) {
-				var shortUrl = JSON.parse(xhr.responseText).id;
-
-				DB.insertOrUpdate("urls", { type: 'ShortUrl' }, { type: "ShortUrl", value: shortUrl });
-
-				DB.insertOrUpdate("urls", { type: 'LongUrl' }, { type: "LongUrl", value: longUrl });
-
-				DB.commit();
-
-				CopyTextToClipboard(shortUrl);
-
-			} else {
-				Notification("msg", "Can't short this Url", "../img/notificationUrl.png", 1500);
-			}
-		}
-	};
-	xhr.send(JSON.stringify({ longUrl: longUrl }));
-}
-
-function Notification(id, message, iconPath, closeTime) {
-	chrome.notifications.create(id, {
-		type: "basic",
-		title: "Google Services",
-		message: message,
-		iconUrl: iconPath
-	}, function () {
-		setTimeout(function () {
-			chrome.notifications.clear(id, function () { });
-		}, closeTime);
-	});
 }
 
 chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
@@ -170,8 +61,6 @@ chrome.runtime.onInstalled.addListener(function (details) {
 			DB.drop();
 			break;
 	}
-	
-	UpdateContextMenu();
 });
 
 chrome.tabs.onUpdated.addListener(function () {
@@ -200,12 +89,4 @@ chrome.windows.onFocusChanged.addListener(function () {
 
 document.addEventListener('DOMContentLoaded', function(){
 	UpdateUnreadCount();
-});
-
-chrome.commands.onCommand.addListener(function (command) {
-	switch (command) {
-		case "Url Shortener":
-			GetUrl();
-			break;
-	}
 });

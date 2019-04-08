@@ -7,24 +7,16 @@ function CreateLiElement(serviceObj, style) {
 			li.innerHTML = "&zwnj;";
 			li.setAttribute("class", "gridStyle");
 			break;
+			
 		case "line":
 			li.innerHTML = serviceObj.title;
 			li.setAttribute("class", "lineStyle");
 			break;	
 	}
 
-	switch (serviceObj.short_name){
-		case "mail":
-			li.onclick = OpenMail;
-			break;
-		case "shortener":
-			li.onclick = GetUrl;
-			break;
-		default:
-			li.onclick = function () {
-				chrome.tabs.create({ url: serviceObj.url });
-			};
-	}
+	li.onclick = function () {
+		chrome.tabs.create({ url: serviceObj.url });
+	};
 
 	return li;
 }

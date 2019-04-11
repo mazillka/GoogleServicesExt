@@ -32,14 +32,5 @@
         "default_popup": "html/popup.html"
     },
 
-    "options_page": "html/options.html",
-
-    "commands": {
-        "Url Shortener": {
-            "suggested_key": {
-                "default": "Alt+Q"
-            },
-            "description": "Url Short"
-        }
-    }
+    "options_page": "html/options.html"
 }

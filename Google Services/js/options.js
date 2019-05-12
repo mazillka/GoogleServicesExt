@@ -1,3 +1,11 @@
+Array.prototype.lastActiveServiceIdx = function() {
+	for(var i = this.length - 1; i !== 0; i--){
+		if(this[i].status){
+			return i + 1;
+		}
+	}
+};
+
 function CreateLiElement(serviceObj) {
 	var p = document.createElement("p");
 

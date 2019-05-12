@@ -1,53 +1,31 @@
 Array.prototype.first = function () {
 	return this[0];
 };
-
-Array.prototype.lastActiveServiceIdx = function() {
-	for(var i = this.length - 1; i != 0; i--){
-		if(this[i].status){
-			return i + 1;
-		}
-	}
-};
-
 HTMLCollection.prototype.first = function () {
 	return this[0];
 };
 
 function UpdateUnreadCount() {
 	if (DB.queryAll("configs", { query: { title: "UnreadCounter" } }).first().status) {
-		var xhr = new XMLHttpRequest();
-		xhr.open("GET", "https://mail.google.com/mail/feed/atom", true);
-		xhr.onreadystatechange = function () {
-			if (xhr.readyState == 4) {
-				if (xhr.status == 200) {
-					var xmlDoc = xhr.responseXML;
-					var unreadCount = xmlDoc.getElementsByTagName("fullcount").first().innerHTML;
-
-					if (unreadCount > 0) {
-						chrome.browserAction.setBadgeText({ text: unreadCount });
-					} else {
-						chrome.browserAction.setBadgeText({ text: "" });
-					}
-				}
-			}
-		};
-		xhr.send(null);
+		return fetch('https://mail.google.com/mail/feed/atom')
+			.then(res => res.text())
+			.then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
+			.then((xmlDoc) => {
+				const unreadString = xmlDoc.getElementsByTagName("fullcount").first().textContent;
+				const unreadNumber = Number(unreadString);
+				chrome
+					.browserAction
+					.setBadgeText({ text: !Number.isNaN(unreadNumber) && unreadNumber > 0 ? unreadString : ''});
+			});
 	} else {
-		chrome.browserAction.setBadgeText({ text: "" });
+		chrome.browserAction.setBadgeText({ text: '' });
 	}
 }
-
-chrome.extension.onMessage.addListener(function (request, sender, sendResponse) {
-	switch (request.message) {
-		case "UpdateUnreadCounter":
-			var updateTimer = setInterval(function () {
-				UpdateUnreadCount();
-			}, 1000);
-			setTimeout(function () {
-				clearInterval(updateTimer);
-			}, 180000);
-			break;
+chrome.extension.onMessage.addListener(function (request) {
+	if (request.message === 'UpdateUnreadCounter') {
+		// TODO: update this to use throttling and check if interval is already in calling updates
+		const updateTimer = setInterval(UpdateUnreadCount, 1000);
+		setTimeout(() =>clearInterval(updateTimer), 180000);
 	}
 });
 
@@ -58,35 +36,17 @@ chrome.runtime.onInstalled.addListener(function (details) {
 			break;
 
 		case "update":
+			// TODO: update to not drop db, but restore default values
 			DB.drop();
 			break;
 	}
 });
 
-chrome.tabs.onUpdated.addListener(function () {
-	UpdateUnreadCount();
-});
+chrome.tabs.onUpdated.addListener(UpdateUnreadCount);
+chrome.tabs.onActivated.addListener(UpdateUnreadCount);
+chrome.tabs.onRemoved.addListener(UpdateUnreadCount);
+chrome.tabs.onHighlighted.addListener(UpdateUnreadCount);
+chrome.idle.onStateChanged.addListener(UpdateUnreadCount);
+chrome.windows.onFocusChanged.addListener(UpdateUnreadCount);
 
-chrome.tabs.onActivated.addListener(function () {
-	UpdateUnreadCount();
-});
-
-chrome.tabs.onRemoved.addListener(function () {
-	UpdateUnreadCount();
-});
-
-chrome.tabs.onHighlighted.addListener(function () {
-	UpdateUnreadCount();
-});
-
-chrome.idle.onStateChanged.addListener(function () {
-	UpdateUnreadCount();
-});
-
-chrome.windows.onFocusChanged.addListener(function () {
-	UpdateUnreadCount();
-});
-
-document.addEventListener('DOMContentLoaded', function(){
-	UpdateUnreadCount();
-});
+document.addEventListener('DOMContentLoaded', UpdateUnreadCount);

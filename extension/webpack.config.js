@@ -5,7 +5,7 @@ module.exports = [{
     entry: {
         contentscript: './src/js/contentscript.js',
         db: './src/js/db.js',
-        background: './src/background.js',
+        background: './src/js/background.js',
         popup: './src/popup.js',
         options: './src/options.js',
     },

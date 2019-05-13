@@ -1,17 +1,19 @@
+import db from './db.js';
+
 function CreateLiElement(serviceObj, style) {
 	var li = document.createElement("li");
-	li.style.backgroundImage = "url('"+ serviceObj.image_path +"')";
+	li.style.backgroundImage = "url('" + serviceObj.image_path + "')";
 
-	switch(style){
+	switch (style) {
 		case "grid":
 			li.innerHTML = "&zwnj;";
 			li.setAttribute("class", "gridStyle");
 			break;
-			
+
 		case "line":
 			li.innerHTML = serviceObj.title;
 			li.setAttribute("class", "lineStyle");
-			break;	
+			break;
 	}
 
 	li.onclick = function () {
@@ -22,17 +24,17 @@ function CreateLiElement(serviceObj, style) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-	var style = DB.queryAll("menuStyles", { query: { status: true } }).first().style;
+	var style = db.queryAll("menuStyles", { query: { status: true } }).first().style;
 
 	var ul = document.getElementById("list");
 
-	DB.queryAll("services", {
+	db.queryAll("services", {
 		query: { status: true }
-	}).forEach(function(service) {
+	}).forEach(function (service) {
 		ul.appendChild(CreateLiElement(service, style));
 	});
 });
 
- document.addEventListener("contextmenu", function (event) {
-	 event.preventDefault();
- });
+document.addEventListener("contextmenu", function (event) {
+	event.preventDefault();
+});

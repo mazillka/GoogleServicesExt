@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
   var tabLinks = document.getElementsByClassName("tab-links");
 
-  for(let i = 0; i < tabLinks.length; i++){
+  for (let i = 0; i < tabLinks.length; i++) {
     tabLinks[i].addEventListener("click", function (event) {
       openTab(event, event.target.value);
     });

@@ -1,6 +1,9 @@
-Array.prototype.lastActiveServiceIdx = function() {
-	for(var i = this.length - 1; i !== 0; i--){
-		if(this[i].status){
+import sortable from 'sortablejs';
+import db from './db.js';
+
+Array.prototype.lastActiveServiceIdx = function () {
+	for (var i = this.length - 1; i !== 0; i--) {
+		if (this[i].status) {
 			return i + 1;
 		}
 	}
@@ -24,14 +27,14 @@ function CreateLiElement(serviceObj) {
 	p.appendChild(label);
 
 	var li = document.createElement("li");
-	li.style.backgroundImage = "url('"+ serviceObj.image_path +"')";
+	li.style.backgroundImage = "url('" + serviceObj.image_path + "')";
 
 	li.appendChild(p);
 
 	return li;
 }
 
-function CreateRadioButtonElement(obj, name){
+function CreateRadioButtonElement(obj, name) {
 	var p = document.createElement("p");
 	var input = document.createElement("input");
 	input.type = "radio";
@@ -51,50 +54,50 @@ function CreateRadioButtonElement(obj, name){
 	return p;
 }
 
-function UpdateServicesList(){
+function UpdateServicesList() {
 	var ul = document.getElementById("list");
 	ul.innerHTML = "";
 
-	DB.queryAll("services").forEach(function(service) {
+	db.queryAll("services").forEach(function (service) {
 		ul.appendChild(CreateLiElement(service));
 	});
 
-	Sortable.create(ul, {
+	sortable.create(ul, {
 		animation: 150,
 		onUpdate: function (event) {
-			var tableBackup = DB.queryAll("services");
+			var tableBackup = db.queryAll("services");
 			var movedElement = tableBackup[event.oldIndex];
 
 			tableBackup.splice(event.oldIndex, 1);
 			tableBackup.splice(event.newIndex, 0, movedElement);
 
-			DB.dropTable("services");
-			DB.createTableWithData("services", tableBackup);
-			DB.commit();
+			db.dropTable("services");
+			db.createTableWithData("services", tableBackup);
+			db.commit();
 		}
 	});
 
 	SubscribeToServicesListEvents();
 }
 
-function SubscribeToServicesListEvents(){
+function SubscribeToServicesListEvents() {
 	var inputs = document.querySelectorAll('input[type="checkbox"]');
 
-	for(var i = 0; i < inputs.length; i++){
-		inputs[i].onclick = function(event){
+	for (var i = 0; i < inputs.length; i++) {
+		inputs[i].onclick = function (event) {
 			var obj = event.target;
 
-			if(obj.value == "UnreadCounter"){
-				DB.update("configs", { title: obj.value }, function (row) {
+			if (obj.value == "UnreadCounter") {
+				db.update("configs", { title: obj.value }, function (row) {
 					row.status = obj.checked;
 					return row;
 				});
 
 				UpdateUnreadCount();
-			} else{
-				var idx = DB.queryAll("services", { query: { short_name: obj.value } }).first().ID - 1;
+			} else {
+				var idx = db.queryAll("services", { query: { short_name: obj.value } }).first().ID - 1;
 
-				var tableBackup = DB.queryAll("services");
+				var tableBackup = db.queryAll("services");
 				var changedElement = tableBackup[idx];
 				changedElement.status = obj.checked;
 
@@ -102,10 +105,10 @@ function SubscribeToServicesListEvents(){
 
 				obj.checked ? tableBackup.splice(tableBackup.lastActiveServiceIdx(), 0, changedElement) : tableBackup.splice(tableBackup.length, 0, changedElement);
 
-				DB.dropTable("services");
-				DB.createTableWithData("services", tableBackup);
+				db.dropTable("services");
+				db.createTableWithData("services", tableBackup);
 			}
-			DB.commit();
+			db.commit();
 
 			UpdateServicesList();
 		};
@@ -116,33 +119,33 @@ document.addEventListener('DOMContentLoaded', function () {
 	UpdateServicesList();
 
 	var styles = document.getElementById("styleList");
-	DB.queryAll("menuStyles").forEach(function(style){
+	db.queryAll("menuStyles").forEach(function (style) {
 		styles.appendChild(CreateRadioButtonElement(style, "style"));
 	});
 
-	document.getElementById("showUnreadCountCheckbox").checked = DB.queryAll("configs", { query: {title: "UnreadCounter" } }).first().status;
+	document.getElementById("showUnreadCountCheckbox").checked = db.queryAll("configs", { query: { title: "UnreadCounter" } }).first().status;
 });
 
-window.onload = function() {
+window.onload = function () {
 
 	SubscribeToServicesListEvents();
 
 	var styles = document.getElementsByName("style");
-	for(var i = 0; i < styles.length; i++){
-		styles[i].onclick = function(event){
+	for (var i = 0; i < styles.length; i++) {
+		styles[i].onclick = function (event) {
 			var obj = event.target;
 
-			DB.update("menuStyles", {status: true}, function (row) {
+			db.update("menuStyles", { status: true }, function (row) {
 				row.status = false;
 				return row;
 			});
 
-			DB.update("menuStyles", {title: obj.value}, function (row) {
+			db.update("menuStyles", { title: obj.value }, function (row) {
 				row.status = obj.checked;
 				return row;
 			});
 
-			DB.commit();
+			db.commit();
 		};
 	}
 };

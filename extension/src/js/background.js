@@ -9,7 +9,6 @@ HTMLCollection.prototype.first = function () {
 };
 
 function UpdateUnreadCount() {
-	let text = '';
 	if (db.queryAll("configs", { query: { title: "UnreadCounter" } }).first().status) {
 		fetch('https://mail.google.com/mail/feed/atom')
 			.then(res => res.text())
@@ -17,10 +16,14 @@ function UpdateUnreadCount() {
 			.then((xmlDoc) => {
 				const unreadString = xmlDoc.getElementsByTagName("fullcount").first().textContent;
 				const unreadNumber = Number(unreadString);
-				text = !Number.isNaN(unreadNumber) && unreadNumber > 0 ? unreadString : '';
+				SetBadgeText(!Number.isNaN(unreadNumber) && unreadNumber > 0 ? unreadString : '');
 			});
+	} else {
+		SetBadgeText('');
 	}
+}
 
+function SetBadgeText(text) {
 	chrome.browserAction.setBadgeText({ text });
 }
 

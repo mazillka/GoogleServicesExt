@@ -1,6 +1,6 @@
 import localStorageDB from 'localstoragedb';
 
-var db = new localStorageDB("library", localStorage);
+let db = new localStorageDB("library", localStorage);
 
 if (db.isNew()) {
 	db.createTable("services", ["short_name", "title", "url", "image_path", "status"]);

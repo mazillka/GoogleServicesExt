@@ -8,23 +8,21 @@ HTMLCollection.prototype.first = function () {
 	return this[0];
 };
 
-async function UpdateUnreadCount() {
-	var text = '';
+function UpdateUnreadCount() {
+	let text = '';
 	if (db.queryAll("configs", { query: { title: "UnreadCounter" } }).first().status) {
-		const res = await fetch('https://mail.google.com/mail/feed/atom');
-		const str = await res.text();
-		const xmlDoc = (new window.DOMParser()).parseFromString(str, "text/xml");
-		const unreadString = xmlDoc.getElementsByTagName("fullcount").first().textContent;
-		const unreadNumber = Number(unreadString);
-		text = !Number.isNaN(unreadNumber) && unreadNumber > 0 ? unreadString : '';
+		fetch('https://mail.google.com/mail/feed/atom')
+			.then(res => res.text())
+			.then(str => (new window.DOMParser()).parseFromString(str, "text/xml"))
+			.then((xmlDoc) => {
+				const unreadString = xmlDoc.getElementsByTagName("fullcount").first().textContent;
+				const unreadNumber = Number(unreadString);
+				text = !Number.isNaN(unreadNumber) && unreadNumber > 0 ? unreadString : '';
+			});
 	}
 
-	SetBadgeText(text);
+	chrome.browserAction.setBadgeText({ text });
 }
-
-function SetBadgeText(text) {
-	chrome.browserAction.setBadgeText({ text: text });
-};
 
 chrome.extension.onMessage.addListener(function (request) {
 	if (request.message === 'UpdateUnreadCounter') {

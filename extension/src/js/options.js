@@ -1,72 +1,33 @@
 import sortable from 'sortablejs';
 import db from './db.js';
+import createElement from './helpers.js'
 
 Array.prototype.lastActiveServiceIdx = function () {
-	for (var i = this.length - 1; i !== 0; i--) {
+	for (let i = this.length - 1; i !== 0; i--) {
 		if (this[i].status) {
 			return i + 1;
 		}
 	}
 };
 
-function CreateLiElement(serviceObj) {
-	var p = document.createElement("p");
-
-	var input = document.createElement("input");
-	input.type = "checkbox";
-	input.value = serviceObj.short_name;
-	input.id = serviceObj.short_name;
-	input.checked = serviceObj.status;
-
-	p.appendChild(input);
-
-	var label = document.createElement("label");
-	label.htmlFor = serviceObj.short_name;
-	label.innerHTML = serviceObj.title;
-
-	p.appendChild(label);
-
-	var li = document.createElement("li");
-	li.style.backgroundImage = "url('" + serviceObj.image_path + "')";
-
-	li.appendChild(p);
-
-	return li;
-}
-
-function CreateRadioButtonElement(obj, name) {
-	var p = document.createElement("p");
-	var input = document.createElement("input");
-	input.type = "radio";
-	input.value = obj.title;
-	input.id = obj.title;
-	input.name = name;
-	input.checked = obj.status;
-
-	p.appendChild(input);
-
-	var label = document.createElement("label");
-	label.htmlFor = obj.title;
-	label.innerHTML = obj.title;
-
-	p.appendChild(label);
-
-	return p;
-}
-
 function UpdateServicesList() {
-	var ul = document.getElementById("list");
+	let ul = document.getElementById("list");
 	ul.innerHTML = "";
 
 	db.queryAll("services").forEach(function (service) {
-		ul.appendChild(CreateLiElement(service));
+		const input = createElement('input', { 'type': 'checkbox', 'value': service.short_name, 'id': service.short_name, ...(service.status && { 'checked': true }) });
+		const label = createElement('label', { 'for': service.short_name }, service.title);
+		const p = createElement('p', {}, [input, label]);
+		const li = createElement('li', { 'style': `background-image: url(${service.image_path});` }, p);
+
+		ul.appendChild(li);
 	});
 
 	sortable.create(ul, {
 		animation: 150,
 		onUpdate: function (event) {
-			var tableBackup = db.queryAll("services");
-			var movedElement = tableBackup[event.oldIndex];
+			let tableBackup = db.queryAll("services");
+			let movedElement = tableBackup[event.oldIndex];
 
 			tableBackup.splice(event.oldIndex, 1);
 			tableBackup.splice(event.newIndex, 0, movedElement);
@@ -83,9 +44,9 @@ function UpdateServicesList() {
 function SubscribeToServicesListEvents() {
 	var inputs = document.querySelectorAll('input[type="checkbox"]');
 
-	for (var i = 0; i < inputs.length; i++) {
+	for (let i = 0; i < inputs.length; i++) {
 		inputs[i].onclick = function (event) {
-			var obj = event.target;
+			let obj = event.target;
 
 			if (obj.value == "UnreadCounter") {
 				db.update("configs", { title: obj.value }, function (row) {
@@ -95,10 +56,10 @@ function SubscribeToServicesListEvents() {
 
 				UpdateUnreadCount();
 			} else {
-				var idx = db.queryAll("services", { query: { short_name: obj.value } }).first().ID - 1;
+				let idx = db.queryAll("services", { query: { short_name: obj.value } }).first().ID - 1;
 
-				var tableBackup = db.queryAll("services");
-				var changedElement = tableBackup[idx];
+				let tableBackup = db.queryAll("services");
+				let changedElement = tableBackup[idx];
 				changedElement.status = obj.checked;
 
 				tableBackup.splice(idx, 1);
@@ -118,9 +79,13 @@ function SubscribeToServicesListEvents() {
 document.addEventListener('DOMContentLoaded', function () {
 	UpdateServicesList();
 
-	var styles = document.getElementById("styleList");
+	let styles = document.getElementById("styleList");
 	db.queryAll("menuStyles").forEach(function (style) {
-		styles.appendChild(CreateRadioButtonElement(style, "style"));
+		const input = createElement('input', { 'type': 'radio', 'name': 'style', 'value': style.title, 'id': style.title, ...(style.status && { 'checked': true }) });
+		const label = createElement('label', { 'for': style.title }, style.title);
+		const p = createElement('p', {}, [input, label]);
+
+		styles.appendChild(p);
 	});
 
 	document.getElementById("showUnreadCountCheckbox").checked = db.queryAll("configs", { query: { title: "UnreadCounter" } }).first().status;
@@ -130,10 +95,10 @@ window.onload = function () {
 
 	SubscribeToServicesListEvents();
 
-	var styles = document.getElementsByName("style");
-	for (var i = 0; i < styles.length; i++) {
+	let styles = document.getElementsByName("style");
+	for (let i = 0; i < styles.length; i++) {
 		styles[i].onclick = function (event) {
-			var obj = event.target;
+			let obj = event.target;
 
 			db.update("menuStyles", { status: true }, function (row) {
 				row.status = false;
@@ -150,6 +115,4 @@ window.onload = function () {
 	}
 };
 
-document.addEventListener("contextmenu", function (event) {
-	event.preventDefault();
-});
+document.addEventListener("contextmenu", (event) => event.preventDefault());

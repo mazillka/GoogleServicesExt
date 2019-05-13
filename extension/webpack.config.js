@@ -1,8 +1,10 @@
-let path = require('path');
-let copy = require('copy-webpack-plugin');
+const path = require('path');
+const copy = require('copy-webpack-plugin');
 
 module.exports = [{
+    watch: true,
     entry: {
+        helpers: './src/js/helpers.js', 
         contentscript: './src/js/contentscript.js',
         db: './src/js/db.js',
         background: './src/js/background.js',

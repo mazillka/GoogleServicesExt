@@ -1,40 +1,26 @@
 import db from './db.js';
-
-function CreateLiElement(serviceObj, style) {
-	var li = document.createElement("li");
-	li.style.backgroundImage = "url('" + serviceObj.image_path + "')";
-
-	switch (style) {
-		case "grid":
-			li.innerHTML = "&zwnj;";
-			li.setAttribute("class", "gridStyle");
-			break;
-
-		case "line":
-			li.innerHTML = serviceObj.title;
-			li.setAttribute("class", "lineStyle");
-			break;
-	}
-
-	li.onclick = function () {
-		chrome.tabs.create({ url: serviceObj.url });
-	};
-
-	return li;
-}
+import createElement from './helpers.js'
 
 document.addEventListener('DOMContentLoaded', function () {
-	var style = db.queryAll("menuStyles", { query: { status: true } }).first().style;
+	let style = db.queryAll("menuStyles", { query: { status: true } }).first().style;
 
-	var ul = document.getElementById("list");
+	let ul = document.getElementById("list");
 
 	db.queryAll("services", {
 		query: { status: true }
 	}).forEach(function (service) {
-		ul.appendChild(CreateLiElement(service, style));
+		const attributes = {
+			'style': `background-image: url(${service.image_path});`,
+			'class': `${style}Style`,
+			'onclick': function () {
+				chrome.tabs.create({ url: service.url })
+			}
+		};
+
+		const li = createElement('li', attributes, (style == 'grid' ? '&zwnj;' : service.title));
+
+		ul.appendChild(li);
 	});
 });
 
-document.addEventListener("contextmenu", function (event) {
-	event.preventDefault();
-});
+document.addEventListener("contextmenu", (event) => event.preventDefault());

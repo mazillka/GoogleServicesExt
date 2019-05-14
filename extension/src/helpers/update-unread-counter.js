@@ -1,33 +1,26 @@
-import db from "./db";
 import {throttle} from "./trottle";
-
-const isBadgeActive = () => db.queryAll("configs", {query: {title: "UnreadCounter"}}).first().status;
-const SetBadgeText = (text) => chrome.browserAction.setBadgeText({text});
+const isBadgeActive = () => new Promise(resolve => chrome.storage.sync.get(['showBadge'], item => resolve(item.showBadge)));
+const SetBadgeText = text => chrome.browserAction.setBadgeText({text});
 const counter = {
-    number: 0,
+    number: null,
 };
 const localUnreadCounter = new Proxy(
     counter,
     {
-        set: (target, objectKey, value) => {
+        set: async (target, objectKey, value) => {
             target[objectKey] = value;
-            if (objectKey === 'number' && !Number.isNaN(value) && isBadgeActive()) {
-                console.info(target, objectKey, value);
+            if (objectKey === 'number' && !Number.isNaN(value) && await isBadgeActive()) {
                 SetBadgeText(value > 0 ? value.toString() : '');
             }
             return true;
         },
         get: (object, key) => {
-            console.info(key, object[key])
             return object[key];
         },
     }
 );
 
-export const refreshBadgeVisibility = () => {
-    console.info(isBadgeActive(), db.queryAll("configs", {query: {title: "UnreadCounter"}}), localUnreadCounter.number, counter.number);
-    return SetBadgeText(isBadgeActive() && localUnreadCounter.number > 0 ? localUnreadCounter.number.toString() : '');
-};
+export const refreshBadgeVisibility = (visibility) => SetBadgeText(visibility && localUnreadCounter.number !== null ? localUnreadCounter.number.toString() : '');
 const makeUpdateCounterRequest = () => {
     fetch('https://mail.google.com/mail/feed/atom')
         .then(response => response.text())

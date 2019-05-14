@@ -1,4 +1,4 @@
-function createElement(element, attribute, inner) {
+export const createElement = (element, attribute, inner) => {
     if (typeof element === "undefined") {
         return false;
     }
@@ -22,7 +22,7 @@ function createElement(element, attribute, inner) {
     if (!Array.isArray(inner)) {
         inner = [inner];
     }
-    
+
     for (let i = 0; i < inner.length; i++) {
         if (inner[i].tagName) {
             el.appendChild(inner[i]);
@@ -36,6 +36,4 @@ function createElement(element, attribute, inner) {
     }
 
     return el;
-}
-
-export default createElement;
+};

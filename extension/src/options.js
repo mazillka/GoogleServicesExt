@@ -1,16 +1,16 @@
 import './helpers/prototypes';
 import sortable from 'sortablejs';
-import db from './helpers/db.js';
-import {createElement, refreshBadgeVisibility} from './helpers';
+import {createElement, storage} from './helpers';
 
 
-function UpdateServicesList() {
-    let ul = document.getElementById('list');
+async function renderServicesList() {
+    const ul = document.getElementById('list');
     while (ul.firstChild) {
         ul.removeChild(ul.firstChild);
     }
 
-    db.queryAll('services').forEach(function (service) {
+    const services = await storage.get('services');
+    services.forEach((service) => {
         const input = createElement('input', {
             type: 'checkbox',
             value: service.short_name,
@@ -25,63 +25,57 @@ function UpdateServicesList() {
 
     sortable.create(ul, {
         animation: 150,
-        onUpdate: function (event) {
-            let tableBackup = db.queryAll('services');
-            let movedElement = tableBackup[event.oldIndex];
+        onUpdate: async event => {
+            const services = await storage.get('services');
+            const movedElement = services[event.oldIndex];
 
-            tableBackup.splice(event.oldIndex, 1);
-            tableBackup.splice(event.newIndex, 0, movedElement);
+            services.splice(event.oldIndex, 1);
+            services.splice(event.newIndex, 0, movedElement);
 
-            db.dropTable('services');
-            db.createTableWithData('services', tableBackup);
-            db.commit();
+            await storage.set('services', services);
         }
     });
 
-    SubscribeToServicesListEvents();
+    addServiceCheckboxesEventListeners();
 }
 
-function SubscribeToServicesListEvents() {
+function addServiceCheckboxesEventListeners() {
     const inputs = document.querySelectorAll('input[type="checkbox"]');
-
-    for (let i = 0; i < inputs.length; i++) {
-        inputs[i].onclick = function (event) {
-            let obj = event.target;
-
-            if (obj.value === 'UnreadCounter') {
-                console.info(obj, obj.value, obj.checked);
-                db.update('configs', {title: obj.value}, function (row) {
-                    row.status = obj.checked;
-                    return row;
-                });
-
-                chrome.extension.sendMessage({message: 'refreshBadgeVisibility'});
+    [...inputs].forEach((input) => {
+        input.addEventListener('click', async event => {
+            const element = event.target;
+            if (element.value === 'UnreadCounter') {
+                storage.set('showBadge', element.checked);
             } else {
-                let idx = db.queryAll('services', {query: {short_name: obj.value}}).first().ID - 1;
-
-                let tableBackup = db.queryAll('services');
-                let changedElement = tableBackup[idx];
-                changedElement.status = obj.checked;
-
-                tableBackup.splice(idx, 1);
-
-                obj.checked ? tableBackup.splice(tableBackup.lastActiveServiceIdx(), 0, changedElement) : tableBackup.splice(tableBackup.length, 0, changedElement);
-
-                db.dropTable('services');
-                db.createTableWithData('services', tableBackup);
+                const services = await storage.get('services');
+                const changedServices = services
+                    .map(service => {
+                        if (service.short_name === element.value) {
+                            service.status = element.checked;
+                        }
+                        return service;
+                    })
+                    .sort((x, y) => (x.status === y.status) ? 0 : x.status ? -1 : 1);
+                await storage.set('services', changedServices);
+                await renderServicesList();
             }
-            db.commit();
-
-            UpdateServicesList();
-        };
-    }
+        })
+    });
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    UpdateServicesList();
+document.addEventListener('DOMContentLoaded', async () => {
+    await renderServicesList();
+    await renderStyleList();
+    document.getElementById('showUnreadCountCheckbox').checked = await storage.get('showBadge');
+    initializeTabs();
+});
 
+document.addEventListener('contextmenu', (event) => event.preventDefault());
+
+async function renderStyleList() {
     const styles = document.getElementById('styleList');
-    db.queryAll('menuStyles').forEach(style => {
+    const menuStyles = await storage.get('menuStyles');
+    menuStyles.forEach(style => {
         const input = createElement('input', {
             type: 'radio',
             name: 'style',
@@ -90,61 +84,33 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         const label = createElement('label', {'for': style.title}, style.title);
         const p = createElement('p', {}, [input, label]);
-
+        input.addEventListener('click', async event => {
+            const storageStyles = await storage.get('menuStyles');
+            const changedStyles = storageStyles.map(style => {
+                style.status = style.title === event.target.value;
+                return style;
+            });
+            await storage.set('menuStyles', changedStyles);
+        });
         styles.appendChild(p);
     });
+}
 
-    document.getElementById('showUnreadCountCheckbox').checked = db.queryAll('configs', {query: {title: 'UnreadCounter'}}).first().status;
-});
+function initializeTabs() {
+    const tabLinks = document.getElementsByClassName('tab-links');
+    [...tabLinks].forEach(element => {
+        element.addEventListener('click', (event) => openTab(event, event.target.value));
+    });
+    tabLinks[0].click();
+}
 
-window.onload = function () {
-
-    SubscribeToServicesListEvents();
-
-    let styles = document.getElementsByName("style");
-    for (let i = 0; i < styles.length; i++) {
-        styles[i].onclick = function (event) {
-            let obj = event.target;
-
-            db.update('menuStyles', {status: true}, function (row) {
-                row.status = false;
-                return row;
-            });
-
-            db.update('menuStyles', {title: obj.value}, function (row) {
-                row.status = obj.checked;
-                return row;
-            });
-
-            db.commit();
-        };
-    }
-};
-
-document.addEventListener('contextmenu', (event) => event.preventDefault());
-
-// options page tabs
-document.addEventListener('DOMContentLoaded', function () {
+function openTab(event, tabName) {
+    const tabContent = document.getElementsByClassName('tab-content');
     const tabLinks = document.getElementsByClassName('tab-links');
 
-    for (let i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].addEventListener('click', (event) => openTab(event, event.target.value));
-    }
+    [...tabContent].forEach(element => element.style.display = 'none');
+    [...tabLinks].forEach(element => element.classList.remove('active'));
 
-    tabLinks[0].click();
-});
-
-function openTab(evt, cityName) {
-    let tabContent = document.getElementsByClassName('tab-content');
-    for (let i = 0; i < tabContent.length; i++) {
-        tabContent[i].style.display = 'none';
-    }
-
-    let tabLinks = document.getElementsByClassName('tab-links');
-    for (let i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].classList.remove('active');
-    }
-
-    document.getElementById(cityName).style.display = 'block';
-    evt.currentTarget.classList.add('active');
+    document.getElementById(tabName).style.display = 'block';
+    event.currentTarget.classList.add('active');
 }

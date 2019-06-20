@@ -1,4 +1,5 @@
 import {throttle} from "./trottle";
+
 const isBadgeActive = () => new Promise(resolve => chrome.storage.sync.get(['showBadge'], item => resolve(item.showBadge)));
 const SetBadgeText = text => chrome.browserAction.setBadgeText({text});
 const counter = {
@@ -21,7 +22,8 @@ const localUnreadCounter = new Proxy(
 );
 
 export const refreshBadgeVisibility = (visibility) => SetBadgeText(visibility && localUnreadCounter.number !== null ? localUnreadCounter.number.toString() : '');
-const makeUpdateCounterRequest = () => {
+
+export const updateUnreadCounter = throttle(() => {
     fetch('https://mail.google.com/mail/feed/atom')
         .then(response => response.text())
         .then(xmlString => (new window.DOMParser()).parseFromString(xmlString, "text/xml"))
@@ -32,6 +34,4 @@ const makeUpdateCounterRequest = () => {
                 localUnreadCounter.number = unreadNumber;
             }
         });
-};
-
-export const updateUnreadCounter = throttle(makeUpdateCounterRequest, 10000);
+}, 10000);

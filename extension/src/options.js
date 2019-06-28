@@ -1,7 +1,7 @@
+import './scss/options.scss'
 import './helpers/prototypes';
 import sortable from 'sortablejs';
 import {createElement, storage} from './helpers';
-
 
 async function renderServicesList() {
     const ul = document.getElementById('list');

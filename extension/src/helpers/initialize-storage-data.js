@@ -6,28 +6,28 @@ const initializeServicesState = async () => {
             short_name: "mail",
             title: "Google Mail",
             url: "https://mail.google.com/",
-            image_path: "../img/gmail.png",
+            image_path: "../svg/gmail.svg",
             status: true
         },
         {
             short_name: "drive",
             title: "Google Drive",
             url: "https://drive.google.com",
-            image_path: "../img/drive.png",
+            image_path: "../svg/drive.svg",
             status: true
         },
         {
             short_name: "translate",
             title: "Google Translate",
             url: "https://translate.google.com",
-            image_path: "../img/translate.png",
+            image_path: "../svg/translate.svg",
             status: true
         },
         {
             short_name: "search",
             title: "Google Search",
             url: "https://google.com",
-            image_path: "../img/search.png",
+            image_path: "../svg/search.svg",
             status: true
         },
         {
@@ -55,14 +55,14 @@ const initializeServicesState = async () => {
             short_name: "maps",
             title: "Google Maps",
             url: "https://maps.google.com",
-            image_path: "../img/maps.png",
+            image_path: "../svg/maps.svg",
             status: true
         },
         {
             short_name: "news",
             title: "Google News",
             url: "https://news.google.com",
-            image_path: "../img/news.png",
+            image_path: "../svg/news.svg",
             status: true
         },
         {
@@ -76,7 +76,7 @@ const initializeServicesState = async () => {
             short_name: "photos",
             title: "Google Photos",
             url: "https://photos.google.com",
-            image_path: "../img/photos.png",
+            image_path: "../svg/photos.svg",
             status: true
         },
         {
@@ -90,7 +90,7 @@ const initializeServicesState = async () => {
             short_name: "calendar",
             title: "Google Calendar",
             url: "https://calendar.google.com",
-            image_path: "../img/calendar.png",
+            image_path: "../svg/calendar.svg",
             status: true
         },
         {

@@ -30,6 +30,7 @@ module.exports = [{
             { from: './static/html', to: path.resolve(__dirname, './dist/html') },
             { from: './static/icons', to: path.resolve(__dirname, './dist/icons') },
             { from: './static/img', to: path.resolve(__dirname, './dist/img') },
+            { from: './static/svg', to: path.resolve(__dirname, './dist/svg') },
             { from: './manifest.json', to: path.resolve(__dirname, './dist/') }
         ]),
         new miniCssExtractPlugin({

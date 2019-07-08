@@ -1,3 +1,4 @@
+import './scss/popup.scss'
 import './helpers/prototypes';
 import {createElement, storage} from './helpers';
 

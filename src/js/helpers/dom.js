@@ -8,10 +8,10 @@ export const createElement = (element, attribute, inner) => {
     }
 
     let el = document.createElement(element);
-    if (typeof attribute === 'object') {
+    if (typeof attribute === "object") {
         for (let key in attribute) {
             let value = attribute[key];
-            if (typeof value === 'function') {
+            if (typeof value === "function") {
                 el.onclick = value;
             } else {
                 el.setAttribute(key, value);
@@ -27,7 +27,7 @@ export const createElement = (element, attribute, inner) => {
         if (inner[i].tagName) {
             el.appendChild(inner[i]);
         } else {
-            if(inner[i].startsWith('&') && inner[i].endsWith(';')){ // html entity
+            if(inner[i].startsWith("&") && inner[i].endsWith(";")){ // html entity
                 el.innerHTML = inner[i];
             } else {
                 el.appendChild(document.createTextNode(inner[i]));

@@ -23,7 +23,7 @@
     ],
     "background": {
         "scripts": [
-            "js/background.js"
+            "background.js"
         ],
         "persistent": false
     },
@@ -31,7 +31,7 @@
         {
             "all_frames": true,
             "js": [
-                "js/contentscript.js"
+                "contentscript.js"
             ],
             "matches": [
                 "*://*.google.com/*"

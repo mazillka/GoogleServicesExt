@@ -1,10 +1,9 @@
 import { throttle } from "./trottle";
 
 const isBadgeActive = () => new Promise(resolve => chrome.storage.sync.get(["showBadge"], item => resolve(item.showBadge)));
-const SetBadgeText = text => chrome.browserAction.setBadgeText({ text });
-const counter = {
-    number: null,
-};
+const SetBadgeText = (text) => chrome.browserAction.setBadgeText({ text });
+const counter = { number: null };
+
 const localUnreadCounter = new Proxy(
     counter,
     {
@@ -25,13 +24,18 @@ export const refreshBadgeVisibility = (visibility) => SetBadgeText(visibility &&
 
 export const updateUnreadCounter = throttle(() => {
     fetch("https://mail.google.com/mail/feed/atom")
-        .then(response => response.text())
-        .then(xmlString => (new window.DOMParser()).parseFromString(xmlString, "text/xml"))
-        .then(xmlDoc => {
-            const unreadString = xmlDoc.getElementsByTagName("fullcount").first().textContent;
-            const unreadNumber = Number(unreadString);
-            if (!Number.isNaN(unreadNumber) && unreadNumber !== localUnreadCounter.number) {
-                localUnreadCounter.number = unreadNumber;
+        .then((response) => response.text())
+        .then((xmlString) => (new window.DOMParser()).parseFromString(xmlString, "text/xml"))
+        .then((xmlDoc) => {
+            if (xmlDoc) {
+                const tag = xmlDoc.querySelector("fullcount");
+                if(tag){
+                    const unreadNumber = Number(tag.textContent);
+
+                    if (!Number.isNaN(unreadNumber) && unreadNumber !== localUnreadCounter.number) {
+                        localUnreadCounter.number = unreadNumber;
+                    }
+                }
             }
         });
 }, 1000);

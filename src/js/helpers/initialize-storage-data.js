@@ -45,13 +45,6 @@ const initializeServicesState = async () => {
             status: true
         },
         {
-            short_name: "plus",
-            title: "Google Plus",
-            url: "https://plus.google.com",
-            image_path: "../images/plus.png",
-            status: true
-        },
-        {
             short_name: "maps",
             title: "Google Maps",
             url: "https://maps.google.com",

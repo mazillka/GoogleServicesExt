@@ -1,10 +1,10 @@
 import "../scss/options.scss"
 import "./helpers/prototypes";
 import sortable from "sortablejs";
-import {createElement, storage} from "./helpers";
+import { createElement, storage } from "./helpers";
 
 async function renderServicesList() {
-    const ul = document.getElementById("list");
+    const ul = document.querySelector("#list");
     while (ul.firstChild) {
         ul.removeChild(ul.firstChild);
     }
@@ -14,18 +14,18 @@ async function renderServicesList() {
         const input = createElement("input", {
             type: "checkbox",
             value: service.short_name,
-            id: service.short_name, ...(service.status && {checked: true}),
+            id: service.short_name, ...(service.status && { checked: true }),
         });
-        const label = createElement("label", {for: service.short_name}, service.title);
+        const label = createElement("label", { for: service.short_name }, service.title);
         const p = createElement("p", {}, [input, label]);
-        const li = createElement("li", {style: `background-image: url(${service.image_path});`}, p);
+        const li = createElement("li", { style: `background-image: url(${service.image_path});` }, p);
 
         ul.appendChild(li);
     });
 
     sortable.create(ul, {
         animation: 150,
-        onUpdate: async event => {
+        onUpdate: async (event) => {
             const services = await storage.get("services");
             const movedElement = services[event.oldIndex];
 
@@ -42,7 +42,7 @@ async function renderServicesList() {
 function addServiceCheckboxesEventListeners() {
     const inputs = document.querySelectorAll(`input[type="checkbox"]`);
     [...inputs].forEach((input) => {
-        input.addEventListener("click", async event => {
+        input.addEventListener("click", async (event) => {
             const element = event.target;
             if (element.value === "UnreadCounter") {
                 storage.set("showBadge", element.checked);
@@ -66,23 +66,21 @@ function addServiceCheckboxesEventListeners() {
 document.addEventListener("DOMContentLoaded", async () => {
     await renderServicesList();
     await renderStyleList();
-    document.getElementById("showUnreadCountCheckbox").checked = await storage.get("showBadge");
+    document.querySelector("#showUnreadCountCheckbox").checked = await storage.get("showBadge");
     initializeTabs();
 });
 
-document.addEventListener("contextmenu", (event) => event.preventDefault());
-
 async function renderStyleList() {
-    const styles = document.getElementById("styleList");
+    const styles = document.querySelector("#styleList");
     const menuStyles = await storage.get("menuStyles");
-    menuStyles.forEach(style => {
+    menuStyles.forEach((style) => {
         const input = createElement("input", {
             type: "radio",
             name: "style",
             value: style.title,
-            id: style.title, ...(style.status && {"checked": true})
+            id: style.title, ...(style.status && { "checked": true })
         });
-        const label = createElement("label", {"for": style.title}, style.title);
+        const label = createElement("label", { "for": style.title }, style.title);
         const p = createElement("p", {}, [input, label]);
         input.addEventListener("click", async event => {
             const storageStyles = await storage.get("menuStyles");
@@ -97,7 +95,7 @@ async function renderStyleList() {
 }
 
 function initializeTabs() {
-    const tabLinks = document.getElementsByClassName("tab-links");
+    const tabLinks = document.querySelectorAll(".tab-links");
     [...tabLinks].forEach(element => {
         element.addEventListener("click", (event) => openTab(event, event.target.value));
     });
@@ -105,12 +103,14 @@ function initializeTabs() {
 }
 
 function openTab(event, tabName) {
-    const tabContent = document.getElementsByClassName("tab-content");
-    const tabLinks = document.getElementsByClassName("tab-links");
+    const tabContent = document.querySelectorAll(".tab-content");
+    const tabLinks = document.querySelectorAll(".tab-links");
 
-    [...tabContent].forEach(element => element.style.display = "none");
-    [...tabLinks].forEach(element => element.classList.remove("active"));
+    [...tabContent].forEach((element) => element.style.display = "none");
+    [...tabLinks].forEach((element) => element.classList.remove("active"));
 
     document.getElementById(tabName).style.display = "block";
     event.currentTarget.classList.add("active");
 }
+
+document.addEventListener("contextmenu", (event) => event.preventDefault());

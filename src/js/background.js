@@ -1,25 +1,25 @@
 import "./helpers/prototypes";
-import {initializeData, resetData} from "./helpers/initialize-storage-data";
-import {refreshBadgeVisibility, storage, updateUnreadCounter} from "./helpers";
+import { initializeData, resetData } from "./helpers/initialize-storage-data";
+import { refreshBadgeVisibility, storage, updateUnreadCounter } from "./helpers";
 
 // set up listeners
-storage.onChange(changes => {
+storage.onChange((changes) => {
     if (changes.hasOwnProperty("showBadge")) {
         refreshBadgeVisibility(changes.showBadge.newValue);
     }
 });
 
-chrome.extension.onMessage.addListener(request => {
+chrome.extension.onMessage.addListener((request) => {
     if (request.message === "UpdateUnreadCounter") {
         updateUnreadCounter();
     }
 });
 
-chrome.runtime.onInstalled.addListener(async details => {
+chrome.runtime.onInstalled.addListener(async (details) => {
     switch (details.reason) {
         case "install":
             await initializeData();
-            chrome.tabs.create({url: chrome.extension.getURL("html/options.html")});
+            chrome.tabs.create({ url: chrome.extension.getURL("html/options.html") });
             break;
 
         case "update":

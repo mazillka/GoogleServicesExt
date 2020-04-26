@@ -1,7 +1,3 @@
-exports.generateSourceMaps = ({ type }) => ({
-    devtool: type
-});
-
 const devMode = process.env.NODE_ENV !== "production";
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -9,10 +5,8 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const CompressionPlugin = require("compression-webpack-plugin");
 
 module.exports = [{
-    devtool: "source-map",
     entry: {
         contentscript: "./src/js/contentscript.js",
         background: "./src/js/background.js",
@@ -96,8 +90,6 @@ module.exports = [{
         new MiniCssExtractPlugin({
             filename: "css/[name].css",
             chunkFilename: "css/[name].css"
-        }),
-
-        new CompressionPlugin()
+        })
     ]
 }];

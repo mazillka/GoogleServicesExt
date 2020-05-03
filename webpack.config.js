@@ -5,6 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const ZipBundlerPlugin = require("webpack-zip-bundler");
 
 module.exports = [{
     entry: {
@@ -90,6 +91,8 @@ module.exports = [{
         new MiniCssExtractPlugin({
             filename: "css/[name].css",
             chunkFilename: "css/[name].css"
-        })
+        }),
+
+        new ZipBundlerPlugin()
     ]
 }];

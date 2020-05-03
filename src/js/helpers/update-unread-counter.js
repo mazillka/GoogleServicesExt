@@ -1,23 +1,23 @@
 import { throttle } from "./trottle";
+import extensionizer from "extensionizer";
 
-const isBadgeActive = () => new Promise(resolve => chrome.storage.sync.get(["showBadge"], item => resolve(item.showBadge)));
-const SetBadgeText = (text) => chrome.browserAction.setBadgeText({ text });
+const isBadgeActive = () => new Promise((resolve) => extensionizer.storage.sync.get(["showBadge"], (item) => resolve(item.showBadge)));
+const SetBadgeText = (text) => extensionizer.browserAction.setBadgeText({ text });
 const counter = { number: null };
 
 const localUnreadCounter = new Proxy(
-    counter,
-    {
-        set: async (target, objectKey, value) => {
-            target[objectKey] = value;
-            if (objectKey === "number" && !Number.isNaN(value) && await isBadgeActive()) {
-                SetBadgeText(value > 0 ? value.toString() : "");
-            }
-            return true;
-        },
-        get: (object, key) => {
-            return object[key];
-        },
-    }
+    counter, {
+    set: async (target, objectKey, value) => {
+        target[objectKey] = value;
+        if (objectKey === "number" && !Number.isNaN(value) && await isBadgeActive()) {
+            SetBadgeText(value > 0 ? value.toString() : "");
+        }
+        return true;
+    },
+    get: (object, key) => {
+        return object[key];
+    },
+}
 );
 
 export const refreshBadgeVisibility = (visibility) => SetBadgeText(visibility && localUnreadCounter.number !== null ? localUnreadCounter.number.toString() : "");
@@ -29,7 +29,7 @@ export const updateUnreadCounter = throttle(() => {
         .then((xmlDoc) => {
             if (xmlDoc) {
                 const tag = xmlDoc.querySelector("fullcount");
-                if(tag){
+                if (tag) {
                     const unreadNumber = Number(tag.textContent);
 
                     if (!Number.isNaN(unreadNumber) && unreadNumber !== localUnreadCounter.number) {

@@ -1,6 +1,7 @@
 import "./helpers/prototypes";
 import { initializeData, resetData } from "./helpers/initialize-storage-data";
 import { refreshBadgeVisibility, storage, updateUnreadCounter } from "./helpers";
+import extensionizer from "extensionizer";
 
 // set up listeners
 storage.onChange((changes) => {
@@ -9,17 +10,17 @@ storage.onChange((changes) => {
     }
 });
 
-chrome.extension.onMessage.addListener((request) => {
+extensionizer.extension.onMessage.addListener((request) => {
     if (request.message === "UpdateUnreadCounter") {
         updateUnreadCounter();
     }
 });
 
-chrome.runtime.onInstalled.addListener(async (details) => {
+extensionizer.runtime.onInstalled.addListener(async (details) => {
     switch (details.reason) {
         case "install":
             await initializeData();
-            chrome.tabs.create({ url: chrome.extension.getURL("html/options.html") });
+            extensionizer.tabs.create({ url: extensionizer.extension.getURL("html/options.html") });
             break;
 
         case "update":
@@ -28,11 +29,10 @@ chrome.runtime.onInstalled.addListener(async (details) => {
     }
 });
 
-chrome.tabs.onUpdated.addListener(updateUnreadCounter);
-chrome.tabs.onActivated.addListener(updateUnreadCounter);
-chrome.tabs.onRemoved.addListener(updateUnreadCounter);
-chrome.tabs.onHighlighted.addListener(updateUnreadCounter);
-chrome.idle.onStateChanged.addListener(updateUnreadCounter);
-chrome.windows.onFocusChanged.addListener(updateUnreadCounter);
+extensionizer.tabs.onUpdated.addListener(updateUnreadCounter);
+extensionizer.tabs.onActivated.addListener(updateUnreadCounter);
+extensionizer.tabs.onRemoved.addListener(updateUnreadCounter);
+extensionizer.tabs.onHighlighted.addListener(updateUnreadCounter);
+extensionizer.windows.onFocusChanged.addListener(updateUnreadCounter);
 
 document.addEventListener("DOMContentLoaded", updateUnreadCounter);

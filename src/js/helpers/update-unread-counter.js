@@ -1,8 +1,8 @@
 import { throttle } from "./trottle";
 import extensionizer from "extensionizer";
 
-const isBadgeActive = () => new Promise((resolve) => extensionizer.storage.sync.get(["showBadge"], (item) => resolve(item.showBadge)));
-const SetBadgeText = (text) => extensionizer.browserAction.setBadgeText({ text });
+const isBadgeActive = () => new Promise(resolve => extensionizer.storage.sync.get(["showBadge"], item => resolve(item.showBadge)));
+const SetBadgeText = text => extensionizer.browserAction.setBadgeText({ text });
 const counter = { number: null };
 
 const localUnreadCounter = new Proxy(counter, {
@@ -18,13 +18,13 @@ const localUnreadCounter = new Proxy(counter, {
 	},
 });
 
-export const refreshBadgeVisibility = (visibility) => SetBadgeText(visibility && localUnreadCounter.number !== null ? localUnreadCounter.number.toString() : "");
+export const refreshBadgeVisibility = visibility => SetBadgeText(visibility && localUnreadCounter.number !== null ? localUnreadCounter.number.toString() : "");
 
 export const updateUnreadCounter = throttle(() => {
 	fetch("https://mail.google.com/mail/feed/atom")
-		.then((response) => response.text())
-		.then((xmlString) => new window.DOMParser().parseFromString(xmlString, "text/xml"))
-		.then((xmlDoc) => {
+		.then(response => response.text())
+		.then(xmlString => new window.DOMParser().parseFromString(xmlString, "text/xml"))
+		.then(xmlDoc => {
 			if (xmlDoc) {
 				const tag = xmlDoc.querySelector("fullcount");
 				if (tag) {

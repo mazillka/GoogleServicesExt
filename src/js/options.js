@@ -10,7 +10,7 @@ async function renderServicesList() {
 	}
 
 	const services = await storage.get("services");
-	services.forEach((service) => {
+	services.forEach(service => {
 		const input = createElement("input", {
 			type: "checkbox",
 			value: service.short_name,
@@ -26,7 +26,7 @@ async function renderServicesList() {
 
 	sortable.create(ul, {
 		animation: 150,
-		onUpdate: async (event) => {
+		onUpdate: async event => {
 			const services = await storage.get("services");
 			const movedElement = services[event.oldIndex];
 
@@ -42,15 +42,15 @@ async function renderServicesList() {
 
 function addServiceCheckboxesEventListeners() {
 	const inputs = document.querySelectorAll(`input[type="checkbox"]`);
-	[...inputs].forEach((input) => {
-		input.addEventListener("click", async (event) => {
+	[...inputs].forEach(input => {
+		input.addEventListener("click", async event => {
 			const element = event.target;
 			if (element.value === "UnreadCounter") {
 				storage.set("showBadge", element.checked);
 			} else {
 				const services = await storage.get("services");
 				const changedServices = services
-					.map((service) => {
+					.map(service => {
 						if (service.short_name === element.value) {
 							service.status = element.checked;
 						}
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function renderStyleList() {
 	const styles = document.querySelector("#styleList");
 	const menuStyles = await storage.get("menuStyles");
-	menuStyles.forEach((style) => {
+	menuStyles.forEach(style => {
 		const input = createElement("input", {
 			type: "radio",
 			name: "style",
@@ -84,9 +84,9 @@ async function renderStyleList() {
 		});
 		const label = createElement("label", { for: style.title }, style.title);
 		const p = createElement("p", {}, [input, label]);
-		input.addEventListener("click", async (event) => {
+		input.addEventListener("click", async event => {
 			const storageStyles = await storage.get("menuStyles");
-			const changedStyles = storageStyles.map((style) => {
+			const changedStyles = storageStyles.map(style => {
 				style.status = style.title === event.target.value;
 				return style;
 			});
@@ -98,8 +98,8 @@ async function renderStyleList() {
 
 function initializeTabs() {
 	const tabLinks = document.querySelectorAll(".tab-links");
-	[...tabLinks].forEach((element) => {
-		element.addEventListener("click", (event) => openTab(event, event.target.value));
+	[...tabLinks].forEach(element => {
+		element.addEventListener("click", event => openTab(event, event.target.value));
 	});
 	tabLinks[0].click();
 }
@@ -108,11 +108,11 @@ function openTab(event, tabName) {
 	const tabContent = document.querySelectorAll(".tab-content");
 	const tabLinks = document.querySelectorAll(".tab-links");
 
-	[...tabContent].forEach((element) => (element.style.display = "none"));
-	[...tabLinks].forEach((element) => element.classList.remove("active"));
+	[...tabContent].forEach(element => (element.style.display = "none"));
+	[...tabLinks].forEach(element => element.classList.remove("active"));
 
 	document.getElementById(tabName).style.display = "block";
 	event.currentTarget.classList.add("active");
 }
 
-document.addEventListener("contextmenu", (event) => event.preventDefault());
+document.addEventListener("contextmenu", event => event.preventDefault());

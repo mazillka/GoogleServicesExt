@@ -96,10 +96,6 @@ module.exports = [{
 
         new ZipBundlerPlugin(),
 
-        new PrettierPlugin({
-            printWidth: 256,
-            useTabs: true,
-            semi: true
-        }),
+        new PrettierPlugin()
     ]
 }];

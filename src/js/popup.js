@@ -4,13 +4,13 @@ import { createElement, storage } from "./helpers";
 import extensionizer from "extensionizer";
 
 document.addEventListener("DOMContentLoaded", async () => {
-	const style = (await storage.get("menuStyles")).find((style) => style.status).style;
+	const style = (await storage.get("menuStyles")).find(style => style.status).style;
 	const ul = document.querySelector("#list");
 
-	await storage.get("services").then((services) => {
+	await storage.get("services").then(services => {
 		services
-			.filter((service) => service.status)
-			.forEach((service) => {
+			.filter(service => service.status)
+			.forEach(service => {
 				const attributes = {
 					style: `background-image: url(${service.image_path});`,
 					class: `${style}Style`,
@@ -24,4 +24,4 @@ document.addEventListener("DOMContentLoaded", async () => {
 	});
 });
 
-document.addEventListener("contextmenu", (event) => event.preventDefault());
+document.addEventListener("contextmenu", event => event.preventDefault());

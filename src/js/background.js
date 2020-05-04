@@ -4,19 +4,19 @@ import { refreshBadgeVisibility, storage, updateUnreadCounter } from "./helpers"
 import extensionizer from "extensionizer";
 
 // set up listeners
-storage.onChange((changes) => {
+storage.onChange(changes => {
 	if (changes.hasOwnProperty("showBadge")) {
 		refreshBadgeVisibility(changes.showBadge.newValue);
 	}
 });
 
-extensionizer.extension.onMessage.addListener((request) => {
+extensionizer.extension.onMessage.addListener(request => {
 	if (request.message === "UpdateUnreadCounter") {
 		updateUnreadCounter();
 	}
 });
 
-extensionizer.runtime.onInstalled.addListener(async (details) => {
+extensionizer.runtime.onInstalled.addListener(async details => {
 	switch (details.reason) {
 		case "install":
 			await initializeData();

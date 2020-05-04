@@ -5,28 +5,28 @@ import extensionizer from "extensionizer";
 
 // set up listeners
 storage.onChange((changes) => {
-    if (changes.hasOwnProperty("showBadge")) {
-        refreshBadgeVisibility(changes.showBadge.newValue);
-    }
+	if (changes.hasOwnProperty("showBadge")) {
+		refreshBadgeVisibility(changes.showBadge.newValue);
+	}
 });
 
 extensionizer.extension.onMessage.addListener((request) => {
-    if (request.message === "UpdateUnreadCounter") {
-        updateUnreadCounter();
-    }
+	if (request.message === "UpdateUnreadCounter") {
+		updateUnreadCounter();
+	}
 });
 
 extensionizer.runtime.onInstalled.addListener(async (details) => {
-    switch (details.reason) {
-        case "install":
-            await initializeData();
-            extensionizer.tabs.create({ url: extensionizer.extension.getURL("html/options.html") });
-            break;
+	switch (details.reason) {
+		case "install":
+			await initializeData();
+			extensionizer.tabs.create({ url: extensionizer.extension.getURL("html/options.html") });
+			break;
 
-        case "update":
-            await resetData();
-            break;
-    }
+		case "update":
+			await resetData();
+			break;
+	}
 });
 
 extensionizer.tabs.onUpdated.addListener(updateUnreadCounter);

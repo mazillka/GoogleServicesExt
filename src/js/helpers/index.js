@@ -3,10 +3,4 @@ import { throttle } from "./trottle";
 import { updateUnreadCounter, refreshBadgeVisibility } from "./update-unread-counter";
 import storage from "./storage";
 
-export {
-    throttle,
-    storage,
-    createElement,
-    updateUnreadCounter,
-    refreshBadgeVisibility
-}
+export { throttle, storage, createElement, updateUnreadCounter, refreshBadgeVisibility };

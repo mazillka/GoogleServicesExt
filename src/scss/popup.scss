@@ -1,66 +1,68 @@
 * {
-  margin: 0;
-  padding: 0;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  cursor: default;
-  outline: 0;
-  list-style-type: none;
-  -webkit-user-select: none;
-  background-size: 32px 32px;
-  background-color: #F8F8F8;
+	margin: 0;
+	padding: 0;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	cursor: default;
+	outline: 0;
+	list-style-type: none;
+	-webkit-user-select: none;
+	background-size: 32px 32px;
+	background-color: #f8f8f8;
 
-  ul {
-    width: 200px;
+	ul {
+		width: 200px;
 
-    li {
-      background-repeat: no-repeat;
-      background-position: right;
-      line-height: 36px;
-      cursor: pointer;
+		li {
+			background-repeat: no-repeat;
+			background-position: right;
+			line-height: 36px;
+			cursor: pointer;
 
-      &:hover, &:hover > label {
-        background-color: #39F;
-      }
-    }
-  }
+			&:hover,
+			&:hover > label {
+				background-color: #39f;
+			}
+		}
+	}
 
-  .gridStyle {
-    width: 33%;
-    height: 36%;
-    display: inline-block;
-    background-position: center;
+	.gridStyle {
+		width: 33%;
+		height: 36%;
+		display: inline-block;
+		background-position: center;
 
-    &:hover {
-      background-color: transparent;
-      background-size: 40px 40px;
-    }
-  }
+		&:hover {
+			background-color: transparent;
+			background-size: 40px 40px;
+		}
+	}
 
-  .lineStyle {
-    color: #686868;
-    padding-left: 2%;
-    font-size: 12px;
-    font-weight: bold;
-    line-height: 35px;
-    height: 35px;
+	.lineStyle {
+		color: #686868;
+		padding-left: 2%;
+		font-size: 12px;
+		font-weight: bold;
+		line-height: 35px;
+		height: 35px;
 
-    &:hover, &:hover > label {
-      background-color: transparent;
-      font-size: 14px;
-      color: black;
-    }
-  }
+		&:hover,
+		&:hover > label {
+			background-color: transparent;
+			font-size: 14px;
+			color: black;
+		}
+	}
 
-  a {
-    font-size: 11px;
-    color: #686868;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 0 3px 0 3px;
+	a {
+		font-size: 11px;
+		color: #686868;
+		text-decoration: none;
+		font-weight: bold;
+		margin: 0 3px 0 3px;
 
-    &:hover {
-      color: orange;
-      cursor: pointer;
-    }
-  }
+		&:hover {
+			color: orange;
+			cursor: pointer;
+		}
+	}
 }

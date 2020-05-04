@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Menu for Google™ Services",
     "short_name": "Menu for Google™ Services",
-    "version": "3.9",
+    "version": "3.9.0",
     "author": "Andrii Shevchuk-Yuhanets",
     "description": "Easy and fast access to Google™ Services",
 

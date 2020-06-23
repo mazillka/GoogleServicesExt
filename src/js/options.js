@@ -9,19 +9,20 @@ async function renderServicesList() {
 		ul.removeChild(ul.firstChild);
 	}
 
-	const services = await storage.get("services");
-	services.forEach(service => {
-		const input = createElement("input", {
-			type: "checkbox",
-			value: service.short_name,
-			id: service.short_name,
-			...(service.status && { checked: true }),
-		});
-		const label = createElement("label", { for: service.short_name }, service.title);
-		const p = createElement("p", {}, [input, label]);
-		const li = createElement("li", { style: `background-image: url(${service.image_path});` }, p);
+	await storage.get("services").then(services => {
+		services.forEach(service => {
+			const input = createElement("input", {
+				type: "checkbox",
+				value: service.short_name,
+				id: service.short_name,
+				...(service.status && { checked: true }),
+			});
+			const label = createElement("label", { for: service.short_name }, service.title);
+			const p = createElement("p", {}, [input, label]);
+			const li = createElement("li", { style: `background-image: url(${service.image_path});` }, p);
 
-		ul.appendChild(li);
+			ul.appendChild(li);
+		});
 	});
 
 	sortable.create(ul, {
@@ -57,6 +58,7 @@ function addServiceCheckboxesEventListeners() {
 						return service;
 					})
 					.sort((x, y) => (x.status === y.status ? 0 : x.status ? -1 : 1));
+
 				await storage.set("services", changedServices);
 				await renderServicesList();
 			}
@@ -64,36 +66,35 @@ function addServiceCheckboxesEventListeners() {
 	});
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
-	await renderServicesList();
-	await renderStyleList();
-	document.querySelector("#showUnreadCountCheckbox").checked = await storage.get("showBadge");
-	initializeTabs();
-});
-
 async function renderStyleList() {
 	const styles = document.querySelector("#styleList");
-	const menuStyles = await storage.get("menuStyles");
-	menuStyles.forEach(style => {
-		const input = createElement("input", {
-			type: "radio",
-			name: "style",
-			value: style.title,
-			id: style.title,
-			...(style.status && { checked: true }),
-		});
-		const label = createElement("label", { for: style.title }, style.title);
-		const p = createElement("p", {}, [input, label]);
-		input.addEventListener("click", async event => {
-			const storageStyles = await storage.get("menuStyles");
-			const changedStyles = storageStyles.map(style => {
-				style.status = style.title === event.target.value;
-				return style;
+	await storage.get("menuStyles").then(menuStyles => {
+		menuStyles.forEach(style => {
+			const input = createElement("input", {
+				type: "radio",
+				name: "style",
+				value: style.title,
+				id: style.title,
+				...(style.status && { checked: true }),
 			});
-			await storage.set("menuStyles", changedStyles);
+			const label = createElement("label", { for: style.title }, style.title);
+			const p = createElement("p", {}, [input, label]);
+			input.addEventListener("click", async event => {
+				const storageStyles = await storage.get("menuStyles");
+				const changedStyles = storageStyles.map(style => {
+					style.status = style.title === event.target.value;
+					return style;
+				});
+				await storage.set("menuStyles", changedStyles);
+			});
+
+			styles.appendChild(p);
 		});
-		styles.appendChild(p);
 	});
+}
+
+async function initializeUnreadCountCheckbox() {
+	document.querySelector("#showUnreadCountCheckbox").checked = await storage.get("showBadge");
 }
 
 function initializeTabs() {
@@ -114,5 +115,12 @@ function openTab(event, tabName) {
 	document.getElementById(tabName).style.display = "block";
 	event.currentTarget.classList.add("active");
 }
+
+document.addEventListener("DOMContentLoaded", async () => {
+	await renderServicesList();
+	await renderStyleList();
+	await initializeUnreadCountCheckbox();
+	initializeTabs();
+});
 
 document.addEventListener("contextmenu", event => event.preventDefault());

@@ -15,7 +15,8 @@
     "permissions": [
         "tabs",
         "storage",
-        "*://*.google.com/*"
+        "*://*.google.com/*",
+        "*://yuotube.com/*"
     ],
     "background": {
         "scripts": [

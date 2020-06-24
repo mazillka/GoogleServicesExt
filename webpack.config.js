@@ -8,6 +8,7 @@ const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const ZipBundlerPlugin = require("webpack-zip-bundler");
 const PrettierPlugin = require("prettier-webpack-plugin");
 const CopyVersionPlugin = require("webpack-copy-version-plugin");
+const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = [
 	{
@@ -97,12 +98,23 @@ module.exports = [
 			}),
 
 			new CopyWebpackPlugin([
-				{ from: "./src/html", to: "html" },
 				{ from: "./src/icons", to: "icons" },
 				{ from: "./src/images", to: "images" },
 				{ from: "./src/manifest.json", to: "manifest.json" },
 			]),
 
+			new HtmlWebPackPlugin({
+				template: "./src/html/options.html",
+				filename: "./options.html",
+				excludeChunks: ["background", "contentscript", "popup"],
+			}),
+
+			new HtmlWebPackPlugin({
+				template: "./src/html/popup.html",
+				filename: "./popup.html",
+				excludeChunks: ["background", "contentscript", "options"],
+			}),
+			
 			new MiniCssExtractPlugin({
 				filename: "css/[name].css",
 				chunkFilename: "css/[name].css",

@@ -12,6 +12,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 			.filter(service => service.status)
 			.forEach(service => {
 				const attributes = {
+					rel: "noopener",
 					style: `background-image: url(${service.image_path});`,
 					class: `${style}Style`,
 					onclick: () => extensionizer.tabs.create({ url: service.url }),

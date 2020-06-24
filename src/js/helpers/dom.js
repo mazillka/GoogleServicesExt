@@ -7,7 +7,7 @@ export const createElement = (element, attribute, inner) => {
 		inner = "";
 	}
 
-	let el = document.createElement(element);
+	const el = document.createElement(element);
 	if (typeof attribute === "object") {
 		for (let key in attribute) {
 			let value = attribute[key];

@@ -1,5 +1,5 @@
 import "./helpers/prototypes";
-import { initializeData, resetData } from "./helpers/initialize-storage-data";
+import { initializeData, updateData } from "./helpers/initialize-storage-data";
 import { refreshBadgeVisibility, storage, updateUnreadCounter } from "./helpers";
 import extensionizer from "extensionizer";
 
@@ -24,12 +24,7 @@ extensionizer.runtime.onInstalled.addListener(async details => {
 			break;
 
 		case "update":
-			// TODO: merge lists or compare them to prevent clearing
-
-			// get options from storage and add options that not in storage
-			// update existing
-
-			await resetData();
+			await updateData();
 			break;
 	}
 });

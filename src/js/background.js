@@ -20,7 +20,7 @@ extensionizer.runtime.onInstalled.addListener(async details => {
 	switch (details.reason) {
 		case "install":
 			await initializeData();
-			extensionizer.tabs.create({ url: extensionizer.extension.getURL("html/options.html") });
+			extensionizer.tabs.create({ url: extensionizer.extension.getURL("options.html") });
 			break;
 
 		case "update":

@@ -15,7 +15,7 @@
 		li {
 			background-repeat: no-repeat;
 			background-position: right;
-			line-height: 36px;
+			line-height: 40px;
 			cursor: pointer;
 
 			&:hover,
@@ -25,7 +25,7 @@
 		}
 	}
 
-	.gridStyle {
+	.grid-style {
 		width: 33%;
 		height: 36%;
 		display: inline-block;
@@ -37,7 +37,7 @@
 		}
 	}
 
-	.lineStyle {
+	.line-style {
 		color: #686868;
 		padding-left: 2%;
 		font-size: 12px;

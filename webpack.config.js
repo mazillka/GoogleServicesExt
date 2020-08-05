@@ -114,7 +114,7 @@ module.exports = [
 				filename: "./popup.html",
 				excludeChunks: ["background", "contentscript", "options"],
 			}),
-			
+
 			new MiniCssExtractPlugin({
 				filename: "css/[name].css",
 				chunkFilename: "css/[name].css",

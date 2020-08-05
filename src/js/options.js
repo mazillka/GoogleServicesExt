@@ -13,13 +13,13 @@ async function renderServicesList() {
 		services.forEach(service => {
 			const input = createElement("input", {
 				type: "checkbox",
-				value: service.short_name,
-				id: service.short_name,
-				...(service.status && { checked: true }),
+				value: service.id,
+				id: service.id,
+				...(service.enabled && { checked: true }),
 			});
-			const label = createElement("label", { for: service.short_name }, service.title);
+			const label = createElement("label", { for: service.id }, ` ${service.name}`);
 			const p = createElement("p", {}, [input, label]);
-			const li = createElement("li", { style: `background-image: url(${service.image_path});` }, p);
+			const li = createElement("li", { style: `background-image: url(${service.icon});` }, p);
 
 			ul.appendChild(li);
 		});
@@ -46,18 +46,18 @@ function addServiceCheckboxesEventListeners() {
 	[...inputs].forEach(input => {
 		input.addEventListener("click", async event => {
 			const element = event.target;
-			if (element.value === "UnreadCounter") {
+			if (element.value === "unread-counter") {
 				storage.set("showBadge", element.checked);
 			} else {
 				const services = await storage.get("services");
 				const changedServices = services
 					.map(service => {
-						if (service.short_name === element.value) {
-							service.status = element.checked;
+						if (service.id === element.value) {
+							service.enabled = element.checked;
 						}
 						return service;
 					})
-					.sort((x, y) => (x.status === y.status ? 0 : x.status ? -1 : 1));
+					.sort((x, y) => (x.enabled === y.enabled ? 0 : x.enabled ? -1 : 1));
 
 				await storage.set("services", changedServices);
 				await renderServicesList();
@@ -67,22 +67,22 @@ function addServiceCheckboxesEventListeners() {
 }
 
 async function renderStyleList() {
-	const styles = document.querySelector("#styleList");
+	const styles = document.querySelector("#style-list");
 	await storage.get("menuStyles").then(menuStyles => {
 		menuStyles.forEach(style => {
 			const input = createElement("input", {
 				type: "radio",
 				name: "style",
-				value: style.title,
-				id: style.title,
-				...(style.status && { checked: true }),
+				value: style.name,
+				id: style.name,
+				...(style.enabled && { checked: true }),
 			});
-			const label = createElement("label", { for: style.title }, style.title);
+			const label = createElement("label", { for: style.name }, ` ${style.name}`);
 			const p = createElement("p", {}, [input, label]);
 			input.addEventListener("click", async event => {
 				const storageStyles = await storage.get("menuStyles");
 				const changedStyles = storageStyles.map(style => {
-					style.status = style.title === event.target.value;
+					style.enabled = style.name === event.target.value;
 					return style;
 				});
 				await storage.set("menuStyles", changedStyles);
@@ -94,7 +94,7 @@ async function renderStyleList() {
 }
 
 async function initializeUnreadCountCheckbox() {
-	document.querySelector("#showUnreadCountCheckbox").checked = await storage.get("showBadge");
+	document.querySelector("#show-unread-count-checkbox").checked = await storage.get("showBadge");
 }
 
 function initializeTabs() {

@@ -11,7 +11,7 @@ storage.onChange(changes => {
 });
 
 extensionizer.extension.onMessage.addListener(request => {
-	if (request.message === "UpdateUnreadCounter") {
+	if (request.message === "update-unread-counter") {
 		updateUnreadCounter();
 	}
 });

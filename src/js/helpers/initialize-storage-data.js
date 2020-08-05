@@ -2,140 +2,159 @@ import { storage } from "./";
 
 const defaultServices = [
 	{
-		short_name: "mail",
-		title: "Google Mail",
+		id: "mail",
+		name: "Google Mail",
 		url: "https://mail.google.com/",
-		image_path: "../images/gmail.png",
-		status: true,
+		icon: "../images/gmail.png",
+		enabled: true,
 	},
 	{
-		short_name: "drive",
-		title: "Google Drive",
+		id: "drive",
+		name: "Google Drive",
 		url: "https://drive.google.com",
-		image_path: "../images/drive.png",
-		status: true,
+		icon: "../images/google_drive.png",
+		enabled: true,
 	},
 	{
-		short_name: "translate",
-		title: "Google Translate",
+		id: "translate",
+		name: "Google Translate",
 		url: "https://translate.google.com",
-		image_path: "../images/translate.png",
-		status: true,
+		icon: "../images/google_translate.png",
+		enabled: true,
 	},
 	{
-		short_name: "search",
-		title: "Google Search",
+		id: "search",
+		name: "Google Search",
 		url: "https://google.com",
-		image_path: "../images/search.png",
-		status: true,
+		icon: "../images/google_search.png",
+		enabled: true,
 	},
 	{
-		short_name: "store",
-		title: "Chrome Web Store",
-		url: "https://chrome.google.com/webstore",
-		image_path: "../images/store.png",
-		status: true,
-	},
-	{
-		short_name: "play",
-		title: "Google Play",
-		url: "https://play.google.com",
-		image_path: "../images/play.png",
-		status: true,
-	},
-	{
-		short_name: "maps",
-		title: "Google Maps",
+		id: "maps",
+		name: "Google Maps",
 		url: "https://maps.google.com",
-		image_path: "../images/maps.png",
-		status: true,
+		icon: "../images/google_maps.png",
+		enabled: true,
 	},
 	{
-		short_name: "news",
-		title: "Google News",
+		id: "news",
+		name: "Google News",
 		url: "https://news.google.com",
-		image_path: "../images/news.png",
-		status: true,
+		icon: "../images/google_news.png",
+		enabled: true,
 	},
 	{
-		short_name: "contacts",
-		title: "Google Contacts",
+		id: "contacts",
+		name: "Google Contacts",
 		url: "https://contacts.google.com",
-		image_path: "../images/contacts.png",
-		status: true,
+		icon: "../images/google_contacts.png",
+		enabled: true,
 	},
 	{
-		short_name: "photos",
-		title: "Google Photos",
+		id: "photos",
+		name: "Google Photos",
 		url: "https://photos.google.com",
-		image_path: "../images/photos.png",
-		status: true,
+		icon: "../images/google_photos.png",
+		enabled: true,
 	},
 	{
-		short_name: "keep",
-		title: "Google Keep",
+		id: "keep",
+		name: "Google Keep",
 		url: "https://keep.google.com",
-		image_path: "../images/keep.png",
-		status: true,
+		icon: "../images/google_keep.png",
+		enabled: true,
 	},
 	{
-		short_name: "calendar",
-		title: "Google Calendar",
+		id: "calendar",
+		name: "Google Calendar",
 		url: "https://calendar.google.com",
-		image_path: "../images/calendar.png",
-		status: true,
+		icon: "../images/google_calendar.png",
+		enabled: true,
 	},
 	{
-		short_name: "hangouts",
-		title: "Google Hangouts",
+		id: "hangouts",
+		name: "Google Hangouts",
 		url: "https://hangouts.google.com",
-		image_path: "../images/hangouts.png",
-		status: true,
+		icon: "../images/hangouts.png",
+		enabled: true,
 	},
 	{
-		short_name: "music",
-		title: "Google Play Music",
+		id: "music",
+		name: "Google Play Music",
 		url: "https://music.google.com",
-		image_path: "../images/music.png",
-		status: true,
+		icon: "../images/google_play_music.png",
+		enabled: true,
 	},
 	{
-		short_name: "youtube",
-		title: "Youtube",
-		url: "https://youtube.com",
-		image_path: "../images/youtube.png",
-		status: true,
+		id: "podcasts",
+		name: "Google Podcasts",
+		url: "https://podcasts.google.com/",
+		icon: "../images/google_podcasts.png",
+		enabled: true,
 	},
 	{
-		short_name: "duo",
-		title: "Duo",
+		id: "duo",
+		name: "Google Duo",
 		url: "https://duo.google.com",
-		image_path: "../images/duo.png",
-		status: true,
+		icon: "../images/google_duo.png",
+		enabled: true,
+	},
+	{
+		id: "meet",
+		name: "Google Meet",
+		url: "https://meet.google.com",
+		icon: "../images/google_meet.png",
+		enabled: true,
+	},
+	{
+		id: "play",
+		name: "Google Play",
+		url: "https://play.google.com",
+		icon: "../images/google_play_store.png",
+		enabled: true,
+	},
+	{
+		id: "youtube",
+		name: "YouTube",
+		url: "https://youtube.com",
+		icon: "../images/youtube.png",
+		enabled: true,
+	},
+	{
+		id: "youtube-music",
+		name: "YouTube Music",
+		url: "https://music.youtube.com/",
+		icon: "../images/youtube_music.png",
+		enabled: true,
+	},
+	{
+		id: "store",
+		name: "Chrome Web Store",
+		url: "https://chrome.google.com/webstore",
+		icon: "../images/store.png",
+		enabled: true,
 	},
 ];
 
 const defaultMenuStyles = [
-	{ title: " Grid Menu", style: "grid", status: true },
-	{ title: " Line Menu", style: "line", status: false },
+	{ name: "Grid Menu", style: "grid", enabled: true },
+	{ name: "Line Menu", style: "line", enabled: false },
 ];
 
-const initializeServicesState = async () => {
-	return await storage.set("services", defaultServices);
-};
+const initializeServicesState = async () => await storage.set("services", defaultServices);
 
 const updateServicesState = async () => {
 	return await storage.get("services").then(services => {
 		defaultServices.forEach(defaultService => {
-			const service = services.find(service => defaultService.short_name === service.short_name);
+			const service = services.find(service => defaultService.id === service.id);
 			if (!service) {
 				services.push(defaultService);
 			}
 		});
 
 		services.forEach(service => {
-			if (!defaultServices.some(defaultService => defaultService.short_name === service.short_name)) {
-				services = services.filter(s => s.short_name !== service.short_name);
+			if (!defaultServices.some(defaultService => defaultService.id === service.id)) {
+				services = services.filter(s => s.id !== service.id);
 			}
 		});
 
@@ -143,13 +162,9 @@ const updateServicesState = async () => {
 	});
 };
 
-const initializeMenuStylesState = async () => {
-	return await storage.set("menuStyles", defaultMenuStyles);
-};
+const initializeMenuStylesState = async () => await storage.set("menuStyles", defaultMenuStyles);
 
-const initializeBadgeVisibilityState = async () => {
-	return await storage.set("showBadge", true);
-};
+const initializeBadgeVisibilityState = async () => await storage.set("showBadge", true);
 
 export const initializeData = async () => {
 	if (!(await storage.get("services"))) {
@@ -165,6 +180,4 @@ export const initializeData = async () => {
 	}
 };
 
-export const updateData = async () => {
-	await updateServicesState();
-};
+export const updateData = async () => await updateServicesState();

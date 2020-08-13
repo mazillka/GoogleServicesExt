@@ -56,9 +56,6 @@ module.exports = [
 							loader: "html-loader",
 							options: {
 								minimize: !devMode,
-								interpolate: true,
-								root: path.resolve(__dirname, "src"),
-								attrs: [":data-src"],
 							},
 						},
 					],
@@ -97,11 +94,13 @@ module.exports = [
 				to: "./src/manifest.json",
 			}),
 
-			new CopyWebpackPlugin([
-				{ from: "./src/icons", to: "icons" },
-				{ from: "./src/images", to: "images" },
-				{ from: "./src/manifest.json", to: "manifest.json" },
-			]),
+			new CopyWebpackPlugin({
+				patterns: [
+					{ from: "./src/icons", to: "icons" },
+					{ from: "./src/images", to: "images" },
+					{ from: "./src/manifest.json", to: "manifest.json" },
+				],
+			}),
 
 			new HtmlWebPackPlugin({
 				template: "./src/html/options.html",

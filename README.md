@@ -16,6 +16,17 @@ With this extension, users can easily navigate between Google products from a si
 - **Opera:** [Install from Opera Add-ons](https://addons.opera.com/ru/extensions/details/google-services)
 - **Edge:** [Install from Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/menu-for-google%E2%84%A2-services/miaoijfohfgeniidndoinmjabjjjejon)
 
+## Stats DEC 1 2025
+
+- **Chrome:**
+![Alt text](./stats/chrome.png)
+
+- **Opera:**
+![Alt text](./stats/opera.png) 
+
+- **Edge:**
+![Alt text](./stats/edge.png)
+
 ## License
 
 This project is licensed under the MIT License.

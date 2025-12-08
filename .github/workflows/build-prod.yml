@@ -22,7 +22,10 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
 
-    - name: Build
-      run: |
-        npm install
-        npm build-prod
+    - name: Install dependencies
+      run: npm install
+      working-directory: ./extension
+
+    - name: Build (Webpack)
+      run: npm run build-prod
+      working-directory: ./extension
